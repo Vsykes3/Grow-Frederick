@@ -1,0 +1,80 @@
+.footer {
+    width: 100%;
+    height: 400px;
+    background-color: #414535;
+    position: static;  /* Changed from fixed to static */
+    display: flex;
+    gap: 0;
+    align-items: center;
+    padding: 0 0;
+    box-sizing: border-box;
+}
+
+.footer-container-1,
+.footer-container-2,
+.footer-container-3,
+.footer-container-4,
+.footer-container-5,
+.footer-container-6 {
+    width: 16.666667%;
+    height: 100%;
+    flex: 0 0 16.666667%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.footer-container-2 {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-container-3 {
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.footer-container-4 {
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-container-5 {
+    background-color: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Reset any text styles that might affect alignment */
+.footer p {
+    margin: 0;
+    padding: 0;
+    color: #f9f0dd;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.foot-text {
+    color: #f9f0dd;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+}
+
+.foot-text:hover{
+    color: #9ebb8c;
+}
