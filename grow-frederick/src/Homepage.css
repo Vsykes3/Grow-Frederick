@@ -5,6 +5,15 @@
   box-sizing: border-box;
 }
 
+.container-link{
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -69,7 +78,7 @@ html, body {
   padding: 10px 20px;
   background-color: #9EBB8C;
   color: #414535;
-  border: none;
+  border: 2px solid #e0e0e0;
   border-radius: 4px;
   font-weight: bold;
   font-size: 1rem;
@@ -179,8 +188,9 @@ html, body {
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 25px;
+  gap: 75px;
   margin-bottom: 40px;
+  justify-content: center;
 }
 
 .call-button{
@@ -188,6 +198,7 @@ html, body {
   font-weight: 600;
   background-color: #9EBB8C;
   border: 2px solid #e0e0e0;
+  color: #414535;
   border-radius: 4px;
   height: 43px;
   width: 108px;

@@ -13,7 +13,9 @@ const Homepage = () => {
             <img src={banner} alt="banner" className="banner" />
             <div className="banner-content">
                 <h1>Gardening Has Never Been This Easy!</h1>
-                <button className="banner-button">Get Started</button>
+                <a href="/signup" className="container-link">
+                  <button className="banner-button">Get Started</button>
+                </a>
             </div>
         </div>
         <div className="features-wrapper">
@@ -39,8 +41,12 @@ const Homepage = () => {
           </div>
           <div className="call-section">
             <div className='call-right'>
-              <div className="call-button">Sign Up!</div>
-              <div className="call-button">Log In!</div>
+              <a href="/signup" className="container-link">
+                <div className="call-button">Sign Up!</div>
+              </a>
+              <a href="/login" className="container-link">
+                <div className="call-button">Log In!</div>
+              </a>
             </div>
           </div>
           <img src={divider} alt="divider" className="call-divider" />
