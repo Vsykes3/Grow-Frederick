@@ -62,29 +62,33 @@ const Homepage = () => {
               </p>
             </div>
             <div className="pricing-card">
-              <div className="pricing-name">Free</div>
+              <div className="pricing-name">Pro</div>
               <div className="pricing-container">
-                <p className="pricing-price">$0</p>
-                <p className="pricing-subs">/forever</p>
+                <p className="pricing-price">$6</p>
+                <p className="pricing-subs">.99/once</p>
               </div>
               <div className="line"></div>
               <p className='pricing-contents'>
-                ✓ Live Weather & Outlook<br></br>
-                ✓ Full Plant & Pest Index<br></br>
-                ✓ General Planting Calendar<br></br>
+                All Free Features PLUS:<br></br><br></br>
+                ✓ Personalized Garden Journal<br></br>
+                ✓ CSV Export<br></br>
+                ✓ Location Based Pest Warnings<br></br>
+                ✓ Custom Planting Tips and Tricks<br></br>
               </p>
             </div>
             <div className="pricing-card">
-              <div className="pricing-name">Free</div>
+              <div className="pricing-name">Premium</div>
               <div className="pricing-container">
-                <p className="pricing-price">$0</p>
-                <p className="pricing-subs">/forever</p>
+                <p className="pricing-price">$10</p>
+                <p className="pricing-subs">/month</p>
               </div>
               <div className="line"></div>
               <p className='pricing-contents'>
-                ✓ Live Weather & Outlook<br></br>
-                ✓ Full Plant & Pest Index<br></br>
-                ✓ General Planting Calendar<br></br>
+                All Pro Features PLUS:<br></br><br></br>
+                ✓ Printable Guides<br></br>
+                ✓ SMS Local Alerts<br></br>
+                ✓ Priority Support<br></br>
+                ✓ Year-in-Review Stats<br></br>
               </p>
             </div>
           </div>

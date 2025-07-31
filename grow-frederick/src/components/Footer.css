@@ -1,6 +1,6 @@
 .footer {
     width: 100%;
-    height: 400px;
+    height: auto;
     background-color: #414535;
     position: static;  /* Changed from fixed to static */
     display: flex;
@@ -21,11 +21,19 @@
     flex: 0 0 16.666667%;
     margin: 0;
     padding: 0;
+    padding-bottom: 20px;
+    padding-top: 20px;
     box-sizing: border-box;
 }
 
+.footer-container-1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .footer-container-2 {
-    height: 60%;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,7 +41,7 @@
 }
 
 .footer-container-3 {
-    height: 40%;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,14 +49,13 @@
 }
 
 .footer-container-4 {
-    background-color: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .footer-container-5 {
-    background-color: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,6 +70,18 @@
     font-size: 14px;
 }
 
+.foot-logo{
+    width: 80%;
+}
+
+.foot-link{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .foot-text {
     color: #f9f0dd;
     text-decoration: none;
@@ -73,8 +92,32 @@
     height: 100%;
     font-family: 'Poppins', sans-serif;
     text-decoration: none;
+    padding: 5px;
 }
 
 .foot-text:hover{
     color: #9ebb8c;
+}
+
+.foot-icont{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+    gap: 25px;
+}
+
+.foot-iconl{
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: auto;
+    display: flex;
+}
+
+.foot-icon{
+    height: 30px;
 }
