@@ -4,6 +4,9 @@ import Footer from './components/Footer'
 import './Homepage.css'
 import banner from './assets/Homepage Banner.jpg'
 import divider from './assets/border.png'
+import calendar from './assets/calendar.png'
+import notification from './assets/notification.png'
+import weather from './assets/weathermap.png'
 
 const Homepage = () => {
   return (
@@ -22,14 +25,17 @@ const Homepage = () => {
           <p className="title">Features</p>
           <div className="cards-container">
             <a href="/calendar" className="features-card">
+              <img src={calendar} alt="calendar" className="features-icon" />
               <p className="features-label">Personalized Calendar</p>
               <p className="features-content">Easily schedule and plan gardening timings with a handy calendar.</p>
             </a>
             <a href="/news" className="features-card">
+              <img src={notification} alt="alerts" className="features-icon" />
               <p className="features-label">Real Time Pest and Weather Alerts</p>
               <p className="features-content">Easily schedule and plan gardening timings with a handy calendar.</p>
             </a>
             <a href="/map" className="features-card">
+              <img src={weather} alt="weather" className="features-icon" />
               <p className="features-label">Interactive Weather Map</p>
               <p className="features-content">Easily schedule and plan gardening timings with a handy calendar.</p>
             </a>
