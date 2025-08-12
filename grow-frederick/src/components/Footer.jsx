@@ -32,7 +32,7 @@ const Footer = () => {
             <a href='https://www.instagram.com/growfrederick/?utm_source=ig_web_button_share_sheet' className='foot-iconl'>
                 <img src={insta} alt="Instagram" className="foot-icon"/>
             </a>
-            <a href='' className='foot-iconl'>
+            <a href='https://www.facebook.com/people/Grow-Frederick/pfbid0F4sDaCKd5FaePQB6EN7sUwuXKxdM4TwBT3j7xhzjuQXAd5hRsruEiwsapZ5HC5iHl/' className='foot-iconl'>
                 <img src={facebook} alt="Facebok" className="foot-icon"/>
             </a>
         </div>
