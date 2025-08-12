@@ -1,21 +1,22 @@
-import React from 'react'
-import './Navbar.css'
-import logo from '../assets/Grow Fred Alt Logo.png'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import './Navbar.css';
+import logo from '../assets/Grow Fred Alt Logo.png';
 
 const Navbar = () => {
   return (
     <div className='header'>
-        <img src={logo} alt="Logo" className="logo"/>
+      <img src={logo} alt="Logo" className="logo" />
 
-        <a href="/home" className='nav-text'>Home</a>
-        <a href="/news" className='nav-text'>News</a>
-        <a href="/map" className='nav-text'>Map</a>
-        <a href="/index" className='nav-text'>Plant Index</a>
-        <a href="/calendar" className='nav-text'>Calendar</a>
-        
-        <button className="login-button">Login</button>
+      <NavLink to="/home" className="nav-text">Home</NavLink>
+      <NavLink to="/news" className="nav-text">News</NavLink>
+      <NavLink to="/map" className="nav-text">Map</NavLink>
+      <NavLink to="/index" className="nav-text">Plant Index</NavLink>
+      <NavLink to="/calendar" className="nav-text">Calendar</NavLink>
+
+      <NavLink to="/login" className="login-button">Login</NavLink>
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

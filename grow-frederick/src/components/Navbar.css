@@ -47,6 +47,10 @@
 }
 
 .login-button {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  text-decoration: none;
   background: #f9f0dd;
   color: #414535;
   border: none;
@@ -59,10 +63,21 @@
   height: 36px;
   width: 90px;
   align-self: center;
+  visibility: visible;
 }
 
 .login-button:hover{
   background: #9EBB8c;
   color: #414535;
   border: #f9f0dd;
+}
+
+.nav-text.active {
+  color: #9EBB8c;
+  font-weight: bold;
+}
+
+.login-button.active {
+  visibility: hidden;
+  width: 0;
 }

@@ -1,12 +1,12 @@
 import React from 'react'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 import './Homepage.css'
-import banner from './assets/Homepage Banner.jpg'
-import divider from './assets/border.png'
-import calendar from './assets/calendar.png'
-import notification from './assets/notification.png'
-import weather from './assets/weathermap.png'
+import banner from '../assets/Homepage Banner.jpg'
+import divider from '../assets/border.png'
+import calendar from '../assets/calendar.png'
+import notification from '../assets/notification.png'
+import weather from '../assets/weathermap.png'
 
 const Homepage = () => {
   return (
