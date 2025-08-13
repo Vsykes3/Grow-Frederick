@@ -7,12 +7,14 @@ import Homepage from './pages/Homepage'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ForgotPassword from './pages/ForgotPassword'
+import PlantIndex from './pages/PlantIndex';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path='/index' element={<PlantIndex />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/login" element={<Login />} />
