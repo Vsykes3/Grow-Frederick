@@ -21,7 +21,7 @@ const Footer = () => {
       </div>
       <div className="footer-container-3">
         <p className="foot-text">Contact Us!</p>
-        <Link href='https://mail.google.com/mail/u/0/#inbox?compose=VpCqJZNHPQHfPqdRBDnNLsSKgsvQLPdnGJwPqsjTKpsRLZHWXkPtRthlwqBKqKvMtRxqnLb' style={{ color: '#f9f0dd', textDecoration: 'none'}} className="foot-text">Email: growfrederick@gmail.com</Link>
+        <Link href='https://mail.google.com/mail/u/0/#inbox?compose=VpCqJZNHPQHfPqdRBDnNLsSKgsvQLPdnGJwPqsjTKpsRLZHWXkPtRthlwqBKqKvMtRxqnLb' style={{ color: '#f9f0dd', textDecoration: 'none'}} className="foot-text-mail">Email: growfrederick@gmail.com</Link>
       </div>
       <div className="footer-container-4">
         <a href="/home" className='foot-text'>Home</a>
