@@ -7,8 +7,12 @@ import divider from '../assets/border.png'
 import calendar from '../assets/calendar.png'
 import notification from '../assets/notification.png'
 import weather from '../assets/weathermap.png'
+import { useAuth } from '../contexts/AuthContext';
 
 const Homepage = () => {
+
+  const { currentUser } = useAuth();
+
   return (
     <div className="stack">
         <Navbar></Navbar>
@@ -16,9 +20,11 @@ const Homepage = () => {
             <img src={banner} alt="banner" className="banner" />
             <div className="banner-content">
                 <h1>Gardening Has Never Been This Easy!</h1>
-                <a href="/signup" className="container-link">
-                  <button className="banner-button">Get Started</button>
-                </a>
+                {!currentUser && (
+                  <a href="/signup" className="container-link">
+                    <button className="banner-button">Get Started</button>
+                  </a>
+                )}
             </div>
         </div>
         <div className="features-wrapper">
@@ -43,17 +49,21 @@ const Homepage = () => {
         </div>
         <div className="call-wrapper">
           <div className="call-section">
-            <h1 className="call-header">Get Started Today!</h1>
+            {!currentUser && (
+              <h1 className="call-header">Get Started Today!</h1>
+            )}
           </div>
           <div className="call-section">
-            <div className='call-right'>
-              <a href="/signup" className="container-link">
-                <div className="call-button">Sign Up!</div>
-              </a>
-              <a href="/login" className="container-link">
-                <div className="call-button">Log In!</div>
-              </a>
-            </div>
+            {!currentUser && (
+              <div className='call-right'>
+                <a href="/signup" className="container-link">
+                  <div className="call-button">Sign Up!</div>
+                </a>
+                <a href="/login" className="container-link">
+                  <div className="call-button">Log In!</div>
+                </a>
+              </div>
+            )}
           </div>
           <img src={divider} alt="divider" className="call-divider" />
         </div>
