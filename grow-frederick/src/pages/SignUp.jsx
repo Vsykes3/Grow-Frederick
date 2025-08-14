@@ -1,10 +1,13 @@
-import React, { useRef, useState } from "react"; // Add missing imports
+import React, { useRef, useState } from "react";
 import AuthCard from "../components/AuthCard";
 import Navbar from "../components/Navbar";
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { updateProfile } from "firebase/auth";
+import { auth } from "../firebase"; // import your firebase auth instance
 
 export default function SignUp() {
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -21,7 +24,15 @@ export default function SignUp() {
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+
+      // Create account
+      const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
+
+      // Set display name
+      await updateProfile(userCredential.user, {
+        displayName: nameRef.current.value
+      });
+
       navigate('/');
     } catch (err) {
       setError(err.message);
@@ -32,37 +43,43 @@ export default function SignUp() {
 
   return (
     <div className="stack">
-      <Navbar></Navbar>
+      <Navbar />
       <AuthCard
         title="Sign Up"
         footer={
           <p>
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </p>
         }
       >
         {error && <div style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
-        <form onSubmit={handleSubmit}> {/* Add onSubmit handler */}
-          <input type="text" placeholder="Full Name" required disabled={loading} />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            required
+            ref={nameRef}
+            disabled={loading}
+          />
           <input 
             type="email" 
             placeholder="Email" 
             required 
-            ref={emailRef} /* Add ref */
+            ref={emailRef}
             disabled={loading}
           />
           <input 
             type="password" 
             placeholder="Password" 
             required 
-            ref={passwordRef} /* Add ref */
+            ref={passwordRef}
             disabled={loading}
           />
           <input 
             type="password" 
             placeholder="Confirm Password" 
             required 
-            ref={passwordConfirmRef} /* Add ref */
+            ref={passwordConfirmRef}
             disabled={loading}
           />
           <button type="submit" disabled={loading}>

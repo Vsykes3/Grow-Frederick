@@ -81,3 +81,76 @@
   visibility: hidden;
   width: 0;
 }
+
+.profile-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #f9f0dd;
+  padding: 5px;
+  padding-right: 10px;
+  border-radius: 10px;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.profile-name {
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #f9f0dd;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 125px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-item-button {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+.dropdown-item-button:hover {
+  background: #f0f0f0;
+}
+
