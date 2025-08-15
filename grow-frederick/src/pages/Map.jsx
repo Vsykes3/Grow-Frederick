@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import "./map.css";
 
 const containerStyle = {
   width: "100%",
@@ -28,20 +31,25 @@ function MapPage() {
   }, []);
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
-      {center ? (
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={12}
-        >
-          {/* Marker at user's location */}
-          <Marker position={center} />
-        </GoogleMap>
-      ) : (
-        <p>Loading map...</p>
-      )}
-    </LoadScript>
+    <div className="stack">
+        <Navbar></Navbar>
+        <div className="map-space"></div>
+        <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
+        {center ? (
+            <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={12}
+            >
+            {/* Marker at user's location */}
+            <Marker position={center} />
+            </GoogleMap>
+        ) : (
+            <p>Loading map...</p>
+        )}
+        </LoadScript>
+        <Footer></Footer>
+    </div>
   );
 }
 
