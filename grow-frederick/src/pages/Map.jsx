@@ -113,6 +113,9 @@ export default function MapPage() {
                 <p>Temp: {Math.round(weatherData.main.temp)}°C</p>
                 <p>Rain: {weatherData.rain ? weatherData.rain["1h"] + " mm" : "0 mm"}</p>
                 <p>Humidity: {weatherData.main.humidity}%</p>
+                <button className="map-to-index" onClick={() => window.location.href = "/index"}>
+                    See What to Plant
+                </button>
               </div>
             )}
           </div>
