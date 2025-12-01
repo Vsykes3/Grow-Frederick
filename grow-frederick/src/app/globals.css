@@ -1,0 +1,302 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  /* GrowCommon Brand Colors */
+  --gc-dark: #414535;
+  --gc-light: #9EBB8C;
+  --gc-accent: #7A9B6B;
+  
+  /* System Colors */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  
+  /* Semantic Colors */
+  --primary: var(--gc-dark);
+  --primary-foreground: #ffffff;
+  --secondary: var(--gc-light);
+  --secondary-foreground: var(--gc-dark);
+  --accent: var(--gc-accent);
+  --accent-foreground: #ffffff;
+  
+  /* Status Colors */
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --error: #ef4444;
+  --error-foreground: #ffffff;
+  
+  /* Border & Surface */
+  --border: #e5e7eb;
+  --input: #f3f4f6;
+  --ring: var(--gc-accent);
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
+}
+
+/* Dark mode styles */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --primary: var(--gc-light);
+  --primary-foreground: var(--gc-dark);
+  --secondary: var(--gc-dark);
+  --secondary-foreground: var(--gc-light);
+  --border: #374151;
+  --input: #1f2937;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;
+}
+
+/* System preference fallback */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --primary: var(--gc-light);
+    --primary-foreground: var(--gc-dark);
+    --secondary: var(--gc-dark);
+    --secondary-foreground: var(--gc-light);
+    --border: #374151;
+    --input: #1f2937;
+    --muted: #111827;
+    --muted-foreground: #9ca3af;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-variation-settings: normal;
+  line-height: 1.6;
+  letter-spacing: 0.025em;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Garden Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--gc-light) 0%,
+    var(--gc-accent) 25%,
+    var(--gc-dark) 50%,
+    var(--gc-accent) 75%,
+    var(--gc-light) 100%
+  );
+  background-size: 400% 400%;
+  animation: gardenGradient 18s ease-in-out infinite;
+  opacity: 0.03;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Pollen Particles */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(158, 187, 140, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 40%, rgba(65, 69, 53, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(122, 155, 107, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 60% 10%, rgba(158, 187, 140, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 10% 60%, rgba(65, 69, 53, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 90% 90%, rgba(122, 155, 107, 0.04) 1px, transparent 1px);
+  background-size: 200px 200px, 300px 300px, 250px 250px, 180px 180px, 220px 220px, 280px 280px;
+  animation: pollenFloat 12s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Smooth Transitions */
+* {
+  transition: 
+    color 200ms ease-out,
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--gc-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--gc-accent);
+  color: white;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gc-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gc-dark);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  color: var(--gc-dark);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+/* Button Base Styles */
+.btn {
+  @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gc-accent focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+
+.btn-primary {
+  @apply bg-gc-dark text-white shadow-soft hover:bg-gc-accent hover:shadow-natural active:scale-95;
+}
+
+.btn-secondary {
+  @apply bg-gc-light text-gc-dark shadow-soft hover:bg-gc-accent hover:text-white hover:shadow-natural active:scale-95;
+}
+
+.btn-ghost {
+  @apply text-gc-dark hover:bg-gc-light hover:text-gc-dark;
+}
+
+/* Card Styles */
+.card {
+  @apply rounded-2xl border border-border bg-background shadow-soft;
+}
+
+.card-header {
+  @apply flex flex-col space-y-1.5 p-6;
+}
+
+.card-content {
+  @apply p-6 pt-0;
+}
+
+/* Input Styles */
+.input {
+  @apply flex h-12 w-full rounded-2xl border border-border bg-input px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gc-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+/* Glass Morphism */
+.glass {
+  @apply backdrop-blur-md bg-white/80 border border-white/20 shadow-garden;
+}
+
+.glass-dark {
+  @apply backdrop-blur-md bg-black/20 border border-white/10 shadow-garden;
+}
+
+/* Pro Badge Animation */
+.pro-badge {
+  background: linear-gradient(
+    90deg,
+    var(--gc-accent) 0%,
+    var(--gc-light) 25%,
+    var(--gc-accent) 50%,
+    var(--gc-light) 75%,
+    var(--gc-accent) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Utility Classes */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  body::before,
+  body::after {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --gc-dark: #000000;
+    --gc-light: #ffffff;
+    --gc-accent: #000000;
+    --border: #000000;
+  }
+  
+  .card {
+    @apply border-2;
+  }
+  
+  .btn {
+    @apply border-2 border-current;
+  }
+}

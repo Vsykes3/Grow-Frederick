@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "prefer-const": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "react-hooks/exhaustive-deps": "warn",
+    "accessibility/alt-text": "error",
+    "accessibility/aria-props": "error",
+    "accessibility/aria-role": "error",
+    "accessibility/aria-unsupported-elements": "error",
+    "accessibility/click-events-have-key-events": "error",
+    "accessibility/heading-has-content": "error",
+    "accessibility/img-redundant-alt": "error",
+    "accessibility/interactive-supports-focus": "error",
+    "accessibility/label-has-associated-control": "error",
+    "accessibility/mouse-events-have-key-events": "error",
+    "accessibility/no-access-key": "error",
+    "accessibility/no-autofocus": "error",
+    "accessibility/no-distracting-elements": "error",
+    "accessibility/no-redundant-roles": "error",
+    "accessibility/role-has-required-aria-props": "error",
+    "accessibility/role-supports-aria-props": "error",
+    "accessibility/scope": "error",
+    "accessibility/tabindex-no-positive": "error"
+  },
+  "plugins": ["accessibility"]
+}
