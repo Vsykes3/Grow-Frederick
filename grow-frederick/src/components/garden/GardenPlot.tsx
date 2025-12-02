@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '@/hooks/useTheme';
 import { plantDatabase, type Plant } from '@/lib/plants';
 import { ProBadge } from '@/components/ui/ProBadge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 interface GardenPlotProps {

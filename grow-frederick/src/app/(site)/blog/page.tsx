@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, Calendar, User, Tag, ArrowRight, Search, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import Image from 'next/image';
 
 interface BlogPost {

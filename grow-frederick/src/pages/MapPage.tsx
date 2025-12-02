@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Thermometer, Droplets, Wind, Eye, Cloud, Sun, CloudRain } from 'lucide-react';
 import { apiService } from '@/services/api';
 import { PaywallGuard } from '@/components/ui/PaywallGuard';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
 
 interface WeatherData {

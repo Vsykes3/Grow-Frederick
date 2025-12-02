@@ -25,7 +25,7 @@ import {
   CreditCard,
   UserCheck
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { LockBadge } from "@/components/ui/lock-badge"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { cn } from "@/lib/utils"

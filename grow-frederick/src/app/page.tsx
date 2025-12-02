@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, AlertTriangle, Sprout } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { LockBadge } from "@/components/ui/lock-badge";
 import homepageBanner from '@/assets/Homepage Banner.jpg';
 

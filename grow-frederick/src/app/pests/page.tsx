@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Filter, AlertTriangle, Bug, Calendar, ExternalLink, Shield, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ReportPestSighting, type PestReport } from '@/components/ReportPestSighting';
 import pestImage from '@/assets/Pest.jpg';
 import japaneseBeetleImage from '@/assets/japanese-beetle.jpg';

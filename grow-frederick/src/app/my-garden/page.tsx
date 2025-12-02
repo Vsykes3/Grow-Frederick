@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { AddPlantModal } from '@/components/my-garden/AddPlantModal';
 import { EditPlantModal } from '@/components/my-garden/EditPlantModal';
 import { LogActivityModal } from '@/components/my-garden/LogActivityModal';

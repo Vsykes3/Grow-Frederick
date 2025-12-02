@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -38,14 +45,6 @@ const nextConfig = {
       process.env.DEMO_BYPASS_PAYWALL || "true"
   },
 
-  // don't let ESLint/TS type errors break the production build
-  eslint: {
-    ignoreDuringBuilds: true
-  },
-  typescript: {
-    ignoreBuildErrors: true
-  },
-
   async headers() {
     return [
       {
@@ -69,6 +68,12 @@ const nextConfig = {
   },
 
   webpack: (config, { isServer }) => {
+    // Fix for @ alias not resolving
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname, 'src')
+    }
+    
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];

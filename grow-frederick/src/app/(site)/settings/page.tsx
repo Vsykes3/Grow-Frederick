@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
 import { completeSignOut } from '@/lib/firebase';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

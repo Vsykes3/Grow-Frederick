@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
 import homepageBanner from '@/assets/Homepage Banner.jpg';
 export default function HomePage() {

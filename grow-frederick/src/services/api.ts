@@ -261,5 +261,16 @@ export const apiService = {
   plants: plantAPI,
   plantId: plantIdAPI,
   maps: mapsAPI,
-  hardiness: hardinessAPI
+  hardiness: hardinessAPI,
+  // Placeholder API service methods
+  get: async (url: string) => {
+    return fetch(url).then(res => res.json())
+  },
+  post: async (url: string, data: any) => {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+  }
 };

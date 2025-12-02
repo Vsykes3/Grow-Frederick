@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 

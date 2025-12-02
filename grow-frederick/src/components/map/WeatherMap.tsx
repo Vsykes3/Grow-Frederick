@@ -6,7 +6,7 @@ import { GoogleMap, LoadScript, Marker, InfoWindow, HeatmapLayer } from '@react-
 import { useTheme } from '@/hooks/useTheme';
 import { weatherService, type WeatherData, type WeatherForecast } from '@/lib/weather';
 import { locationService, type UserLocation } from '@/lib/location';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
 import { cn } from '@/lib/utils';
 

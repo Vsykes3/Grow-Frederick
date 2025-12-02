@@ -20,7 +20,7 @@ import {
 import { getPlantImageUrl } from '@/lib/plantImageHelper';
 import { ProBadge } from '@/components/ui/ProBadge';
 import { PaywallGuard } from '@/components/ui/PaywallGuard';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 interface PlantIndexProps {

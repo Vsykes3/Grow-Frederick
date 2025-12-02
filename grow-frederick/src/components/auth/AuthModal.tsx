@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Mail, Lock, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { signInWithEmail, signUpWithEmail } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';

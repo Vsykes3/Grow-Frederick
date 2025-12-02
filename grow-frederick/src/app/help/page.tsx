@@ -3,7 +3,7 @@
 import React from 'react';
 import { HelpCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export default function HelpPage() {
   return (

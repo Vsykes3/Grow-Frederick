@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { PaywallGuard } from '@/components/ui/PaywallGuard';
 import { ProBadge } from '@/components/ui/ProBadge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { usePlan } from '@/hooks/usePlan';
 
 export default function AlertsPage() {
