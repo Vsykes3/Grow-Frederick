@@ -1,5 +1,5 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getAuth, Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, User } from 'firebase/auth';
+import { getAuth, Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, User } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyCH0307mAkCUqK3NOIdDzi75Qa9PjPPZP8',
@@ -20,18 +20,8 @@ if (getApps().length === 0) {
 
 // Initialize Auth
 export const auth: Auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
 
 // Auth functions
-export const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    return result.user;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
-
 export const signInWithEmail = async (email: string, password: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
@@ -55,6 +45,41 @@ export const signOut = async () => {
     await firebaseSignOut(auth);
   } catch (error: any) {
     throw new Error(error.message);
+  }
+};
+
+// Comprehensive sign out function that clears all user data
+export const completeSignOut = async () => {
+  try {
+    // Sign out from Firebase
+    await firebaseSignOut(auth);
+    
+    // Clear all localStorage items related to user data
+    localStorage.removeItem('userDisplayName');
+    localStorage.removeItem('userPhoto');
+    localStorage.removeItem('temperatureUnit');
+    localStorage.removeItem('distanceUnit');
+    localStorage.removeItem('notificationSettings');
+    localStorage.removeItem('myGardens');
+    localStorage.removeItem('calendarEvents');
+    localStorage.removeItem('plantData');
+    localStorage.removeItem('gardenData');
+    localStorage.removeItem('userPreferences');
+    
+    // Clear sessionStorage
+    sessionStorage.clear();
+    
+    // Dispatch event to clear user context
+    window.dispatchEvent(new CustomEvent('userSignedOut', { bubbles: true }));
+    
+    return true;
+  } catch (error: any) {
+    console.error('Error during sign out:', error);
+    // Even if Firebase sign out fails, clear local data
+    localStorage.clear();
+    sessionStorage.clear();
+    window.dispatchEvent(new CustomEvent('userSignedOut', { bubbles: true }));
+    throw new Error(error.message || 'Failed to sign out');
   }
 };
 

@@ -2,16 +2,20 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
-import { signOut as firebaseSignOut } from '@/lib/firebase';
+import { completeSignOut } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Settings, Bell, User, Download, Trash2, Upload } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut as nextAuthSignOut } from 'next-auth/react';
+import { Settings, Bell, User, Download, Trash2, Upload, LogOut } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 
 export default function SettingsPage() {
   const { user: firebaseUser, loading: firebaseLoading } = useFirebaseAuth();
-  const { user: contextUser, updateUser } = useUser(); // Get context user and update function
+  const { user: contextUser, updateUser, setUser } = useUser(); // Get context user and update function
+  const { data: session } = useSession();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'notifications' | 'account'>('notifications');
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -134,6 +138,31 @@ export default function SettingsPage() {
     alert('Data exported successfully!');
   };
 
+  const handleSignOut = async () => {
+    try {
+      // Sign out from Firebase (clears all local data)
+      await completeSignOut();
+      
+      // Sign out from NextAuth if session exists
+      if (session) {
+        await nextAuthSignOut({ callbackUrl: '/' });
+      }
+      
+      // Clear user context
+      setUser(null);
+      
+      // Redirect to home page
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      console.error('Error signing out:', error);
+      // Even if there's an error, clear local state and redirect
+      setUser(null);
+      router.push('/');
+      router.refresh();
+    }
+  };
+
   const handleDeleteAccount = () => {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
@@ -150,12 +179,19 @@ export default function SettingsPage() {
         sessionStorage.clear();
         
         // Sign out if logged in
-        if (firebaseUser) {
-          firebaseSignOut();
+        if (firebaseUser || session) {
+          completeSignOut();
+          if (session) {
+            nextAuthSignOut({ callbackUrl: '/' });
+          }
         }
         
+        // Clear user context
+        setUser(null);
+        
         // Redirect to home page
-        window.location.href = '/';
+        router.push('/');
+        router.refresh();
         alert('Account deleted successfully. All your data has been removed.');
       }
     }
@@ -387,6 +423,20 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-foreground">Account Actions</h3>
+                        <div className="space-y-3">
+                          <Button 
+                            variant="outline" 
+                            className="w-full justify-start text-foreground"
+                            onClick={handleSignOut}
+                          >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Sign Out
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
                         <h3 className="text-lg font-semibold text-foreground">Data & Privacy</h3>
                         <div className="space-y-3">
                           <Button 
@@ -430,3 +480,4 @@ export default function SettingsPage() {
     </div>
   );
 }
+

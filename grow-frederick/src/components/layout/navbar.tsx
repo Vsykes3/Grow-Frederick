@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn, signOut as nextAuthSignOut } from "next-auth/react"
 import { useFirebaseAuth } from "@/hooks/useFirebaseAuth"
-import { signOut as firebaseSignOut } from "@/lib/firebase"
+import { completeSignOut } from "@/lib/firebase"
+import { useRouter } from "next/navigation"
 import { 
   Menu, 
   X, 
@@ -49,7 +50,8 @@ const navigation = [
 export function Navbar() {
   const { data: session } = useSession()
   const { user: firebaseUser, loading: firebaseLoading } = useFirebaseAuth()
-  const { user: contextUser } = useUser() // Get user from context
+  const { user: contextUser, setUser } = useUser() // Get user from context
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
 
@@ -65,13 +67,34 @@ export function Navbar() {
   } : null))
 
   const handleSignOut = async () => {
-    if (firebaseUser) {
-      await firebaseSignOut()
-    } else {
-      signOut({ callbackUrl: '/' })
+    try {
+      // Sign out from Firebase (clears all local data)
+      await completeSignOut()
+      
+      // Sign out from NextAuth if session exists
+      if (session) {
+        await nextAuthSignOut({ callbackUrl: '/' })
+      }
+      
+      // Clear user context
+      setUser(null)
+      
+      // Close menus
+      setIsOpen(false)
+      setShowUserMenu(false)
+      
+      // Redirect to home page
+      router.push('/')
+      router.refresh()
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // Even if there's an error, clear local state and redirect
+      setUser(null)
+      setIsOpen(false)
+      setShowUserMenu(false)
+      router.push('/')
+      router.refresh()
     }
-    setIsOpen(false)
-    setShowUserMenu(false)
   }
 
   // Close user menu when clicking outside

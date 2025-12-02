@@ -1,6 +1,8 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { auth } from '@/lib/firebase'
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth'
 
 interface User {
   id?: string
@@ -22,37 +24,79 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Load user from localStorage on mount and listen for updates
+  // Sync with Firebase auth state and localStorage
   useEffect(() => {
-    const loadUser = () => {
-      try {
-        const savedName = localStorage.getItem('userDisplayName')
-        const savedPhoto = localStorage.getItem('userPhoto')
-        
-        if (savedName || savedPhoto) {
-          setUser({
-            displayName: savedName || '',
-            profilePicture: savedPhoto || null
-          })
+    setLoading(true)
+    
+    // Listen to Firebase auth state changes
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        // User is signed in with Firebase
+        const userData: User = {
+          id: firebaseUser.uid,
+          email: firebaseUser.email || undefined,
+          displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+          profilePicture: firebaseUser.photoURL || null
         }
-      } catch (error) {
-        console.error('Error loading user data:', error)
-      } finally {
+        
+        // Save to localStorage
+        if (userData.displayName) {
+          localStorage.setItem('userDisplayName', userData.displayName)
+        }
+        if (userData.profilePicture) {
+          localStorage.setItem('userPhoto', userData.profilePicture)
+        }
+        
+        setUser(userData)
+        setLoading(false)
+      } else {
+        // User is signed out - check localStorage as fallback
+        try {
+          const savedName = localStorage.getItem('userDisplayName')
+          const savedPhoto = localStorage.getItem('userPhoto')
+          
+          if (savedName || savedPhoto) {
+            setUser({
+              displayName: savedName || '',
+              profilePicture: savedPhoto || null
+            })
+          } else {
+            setUser(null)
+          }
+        } catch (error) {
+          console.error('Error loading user data:', error)
+          setUser(null)
+        }
         setLoading(false)
       }
-    }
-    
-    loadUser()
+    })
     
     // Listen for userDataUpdated events (from Settings page)
     const handleUserUpdate = () => {
-      loadUser()
+      const savedName = localStorage.getItem('userDisplayName')
+      const savedPhoto = localStorage.getItem('userPhoto')
+      
+      if (savedName || savedPhoto) {
+        setUser({
+          displayName: savedName || '',
+          profilePicture: savedPhoto || null
+        })
+      }
+    }
+    
+    // Listen for sign out events
+    const handleSignOut = () => {
+      setUser(null)
+      setLoading(false)
     }
     
     window.addEventListener('userDataUpdated', handleUserUpdate)
+    window.addEventListener('userSignedOut', handleSignOut)
     
     return () => {
+      unsubscribe()
       window.removeEventListener('userDataUpdated', handleUserUpdate)
+      window.removeEventListener('userSignedOut', handleSignOut)
     }
   }, [])
 

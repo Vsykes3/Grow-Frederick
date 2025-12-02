@@ -77,6 +77,14 @@ const nextConfig = {
         "web-push": "commonjs web-push"
       });
     }
+    
+    // Fix for Windows/OneDrive path issues with symlinks
+    // This prevents EINVAL errors when Next.js tries to read symlinks in .next directory
+    if (process.platform === 'win32') {
+      config.resolve = config.resolve || {};
+      config.resolve.symlinks = false;
+    }
+    
     return config;
   }
 };

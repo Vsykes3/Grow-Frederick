@@ -161,7 +161,7 @@ export default function AboutPage() {
               <div className="text-muted-foreground">Plant Varieties</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-green-600 mb-2">12</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">10</div>
               <div className="text-muted-foreground">Common Pests Tracked</div>
             </div>
             <div>
