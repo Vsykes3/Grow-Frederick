@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProBadge } from './ProBadge';
-import { Button } from './button';
+import { Button } from './Button';
 import { Lock, CheckCircle, Star } from 'lucide-react';
 
 interface PaywallGuardProps {

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, Settings, LogOut, Sun, Moon, Monitor } from 'lucide-react';
 import { useAuthStore, useUIStore } from '../../store';
 import { ProBadge, ProBadgeCompact } from './ProBadge';
-import { Button } from './button';
+import { Button } from './Button';
 import { cn } from '../../lib/utils';
 
 const navigation = [
