@@ -1,8 +1,8 @@
-﻿import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+﻿import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 export function formatDate(date: string | Date): string {
@@ -27,23 +27,9 @@ export function formatDateTime(date: string | Date): string {
 
 export function formatTemperature(temp: number, unit: 'celsius' | 'fahrenheit' = 'fahrenheit'): string {
   if (unit === 'fahrenheit') {
-    return `${Math.round(temp * 9/5 + 32)}Â°F`;
+    return `${Math.round(temp * 9/5 + 32)}°F`;
   }
-  return `${Math.round(temp)}Â°C`;
-}
-
-export function formatDistance(distance: number, unit: 'imperial' | 'metric' = 'imperial'): string {
-  if (unit === 'imperial') {
-    return `${Math.round(distance * 3.28084)} ft`;
-  }
-  return `${Math.round(distance)} m`;
-}
-
-export function formatPrecipitation(precip: number, unit: 'imperial' | 'metric' = 'imperial'): string {
-  if (unit === 'imperial') {
-    return `${(precip * 0.0393701).toFixed(2)} in`;
-  }
-  return `${precip.toFixed(1)} mm`;
+  return `${Math.round(temp)}°C`;
 }
 
 export function getSeason(date: Date = new Date()): 'spring' | 'summer' | 'fall' | 'winter' {
@@ -56,51 +42,51 @@ export function getSeason(date: Date = new Date()): 'spring' | 'summer' | 'fall'
 
 export function getSeasonEmoji(season: string): string {
   const emojis = {
-    spring: 'ðŸŒ¸',
-    summer: 'â˜€ï¸',
-    fall: 'ðŸ‚',
-    winter: 'â„ï¸',
+    spring: '🌸',
+    summer: '☀️',
+    fall: '🍂',
+    winter: '❄️',
   };
-  return emojis[season as keyof typeof emojis] || 'ðŸŒ±';
+  return emojis[season as keyof typeof emojis] || '🌱';
 }
 
 export function getPlantTypeEmoji(type: string): string {
   const emojis = {
-    vegetable: 'ðŸ¥•',
-    herb: 'ðŸŒ¿',
-    flower: 'ðŸŒ¸',
-    fruit: 'ðŸ“',
-    tree: 'ðŸŒ³',
-    shrub: 'ðŸŒ¿',
+    vegetable: '🥕',
+    herb: '🌿',
+    flower: '🌸',
+    fruit: '🍓',
+    tree: '🌳',
+    shrub: '🌿',
   };
-  return emojis[type as keyof typeof emojis] || 'ðŸŒ±';
+  return emojis[type as keyof typeof emojis] || '🌱';
 }
 
 export function getSunEmoji(sun: string): string {
   const emojis = {
-    full: 'â˜€ï¸',
-    partial: 'â›…',
-    shade: 'ðŸŒ¥ï¸',
+    full: '☀️',
+    partial: '⛅',
+    shade: '🌥️',
   };
-  return emojis[sun as keyof typeof emojis] || 'â˜€ï¸';
+  return emojis[sun as keyof typeof emojis] || '☀️';
 }
 
 export function getWaterEmoji(water: string): string {
   const emojis = {
-    low: 'ðŸ’§',
-    moderate: 'ðŸ’§ðŸ’§',
-    high: 'ðŸ’§ðŸ’§ðŸ’§',
+    low: '💧',
+    moderate: '💧💧',
+    high: '💧💧💧',
   };
-  return emojis[water as keyof typeof emojis] || 'ðŸ’§';
+  return emojis[water as keyof typeof emojis] || '💧';
 }
 
 export function getFrostToleranceEmoji(tolerance: string): string {
   const emojis = {
-    tender: 'ðŸŒ±',
-    'half-hardy': 'ðŸŒ¿',
-    hardy: 'ðŸŒ³',
+    tender: '🌱',
+    'half-hardy': '🌿',
+    hardy: '🌳',
   };
-  return emojis[tolerance as keyof typeof emojis] || 'ðŸŒ±';
+  return emojis[tolerance as keyof typeof emojis] || '🌱';
 }
 
 export function getSeverityColor(severity: string): string {
@@ -115,12 +101,12 @@ export function getSeverityColor(severity: string): string {
 
 export function getSeverityEmoji(severity: string): string {
   const emojis = {
-    low: 'ðŸŸ¢',
-    medium: 'ðŸŸ¡',
-    high: 'ðŸŸ ',
-    severe: 'ðŸ”´',
+    low: '🟢',
+    medium: '🟡',
+    high: '🟠',
+    severe: '🔴',
   };
-  return emojis[severity as keyof typeof emojis] || 'âšª';
+  return emojis[severity as keyof typeof emojis] || '⚪';
 }
 
 export function debounce<T extends (...args: any[]) => any>(
@@ -180,12 +166,11 @@ export function isValidZipCode(zip: string): boolean {
 }
 
 export function getHardinessZone(lat: number, lng: number): string {
-  // Simplified hardiness zone calculation
-  // In a real implementation, this would use more sophisticated algorithms
+  // Simplified hardiness zone calculation for Frederick County area
   if (lat >= 39.5) return '7a';
-  if (lat >= 39.0) return '7b';
-  if (lat >= 38.5) return '8a';
-  return '8b';
+  if (lat >= 39.0) return '6b';
+  if (lat >= 38.5) return '7a';
+  return '7b';
 }
 
 export function calculateDistance(
@@ -261,4 +246,3 @@ export function downloadFile(content: string, filename: string, type: string = '
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
-

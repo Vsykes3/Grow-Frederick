@@ -1,4 +1,4 @@
-﻿import type { PlanType, Subscription } from '/src/types';
+﻿import type { PlanType, Subscription } from '@/types';
 
 // Mock subscription data
 const mockSubscription: Subscription = {

@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
-import { getUserPlan, isPro, hasFeature, type UserPlan, type PlanType } from '/src/lib/plan';
+import { getUserPlan, isPro, hasFeature, type UserPlan, type PlanType } from '@/lib/plan';
 
 interface UsePlanReturn {
   plan: UserPlan | null;

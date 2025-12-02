@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useState, useEffect } from 'react';
-import { getUserTheme, setUserTheme, getResolvedTheme, watchSystemTheme, type Theme } from '/src/lib/theme';
+import { getUserTheme, setUserTheme, getResolvedTheme, watchSystemTheme, type Theme } from '@/lib/theme';
 
 /**
  * Hook for theme management

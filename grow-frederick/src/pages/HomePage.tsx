@@ -2,13 +2,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Calendar, AlertTriangle, BarChart3, Sprout } from 'lucide-react';
-import { Button } from '/src/components/ui/Button';
-import { FeatureCard } from '/src/components/ui/FeatureCard';
-import { ProBadge } from '/src/components/ui/ProBadge';
+import { Button } from '../components/ui/Button';
+import { FeatureCard } from '../components/ui/FeatureCard';
+import { ProBadge } from '../components/ui/ProBadge';
 
 const features = [
   {
-    icon: <MapPin className="w-8 h-8" />,
+    icon: '🗺️',
     title: 'Weather & Conditions Map',
     description: 'Real-time temperature, humidity, rainfall, and frost date overlays for your area.',
     href: '/map',
@@ -16,7 +16,7 @@ const features = [
     color: 'from-blue-500 to-cyan-500'
   },
   {
-    icon: <Sprout className="w-8 h-8" />,
+    icon: '🌿',
     title: 'Plant Index',
     description: 'Comprehensive database of plants with growing guides, season compatibility, and care instructions.',
     href: '/plants',
@@ -24,7 +24,7 @@ const features = [
     color: 'from-green-500 to-emerald-500'
   },
   {
-    icon: <Calendar className="w-8 h-8" />,
+    icon: '📅',
     title: 'Smart Planting Calendar',
     description: 'Weather-linked planting reminders and harvest scheduling with local frost date integration.',
     href: '/calendar',
@@ -32,7 +32,7 @@ const features = [
     color: 'from-purple-500 to-pink-500'
   },
   {
-    icon: <AlertTriangle className="w-8 h-8" />,
+    icon: '🚨',
     title: 'Pest & Disease Alerts',
     description: 'Local pest reports, disease prevention tips, and natural remedy suggestions.',
     href: '/alerts',
@@ -40,7 +40,7 @@ const features = [
     color: 'from-orange-500 to-red-500'
   },
   {
-    icon: <BarChart3 className="w-8 h-8" />,
+    icon: '📊',
     title: 'Live Conditions',
     description: 'Real-time soil moisture, temperature trends, and microclimate data for your garden.',
     href: '/live',

@@ -15,7 +15,7 @@ const News = () => {
   const [error, setError] = useState(null);
 
   // API Keys
-  const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  const OPENWEATHER_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
   // Pest alert database based on location and season
   const pestAlertDatabase = {

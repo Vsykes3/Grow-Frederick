@@ -1,8 +1,8 @@
 ﻿'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { getTranslation, getUserLanguage, setUserLanguage, SUPPORTED_LANGUAGES, LANGUAGE_NAMES, LANGUAGE_FLAGS, type SupportedLanguage } from '/src/lib/i18n';
-import { cn } from '/src/lib/utils';
+import { getTranslation, getUserLanguage, setUserLanguage, SUPPORTED_LANGUAGES, LANGUAGE_NAMES, LANGUAGE_FLAGS, type SupportedLanguage } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 interface LanguageSelectorProps {
   className?: string;

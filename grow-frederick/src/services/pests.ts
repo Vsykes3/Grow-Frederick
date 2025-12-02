@@ -1,4 +1,4 @@
-﻿import type { PestReport, PestPressure, Alert } from '/src/types';
+﻿import type { PestReport, PestPressure, Alert } from '@/types';
 
 // Mock pest data
 const mockPestReports: PestReport[] = [

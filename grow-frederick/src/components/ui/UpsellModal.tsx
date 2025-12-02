@@ -1,8 +1,8 @@
 ﻿import React, { useState } from 'react';
-import { cn } from '/src/lib/utils';
-import { Button } from './Button';
+import { cn } from '@/lib/utils';
+import { Button } from './button';
 import { ProBadge } from './ProBadge';
-import { PLAN_PRICING } from '/src/lib/plan';
+import { PLAN_PRICING } from '@/lib/plan';
 
 interface UpsellModalProps {
   isOpen: boolean;
@@ -129,10 +129,10 @@ export function UpsellModal({
                 $0<span className="text-sm font-normal">/month</span>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>â€¢ Basic plant database</li>
-                <li>â€¢ Weather forecasts</li>
-                <li>â€¢ Basic pest alerts</li>
-                <li>â€¢ Manual calendar</li>
+                <li>Basic plant database</li>
+                <li>Weather forecasts</li>
+                <li>Basic pest alerts</li>
+                <li>Manual calendar</li>
               </ul>
             </div>
             
@@ -145,11 +145,11 @@ export function UpsellModal({
                 $9.99<span className="text-sm font-normal text-muted-foreground">/month</span>
               </div>
               <ul className="space-y-2 text-sm text-gc-dark">
-                <li>â€¢ Everything in Free</li>
-                <li>â€¢ Advanced analytics</li>
-                <li>â€¢ Real-time monitoring</li>
-                <li>â€¢ Smart calendar + iCal</li>
-                <li>â€¢ Priority support</li>
+                <li>Everything in Free</li>
+                <li>Advanced analytics</li>
+                <li>Real-time monitoring</li>
+                <li>Smart calendar + iCal</li>
+                <li>Priority support</li>
               </ul>
             </div>
           </div>
@@ -201,7 +201,7 @@ export function UpsellModal({
               Start 7-Day Free Trial
             </Button>
             <p className="text-xs text-muted-foreground text-center">
-              No credit card required â€¢ Cancel anytime â€¢ 7-day free trial
+              No credit card required • Cancel anytime • 7-day free trial
             </p>
           </div>
         </div>

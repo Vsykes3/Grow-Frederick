@@ -1,4 +1,4 @@
-﻿import type { Plant, PlantDetail } from '/src/types';
+﻿import type { Plant, PlantDetail } from '@/types';
 
 // Mock plant data
 const mockPlants: Plant[] = [

@@ -1,4 +1,4 @@
-﻿import type { HeatmapData } from '/src/types';
+﻿import type { HeatmapData } from '@/types';
 
 export async function getTemperatureHeatmap(zip: string): Promise<HeatmapData> {
   // Simulate API delay
