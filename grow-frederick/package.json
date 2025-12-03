@@ -67,21 +67,21 @@
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
-    "zustand": "^4.5.7"
+    "zustand": "^4.5.7",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
-  "@types/node": "^20.10.5",
-  "@types/react": "^18.2.45",
-  "@types/react-dom": "^18.2.18",
-  "autoprefixer": "^10.4.16",
-  "eslint": "^8.56.0",
-  "eslint-config-next": "14.0.4",
-  "postcss": "^8.4.32",
-  "prisma": "^5.7.1",
-  "tailwindcss": "^3.4.0",
-  "tsx": "^4.6.2",
-  "typescript": "^5.3.3"
-},
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8.4.32",
+    "prisma": "^5.7.1",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.6.2"
+  },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
