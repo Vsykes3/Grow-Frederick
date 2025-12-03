@@ -1,0 +1,285 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(FREE)
+  plan          Plan      @default(FREE)
+  zip           String?
+  zone          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  subscriptions Subscription[]
+  userPlants    UserPlant[]
+  events        Event[]
+  pushSubscriptions PushSubscription[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Subscription {
+  id                String            @id @default(cuid())
+  userId            String
+  stripeCustomerId  String?           @unique
+  stripeSubscriptionId String?        @unique
+  plan              Plan
+  status            SubscriptionStatus
+  currentPeriodEnd  DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, plan])
+}
+
+model Plant {
+  id                String   @id @default(cuid())
+  slug              String   @unique
+  commonName        String
+  scientificName    String
+  type              PlantType
+  sun               SunRequirement
+  water             WaterRequirement
+  soil              SoilType[]
+  native            Boolean  @default(false)
+  zoneMin           Int
+  zoneMax           Int
+  sowIndoorsFrom    Int?     // Month (1-12)
+  sowIndoorsTo      Int?
+  sowOutdoorsFrom   Int?
+  sowOutdoorsTo     Int?
+  transplantFrom    Int?
+  transplantTo      Int?
+  daysToMaturity    Int?
+  spacing           String?
+  depth             String?
+  fertilizeNotes    String?  @db.Text
+  pestNotes         String?  @db.Text
+  companion         String[] // Plant IDs
+  antagonistic      String[] // Plant IDs
+  imageUrl          String?
+  tags              String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userPlants        UserPlant[]
+}
+
+model UserPlant {
+  id           String   @id @default(cuid())
+  userId       String
+  plantId      String
+  nickname     String?
+  datePlanted  DateTime?
+  locationNote String?
+  notes        String?  @db.Text
+  status       PlantStatus @default(PLANNED)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plant Plant  @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  events Event[]
+
+  @@unique([userId, plantId])
+}
+
+model Event {
+  id               String      @id @default(cuid())
+  userId           String
+  userPlantId      String?
+  title            String
+  description      String?     @db.Text
+  start            DateTime
+  end              DateTime?
+  allDay           Boolean     @default(false)
+  repeatRule       String?     // RRULE string
+  reminderMinutes  Int?        // Minutes before event
+  channel          ReminderChannel @default(EMAIL)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userPlant UserPlant? @relation(fields: [userPlantId], references: [id], onDelete: Cascade)
+}
+
+model WeatherSnapshot {
+  id        String   @id @default(cuid())
+  zip       String
+  lat       Float
+  lon       Float
+  payload   Json     // OpenWeather API response
+  takenAt   DateTime @default(now())
+
+  @@index([zip, takenAt])
+}
+
+model Pest {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  name            String
+  seasonFrom      Int      // Month (1-12)
+  seasonTo        Int      // Month (1-12)
+  affectedTags    String[] // Plant tags affected
+  description     String   @db.Text
+  organicControls String[] @db.Text
+  images          String[]
+  region          String?  // Specific to region
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  body        String    @db.Text
+  type        PostType
+  region      String?
+  season      String?
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model FeatureFlag {
+  key   String @id
+  value Json
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpoint])
+}
+
+// Enums
+enum UserRole {
+  FREE
+  PRO
+  PREMIUM
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+  PREMIUM
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  PAST_DUE
+  TRIALING
+  UNPAID
+}
+
+enum PlantType {
+  VEGETABLE
+  HERB
+  FLOWER
+  FRUIT
+  TREE
+  SHRUB
+}
+
+enum SunRequirement {
+  FULL
+  PARTIAL
+  SHADE
+}
+
+enum WaterRequirement {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum SoilType {
+  SANDY
+  LOAM
+  CLAY
+  ACIDIC
+  ALKALINE
+}
+
+enum PlantStatus {
+  PLANNED
+  GROWING
+  HARVESTED
+  FAILED
+}
+
+enum PostType {
+  BLOG
+  NEWS
+  TIP
+}
+
+enum ReminderChannel {
+  EMAIL
+  PUSH
+  BOTH
+}
+

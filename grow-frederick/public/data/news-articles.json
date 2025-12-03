@@ -1,0 +1,123 @@
+[
+  {
+    "id": "independent-flooding-2025",
+    "title": "UK Gardens Face Flooding Crisis as Weather Patterns Shift",
+    "description": "Defra warns British gardeners about increased flooding risks and provides guidance on flood-resistant plant selection and garden design strategies.",
+    "url": "https://www.the-independent.com/property/gardening/garden-plants-weather-flooding-defra-uk-b2847219.html",
+    "imageUrl": "https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=800",
+    "source": "The Independent",
+    "category": "weather",
+    "location": "United Kingdom",
+    "date": "2025-11-19",
+    "featured": true
+  },
+  {
+    "id": "nyt-houseplants-2025",
+    "title": "The Rise of Rare Houseplants: Inside The Hausplant's Unique Collection",
+    "description": "New York Times explores the growing trend of rare and unique houseplants, profiling specialty retailers catering to plant collectors seeking unusual specimens.",
+    "url": "https://www.nytimes.com/2025/11/19/realestate/unique-houseplants-the-hausplant.html",
+    "imageUrl": "https://images.unsplash.com/photo-1545241047-6083a3684587?w=800",
+    "source": "The New York Times",
+    "category": "gardening",
+    "location": "New York, USA",
+    "date": "2025-11-19",
+    "featured": true
+  },
+  {
+    "id": "hawaii-public-food-2025",
+    "title": "Honolulu Plants Food in Public Spaces: Urban Agriculture Initiative",
+    "description": "Hawaii's capital city launches groundbreaking program to transform public lands into edible gardens, providing fresh produce to local communities.",
+    "url": "https://www.usnews.com/news/best-states/hawaii/articles/2025-09-30/changing-course-honolulu-is-now-planting-food-in-public-spaces",
+    "imageUrl": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=800",
+    "source": "U.S. News",
+    "category": "gardening",
+    "location": "Hawaii, USA",
+    "date": "2025-09-30",
+    "featured": false
+  },
+  {
+    "id": "finegardening-perennials-2025",
+    "title": "Best Long-Blooming Perennials for Sun in the Mid-Atlantic",
+    "description": "Expert gardeners share top performing perennials for extended bloom times in Zone 6-7 gardens, perfect for Maryland and Virginia landscapes.",
+    "url": "https://www.finegardening.com/article/best-long-blooming-perennials-for-sun-in-the-mid-atlantic",
+    "imageUrl": "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800",
+    "source": "Fine Gardening",
+    "category": "gardening",
+    "location": "Mid-Atlantic, USA",
+    "date": "2025-03-15",
+    "featured": true
+  },
+  {
+    "id": "finegardening-slf-2025",
+    "title": "Pest Alert: Spotted Lanternfly Spreads Across Mid-Atlantic Region",
+    "description": "Fine Gardening's regional expert warns about spotted lanternfly expansion in Maryland, Virginia, and Pennsylvania with identification and control strategies.",
+    "url": "https://www.finegardening.com/article/mid-atlantic-regional-report-pest-alert-spotted-lanternfly?srsltid=AfmBOoqLnLJl1s9Fx_lHDBeiRBwQmZCVpeepcGn888lR-1m3idc9JPDN",
+    "imageUrl": "https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=800",
+    "source": "Fine Gardening",
+    "category": "pest",
+    "location": "Mid-Atlantic, USA",
+    "date": "2024-08-20",
+    "featured": true
+  },
+  {
+    "id": "gardenclub-helene-2025",
+    "title": "Hurricane Helene: Turning Disaster into Compost and Community",
+    "description": "Garden clubs mobilize after Hurricane Helene, transforming storm debris into nutrient-rich compost while rebuilding devastated community gardens.",
+    "url": "https://gardenclub.org/blog/hurricane-helene-compost-and-gods-vine",
+    "imageUrl": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800",
+    "source": "National Garden Clubs",
+    "category": "weather",
+    "location": "Southeast, USA",
+    "date": "2024-10-15",
+    "featured": false
+  },
+  {
+    "id": "sun-almanac-2026",
+    "title": "Farmers' Almanac 2026: What Gardeners Need to Know",
+    "description": "The latest Farmers' Almanac predicts weather patterns for 2026 growing season, offering planting date recommendations for home gardeners.",
+    "url": "https://www.the-sun.com/news/15456831/farmers-almanac-2026-edition-final/",
+    "imageUrl": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
+    "source": "The Sun",
+    "category": "weather",
+    "location": "USA",
+    "date": "2025-11-10",
+    "featured": false
+  },
+  {
+    "id": "sun-coffee-grounds-2025",
+    "title": "Coffee Grounds Hack: Free Fertilizer for Your Garden",
+    "description": "Gardening expert reveals how coffee grounds and filters can transform your vegetable garden's soil health and boost plant growth naturally.",
+    "url": "https://www.the-sun.com/lifestyle/15252764/coffee-grounds-filters-plants-vegetables-garden/",
+    "imageUrl": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800",
+    "source": "The Sun",
+    "category": "gardening",
+    "location": "USA",
+    "date": "2025-11-08",
+    "featured": false
+  },
+  {
+    "id": "sun-winter-flowers-2025",
+    "title": "Flower Expert: 5 Plants That Actually Thrive in Winter",
+    "description": "Horticulture expert shares surprising winter-blooming plants that add color to gardens during the coldest months of the year.",
+    "url": "https://www.the-sun.com/fabulous/15254324/flower-expert-gardening-plants-thrive-winter/",
+    "imageUrl": "https://images.unsplash.com/photo-1485841890310-6a055c88698a?w=800",
+    "source": "The Sun",
+    "category": "gardening",
+    "location": "USA",
+    "date": "2025-11-07",
+    "featured": false
+  },
+  {
+    "id": "wtop-langley-park-2025",
+    "title": "Two New Gardens to Improve Drainage in Langley Park, Maryland",
+    "description": "Prince George's County officials announce rain gardens that will reduce flooding while creating green space for the Langley Park community.",
+    "url": "https://wtop.com/prince-georges-county/2025/10/2-new-gardens-will-improve-drainage-and-help-a-langley-park-community-officials-say/",
+    "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+    "source": "WTOP News",
+    "category": "gardening",
+    "location": "Maryland, USA",
+    "date": "2025-10-15",
+    "featured": false
+  }
+]
+
