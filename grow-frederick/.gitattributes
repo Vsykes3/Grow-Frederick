@@ -1,0 +1,4 @@
+# Prevent OneDrive from syncing build directories
+.next/ linguist-generated=true
+node_modules/ linguist-generated=true
+
