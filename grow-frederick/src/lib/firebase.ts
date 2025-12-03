@@ -1,5 +1,6 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, User } from 'firebase/auth';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyCH0307mAkCUqK3NOIdDzi75Qa9PjPPZP8',
@@ -20,6 +21,14 @@ if (getApps().length === 0) {
 
 // Initialize Auth
 export const auth: Auth = getAuth(app);
+
+// Initialize Storage
+export const storage: FirebaseStorage = getStorage(app);
+
+// Placeholder database export
+export const db = {
+  // Placeholder - add your actual Firebase config
+};
 
 // Auth functions
 export const signInWithEmail = async (email: string, password: string) => {

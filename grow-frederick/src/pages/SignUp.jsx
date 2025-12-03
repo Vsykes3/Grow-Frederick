@@ -1,10 +1,10 @@
 ﻿import React, { useRef, useState } from "react";
 import AuthCard from "../components/AuthCard";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/ui/Navbar";
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { updateProfile } from "firebase/auth";
-import { auth } from "../firebase"; // import your firebase auth instance
+import { auth } from "@/lib/firebase"; // import your firebase auth instance
 
 export default function SignUp() {
   const nameRef = useRef();

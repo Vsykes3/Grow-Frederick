@@ -1,10 +1,10 @@
 ﻿import React, { useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { auth, storage } from "../firebase";
+import { auth, storage, db } from "@/lib/firebase";
 import { updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./Profile.css";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/ui/Navbar";
 
 export default function Profile() {
   const { currentUser } = useAuth();

@@ -1,8 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { auth } from '../firebase';
+import { auth, db } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
-import Navbar from '../components/Navbar';
+import Navbar from '@/components/ui/Navbar';
 import Footer from '../components/Footer';
 import './Settings.css';
 
