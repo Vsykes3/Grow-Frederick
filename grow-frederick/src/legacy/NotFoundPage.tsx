@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search } from 'lucide-react';
@@ -31,7 +31,7 @@ export default function NotFoundPage() {
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            ðŸŒ±
+            🌱
           </motion.div>
 
           <h1 className="text-3xl md:text-4xl font-bold text-gc-dark mb-4">
