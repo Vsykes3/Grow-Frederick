@@ -74,6 +74,10 @@ const nextConfig = {
       '@': require('path').resolve(__dirname, 'src')
     }
     
+    // Exclude React Router pages directory from being processed
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
+    
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];

@@ -1,9 +1,10 @@
 'use client'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
 
@@ -63,6 +64,17 @@ export default function SuccessPage() {
   )
 }
 
-
-
-
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="text-6xl mb-6">🎉</div>
+          <h1 className="text-4xl font-bold mb-4">Loading...</h1>
+        </div>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
+  )
+}

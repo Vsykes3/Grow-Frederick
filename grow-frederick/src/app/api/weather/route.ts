@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 const OWM_API_KEY = process.env.OWM_API_KEY;
 const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
