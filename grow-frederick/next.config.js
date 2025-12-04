@@ -36,12 +36,6 @@ const nextConfig = {
     }
     return config;
   },
-  
-  // SKIP PRERENDERING THE BROKEN PAGES
-  experimental: {
-    skipMiddlewareUrlNormalize: true,
-    skipTrailingSlashRedirect: true,
-  }
 }
 
 module.exports = nextConfig;
