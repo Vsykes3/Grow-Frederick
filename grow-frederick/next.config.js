@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Removed "output: export" - API routes (NextAuth, etc.) require a dynamic server
-  // Use "standalone" for optimized server deployments or remove for standard Next.js server
+  // Standard Next.js server mode (required for API routes)
 
   typescript: {
     ignoreBuildErrors: true,
