@@ -1,8 +1,8 @@
 ﻿import axios from 'axios';
-import type { WeatherForecast, WeatherPoint } from '/src/types';
+import type { WeatherForecast, WeatherPoint } from '@/types';
 
-const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_KEY;
-const VISUALCROSSING_API_KEY = import.meta.env.VITE_VISUALCROSSING_KEY;
+const OPENWEATHER_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_KEY;
+const VISUALCROSSING_API_KEY = process.env.NEXT_PUBLIC_VISUALCROSSING_KEY;
 
 // Mock weather data for development
 const mockWeatherData: WeatherForecast = {

@@ -4,22 +4,22 @@ import axios from 'axios';
 const API_CONFIG = {
   OPENWEATHER: {
     baseURL: 'https://api.openweathermap.org/data/2.5',
-    key: import.meta.env.VITE_OPENWEATHER_API_KEY || 'demo_key'
+    key: process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY || 'demo_key'
   },
   TREFLE: {
     baseURL: 'https://trefle.io/api/v1',
-    key: import.meta.env.VITE_TREFLE_API_KEY || 'vLfyzVxaSLfWRIOyLX_GOZBH6OC1z6SF61F17nQAsiI'
+    key: process.env.NEXT_PUBLIC_TREFLE_API_KEY || 'vLfyzVxaSLfWRIOyLX_GOZBH6OC1z6SF61F17nQAsiI'
   },
   PLANT_ID: {
     baseURL: 'https://api.plant.id/v3',
-    key: import.meta.env.VITE_PLANT_ID_API_KEY || 'demo_key'
+    key: process.env.NEXT_PUBLIC_PLANT_ID_API_KEY || 'demo_key'
   },
   VISUAL_CROSSING: {
     baseURL: 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services',
-    key: import.meta.env.VITE_VISUALCROSSING_KEY || 'demo_key'
+    key: process.env.NEXT_PUBLIC_VISUALCROSSING_KEY || 'demo_key'
   },
   GOOGLE_MAPS: {
-    key: import.meta.env.VITE_GOOGLE_MAPS_KEY || 'demo_key'
+    key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || 'demo_key'
   }
 };
 
@@ -261,5 +261,16 @@ export const apiService = {
   plants: plantAPI,
   plantId: plantIdAPI,
   maps: mapsAPI,
-  hardiness: hardinessAPI
+  hardiness: hardinessAPI,
+  // Placeholder API service methods
+  get: async (url: string) => {
+    return fetch(url).then(res => res.json())
+  },
+  post: async (url: string, data: any) => {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+  }
 };

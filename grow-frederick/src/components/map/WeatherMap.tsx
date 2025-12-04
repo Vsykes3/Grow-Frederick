@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow, HeatmapLayer } from '@react-google-maps/api';
-import { useI18n } from '/src/hooks/useI18n';
-import { useTheme } from '/src/hooks/useTheme';
-import { weatherService, type WeatherData, type WeatherForecast } from '/src/lib/weather';
-import { locationService, type UserLocation } from '/src/lib/location';
-import { Button } from '/src/components/ui/Button';
-import { ProBadge } from '/src/components/ui/ProBadge';
-import { cn } from '/src/lib/utils';
+// Removed i18n - English only
+import { useTheme } from '@/hooks/useTheme';
+import { weatherService, type WeatherData, type WeatherForecast } from '@/lib/weather';
+import { locationService, type UserLocation } from '@/lib/location';
+import { Button } from '@/components/ui/Button';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { cn } from '@/lib/utils';
 
 interface WeatherMapProps {
   className?: string;
@@ -35,7 +35,6 @@ const mapOptions = {
 };
 
 export function WeatherMap({ className }: WeatherMapProps) {
-  const { t, mounted } = useI18n();
   const { resolvedTheme } = useTheme();
   const [location, setLocation] = useState<UserLocation | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -47,10 +46,9 @@ export function WeatherMap({ className }: WeatherMapProps) {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    if (!mounted) return;
     
     initializeLocation();
-  }, [mounted]);
+  }, []);
 
   const initializeLocation = async () => {
     try {
@@ -178,16 +176,7 @@ export function WeatherMap({ className }: WeatherMapProps) {
     }
   };
 
-  if (!mounted) {
-    return (
-      <div className={cn('flex items-center justify-center h-96', className)}>
-        <div className="text-center space-y-4">
-          <div className="w-8 h-8 border-4 border-gc-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  // Removed mounted check - no i18n needed
 
   if (isLoading) {
     return (

@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useState, useEffect } from 'react';
-import { getTranslation, getUserLanguage, setUserLanguage, type SupportedLanguage, type TranslationKey } from '/src/lib/i18n';
+import { getTranslation, getUserLanguage, setUserLanguage, type SupportedLanguage, type TranslationKey } from '@/lib/i18n';
 
 /**
  * Hook for internationalization

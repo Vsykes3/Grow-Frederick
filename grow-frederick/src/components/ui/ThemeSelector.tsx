@@ -1,9 +1,9 @@
 ﻿'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getUserTheme, setUserTheme, THEMES, THEME_LABELS, THEME_ICONS, type Theme } from '/src/lib/theme';
-import { getTranslation, getUserLanguage } from '/src/lib/i18n';
-import { cn } from '/src/lib/utils';
+import { getUserTheme, setUserTheme, THEMES, THEME_LABELS, THEME_ICONS, type Theme } from '@/lib/theme';
+import { getTranslation, getUserLanguage } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 
 interface ThemeSelectorProps {
   className?: string;

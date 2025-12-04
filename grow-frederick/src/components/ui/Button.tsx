@@ -1,103 +1,60 @@
-﻿import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '/src/lib/utils';
+'use client';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'ghost' | 'secondary';
-  size?: 'sm' | 'md' | 'lg';
-  loading?: boolean;
-  children: React.ReactNode;
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
 }
 
-export function Button({ 
-  variant = 'default', 
-  size = 'md', 
-  loading = false,
-  className = '',
-  children,
-  disabled,
-  ...props 
-}: ButtonProps) {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gc-accent focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-  
-  const variantClasses = {
-    default: 'bg-gc-accent text-white hover:bg-gc-dark shadow-soft hover:shadow-medium',
-    outline: 'border-2 border-gc-accent text-gc-accent hover:bg-gc-accent hover:text-white',
-    ghost: 'text-gc-accent hover:bg-gc-accent/10',
-    secondary: 'bg-gc-cream text-gc-dark hover:bg-gc-light shadow-soft',
-  };
-  
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
-  };
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 
-  return (
-    <motion.button
-      className={cn(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        className
-      )}
-      disabled={disabled || loading}
-      whileHover={{ scale: disabled || loading ? 1 : 1.02 }}
-      whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
-      transition={{ duration: 0.15 }}
-      {...props}
-    >
-      {loading ? (
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          Loading...
-        </div>
-      ) : (
-        children
-      )}
-    </motion.button>
-  );
-}
+Button.displayName = "Button";
 
-// Icon button variant
-export function IconButton({ 
-  children, 
-  className = '',
-  ...props 
-}: Omit<ButtonProps, 'children'> & { children: React.ReactNode }) {
-  return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className={cn('p-2', className)}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-}
-
-// Floating action button
-export function FloatingButton({ 
-  children, 
-  className = '',
-  ...props 
-}: Omit<ButtonProps, 'children'> & { children: React.ReactNode }) {
-  return (
-    <motion.button
-      className={cn(
-        'fixed bottom-6 right-6 w-14 h-14 bg-gc-accent text-white rounded-full shadow-large',
-        'flex items-center justify-center hover:bg-gc-dark transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-gc-accent focus:ring-offset-2',
-        className
-      )}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      transition={{ duration: 0.2 }}
-      {...props}
-    >
-      {children}
-    </motion.button>
-  );
-}
+export { Button, buttonVariants };
 

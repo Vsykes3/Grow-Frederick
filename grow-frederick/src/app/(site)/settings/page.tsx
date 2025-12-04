@@ -1,43 +1,214 @@
 ﻿'use client';
 
-import React, { useState } from 'react';
-import { useI18n } from '/src/hooks/useI18n';
-import { useTheme } from '/src/hooks/useTheme';
-import { LanguageSelector } from '/src/components/ui/LanguageSelector';
-import { ThemeSelector } from '/src/components/ui/ThemeSelector';
-import { Button } from '/src/components/ui/Button';
-import { ProBadge } from '/src/components/ui/ProBadge';
+import React, { useState, useEffect, useRef } from 'react';
+import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+import { completeSignOut } from '@/lib/firebase';
+import { Button } from '@/components/ui/Button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut as nextAuthSignOut } from 'next-auth/react';
+import { Settings, Bell, User, Download, Trash2, Upload, LogOut } from 'lucide-react';
+import { useUser } from '@/contexts/UserContext';
 
 export default function SettingsPage() {
-  const { t, mounted } = useI18n();
-  const { theme, resolvedTheme, changeTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<'general' | 'appearance' | 'notifications' | 'account'>('general');
+  const { user: firebaseUser, loading: firebaseLoading } = useFirebaseAuth();
+  const { user: contextUser, updateUser, setUser } = useUser(); // Get context user and update function
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'notifications' | 'account'>('notifications');
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [temperatureUnit] = useState<'fahrenheit'>('fahrenheit');
+  const [distanceUnit] = useState<'imperial'>('imperial');
+  const [notifications, setNotifications] = useState({
+    frostWarnings: true,
+    heatWaveAlerts: true,
+    plantingReminders: true,
+    harvestAlerts: true,
+    inApp: true,
+    email: true
+  });
+  
+  // Remove unused notification options
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="w-8 h-8 border-4 border-gc-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    // Priority: Context user > Firebase user > localStorage
+    if (contextUser) {
+      setDisplayName(contextUser.displayName || '');
+      setPhotoPreview(contextUser.profilePicture || null);
+    } else if (firebaseUser) {
+      setDisplayName(firebaseUser.displayName || '');
+      setEmail(firebaseUser.email || '');
+      setPhotoPreview(firebaseUser.photoURL || null);
+    }
+    
+    // Load saved display name and photo from localStorage as fallback
+    const savedName = localStorage.getItem('userDisplayName');
+    const savedPhoto = localStorage.getItem('userPhoto');
+    if (savedName && !contextUser?.displayName) setDisplayName(savedName);
+    if (savedPhoto && !contextUser?.profilePicture) setPhotoPreview(savedPhoto);
+    
+    // Load saved notification preferences from localStorage
+    const savedNotifications = localStorage.getItem('notificationSettings');
+    if (savedNotifications) {
+      try {
+        setNotifications(JSON.parse(savedNotifications));
+      } catch (e) {
+        console.error('Error loading notification settings:', e);
+      }
+    }
+  }, [firebaseUser]);
+
+  const handlePhotoChange = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image must be less than 5MB');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const photoData = reader.result as string;
+        setPhotoPreview(photoData);
+        // Save to localStorage immediately
+        localStorage.setItem('userPhoto', photoData);
+        // Trigger event to update navbar
+        window.dispatchEvent(new Event('userDataUpdated'));
+        alert('Photo updated! Click "Save Changes" to confirm.');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNotificationChange = (key: keyof typeof notifications) => {
+    setNotifications(prev => {
+      const updated = { ...prev, [key]: !prev[key] };
+      localStorage.setItem('notificationSettings', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleSave = () => {
+    localStorage.setItem('temperatureUnit', temperatureUnit);
+    localStorage.setItem('distanceUnit', distanceUnit);
+    localStorage.setItem('notificationSettings', JSON.stringify(notifications));
+    
+    // Update user context - this IMMEDIATELY updates the navbar!
+    updateUser({
+      displayName: displayName || '',
+      profilePicture: photoPreview || null
+    });
+    
+    alert('Settings saved successfully!');
+  };
+
+  const handleExportData = () => {
+    const data = {
+      displayName,
+      email,
+      preferences: {
+        temperatureUnit,
+        distanceUnit
+      },
+      notifications,
+      exportDate: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `growcommon-data-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert('Data exported successfully!');
+  };
+
+  const handleSignOut = async () => {
+    try {
+      // Sign out from Firebase (clears all local data)
+      await completeSignOut();
+      
+      // Sign out from NextAuth if session exists
+      if (session) {
+        await nextAuthSignOut({ callbackUrl: '/' });
+      }
+      
+      // Clear user context
+      setUser(null);
+      
+      // Redirect to home page
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      console.error('Error signing out:', error);
+      // Even if there's an error, clear local state and redirect
+      setUser(null);
+      router.push('/');
+      router.refresh();
+    }
+  };
+
+  const handleDeleteAccount = () => {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
+        // Clear all localStorage data
+        localStorage.removeItem('userDisplayName');
+        localStorage.removeItem('userPhoto');
+        localStorage.removeItem('temperatureUnit');
+        localStorage.removeItem('distanceUnit');
+        localStorage.removeItem('notificationSettings');
+        localStorage.removeItem('myGardens');
+        localStorage.removeItem('calendarEvents');
+        
+        // Clear session storage
+        sessionStorage.clear();
+        
+        // Sign out if logged in
+        if (firebaseUser || session) {
+          completeSignOut();
+          if (session) {
+            nextAuthSignOut({ callbackUrl: '/' });
+          }
+        }
+        
+        // Clear user context
+        setUser(null);
+        
+        // Redirect to home page
+        router.push('/');
+        router.refresh();
+        alert('Account deleted successfully. All your data has been removed.');
+      }
+    }
+  };
 
   const tabs = [
-    { id: 'general', label: 'General', icon: 'âš™ï¸' },
-    { id: 'appearance', label: 'Appearance', icon: 'ðŸŽ¨' },
-    { id: 'notifications', label: 'Notifications', icon: 'ðŸ””' },
-    { id: 'account', label: 'Account', icon: 'ðŸ‘¤' },
+    { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'account', label: 'Account', icon: User },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="glass border-b border-gc-light/20">
+      <div className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gc-dark">
-            {t('settings.title')}
+          <h1 className="text-3xl font-bold text-foreground">
+            Settings
           </h1>
           <p className="text-muted-foreground mt-2">
             Customize your GrowCommon experience
@@ -49,178 +220,107 @@ export default function SettingsPage() {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="glass rounded-2xl p-6">
+            <div className="bg-card rounded-2xl p-6 border border-border">
               <nav className="space-y-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                      activeTab === tab.id
-                        ? 'bg-gc-accent text-white'
-                        : 'text-muted-foreground hover:text-gc-dark hover:bg-gc-light/10'
-                    }`}
-                  >
-                    <span className="text-lg">{tab.icon}</span>
-                    <span className="font-medium">{tab.label}</span>
-                  </button>
-                ))}
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
+                        activeTab === tab.id
+                          ? 'bg-primary text-primary-foreground'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span className="font-medium">{tab.label}</span>
+                    </button>
+                  );
+                })}
               </nav>
             </div>
           </div>
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="glass rounded-2xl p-8">
-              {activeTab === 'general' && (
-                <div className="space-y-8">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gc-dark mb-6">General Settings</h2>
-                    
-                    <div className="space-y-6">
-                      <LanguageSelector />
-                      
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Units</h3>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gc-dark mb-2">
-                              Temperature
-                            </label>
-                            <select className="w-full px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent">
-                              <option value="fahrenheit">Fahrenheit (Â°F)</option>
-                              <option value="celsius">Celsius (Â°C)</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gc-dark mb-2">
-                              Distance
-                            </label>
-                            <select className="w-full px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent">
-                              <option value="imperial">Imperial (inches, feet)</option>
-                              <option value="metric">Metric (cm, meters)</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Location</h3>
-                        <div>
-                          <label className="block text-sm font-medium text-gc-dark mb-2">
-                            Default Location
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="Frederick, MD"
-                            className="w-full px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'appearance' && (
-                <div className="space-y-8">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gc-dark mb-6">Appearance</h2>
-                    
-                    <div className="space-y-6">
-                      <ThemeSelector />
-                      
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Current Theme</h3>
-                        <div className="p-4 bg-gc-light/10 rounded-lg">
-                          <p className="text-sm text-muted-foreground">
-                            You are currently using <strong>{theme}</strong> theme
-                            {theme === 'system' && ` (resolved to ${resolvedTheme})`}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Accessibility</h3>
-                        <div className="space-y-3">
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">High contrast mode</span>
-                          </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" className="rounded" />
-                            <span className="text-sm text-muted-foreground">Reduce motion</span>
-                          </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Focus indicators</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+            <div className="bg-card rounded-2xl p-8 border border-border">
 
               {activeTab === 'notifications' && (
                 <div className="space-y-8">
                   <div>
-                    <h2 className="text-2xl font-bold text-gc-dark mb-6">Notifications</h2>
+                    <h2 className="text-2xl font-bold text-foreground mb-6">Notifications</h2>
                     
                     <div className="space-y-6">
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Weather Alerts</h3>
+                        <h3 className="text-lg font-semibold text-foreground">Weather Alerts</h3>
                         <div className="space-y-3">
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Frost warnings</span>
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.frostWarnings}
+                              onChange={() => handleNotificationChange('frostWarnings')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">Frost warnings</span>
                           </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Heat wave alerts</span>
-                          </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" className="rounded" />
-                            <span className="text-sm text-muted-foreground">Rainfall predictions</span>
-                            <ProBadge size="sm" />
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.heatWaveAlerts}
+                              onChange={() => handleNotificationChange('heatWaveAlerts')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">Heat wave alerts</span>
                           </label>
                         </div>
                       </div>
 
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Garden Reminders</h3>
+                        <h3 className="text-lg font-semibold text-foreground">Garden Reminders</h3>
                         <div className="space-y-3">
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Planting reminders</span>
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.plantingReminders}
+                              onChange={() => handleNotificationChange('plantingReminders')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">Planting reminders</span>
                           </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Harvest alerts</span>
-                          </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" className="rounded" />
-                            <span className="text-sm text-muted-foreground">Pest monitoring</span>
-                            <ProBadge size="sm" />
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.harvestAlerts}
+                              onChange={() => handleNotificationChange('harvestAlerts')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">Harvest alerts</span>
                           </label>
                         </div>
                       </div>
 
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Notification Methods</h3>
+                        <h3 className="text-lg font-semibold text-foreground">Notification Methods</h3>
                         <div className="space-y-3">
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">In-app notifications</span>
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.inApp}
+                              onChange={() => handleNotificationChange('inApp')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">In-app notifications</span>
                           </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked className="rounded" />
-                            <span className="text-sm text-muted-foreground">Email notifications</span>
-                          </label>
-                          <label className="flex items-center gap-3">
-                            <input type="checkbox" className="rounded" />
-                            <span className="text-sm text-muted-foreground">SMS alerts</span>
-                            <ProBadge size="sm" />
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={notifications.email}
+                              onChange={() => handleNotificationChange('email')}
+                              className="rounded w-5 h-5" 
+                            />
+                            <span className="text-sm text-foreground">Email notifications</span>
                           </label>
                         </div>
                       </div>
@@ -232,58 +332,127 @@ export default function SettingsPage() {
               {activeTab === 'account' && (
                 <div className="space-y-8">
                   <div>
-                    <h2 className="text-2xl font-bold text-gc-dark mb-6">Account</h2>
+                    <h2 className="text-2xl font-bold text-foreground mb-6">Account</h2>
                     
                     <div className="space-y-6">
+                      {/* Profile Picture Section */}
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Profile</h3>
+                        <h3 className="text-lg font-semibold text-foreground">Profile Picture</h3>
+                        <div className="flex items-center space-x-4">
+                          {photoPreview ? (
+                            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-primary">
+                              <Image
+                                src={photoPreview}
+                                alt={displayName || 'User'}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-2xl font-semibold border-2 border-primary">
+                              {displayName?.[0]?.toUpperCase() || email?.[0]?.toUpperCase() || 'U'}
+                            </div>
+                          )}
+                          <div>
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              onChange={handleFileSelect}
+                              accept="image/*"
+                              className="hidden"
+                            />
+                            <Button variant="outline" size="sm" onClick={handlePhotoChange}>
+                              <Upload className="h-4 w-4 mr-2" />
+                              Change Photo
+                            </Button>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Click to upload a new profile picture (max 5MB)
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-foreground">Profile Information</h3>
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-gc-dark mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                               Display Name
                             </label>
                             <input
                               type="text"
+                              value={displayName}
+                              onChange={(e) => setDisplayName(e.target.value)}
                               placeholder="Your name"
-                              className="w-full px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent"
+                              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gc-dark mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                               Email
                             </label>
                             <input
                               type="email"
+                              value={email}
+                              disabled
                               placeholder="your@email.com"
-                              className="w-full px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent"
+                              className="w-full px-3 py-2 border border-border rounded-lg bg-muted text-muted-foreground cursor-not-allowed"
                             />
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Email cannot be changed
+                            </p>
                           </div>
                         </div>
                       </div>
 
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Subscription</h3>
-                        <div className="p-4 bg-gc-light/10 rounded-lg">
+                        <h3 className="text-lg font-semibold text-foreground">Subscription</h3>
+                        <div className="p-4 bg-muted rounded-lg border border-border">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="font-medium text-gc-dark">Free Plan</p>
+                              <p className="font-medium text-foreground">Free Plan</p>
                               <p className="text-sm text-muted-foreground">Basic features included</p>
                             </div>
-                            <Button>
-                              <ProBadge size="sm" className="mr-2" />
-                              Upgrade to Pro
-                            </Button>
+                            <Link href="/pricing">
+                              <Button>
+                                Upgrade to Pro
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>
 
                       <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gc-dark">Data & Privacy</h3>
+                        <h3 className="text-lg font-semibold text-foreground">Account Actions</h3>
                         <div className="space-y-3">
-                          <Button variant="outline" className="w-full justify-start">
+                          <Button 
+                            variant="outline" 
+                            className="w-full justify-start text-foreground"
+                            onClick={handleSignOut}
+                          >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Sign Out
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-foreground">Data & Privacy</h3>
+                        <div className="space-y-3">
+                          <Button 
+                            variant="outline" 
+                            className="w-full justify-start"
+                            onClick={handleExportData}
+                          >
+                            <Download className="h-4 w-4 mr-2" />
                             Export My Data
                           </Button>
-                          <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700">
+                          <Button 
+                            variant="outline" 
+                            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={handleDeleteAccount}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
                             Delete Account
                           </Button>
                         </div>
@@ -294,13 +463,13 @@ export default function SettingsPage() {
               )}
 
               {/* Save Button */}
-              <div className="pt-6 border-t border-gc-light/20">
+              <div className="pt-6 border-t border-border mt-8">
                 <div className="flex justify-end gap-3">
-                  <Button variant="outline">
-                    {t('common.cancel')}
+                  <Button variant="outline" onClick={() => window.location.reload()}>
+                    Cancel
                   </Button>
-                  <Button>
-                    {t('common.save')}
+                  <Button onClick={handleSave}>
+                    Save Changes
                   </Button>
                 </div>
               </div>

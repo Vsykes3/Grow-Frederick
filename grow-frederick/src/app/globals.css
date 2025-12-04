@@ -1,302 +1,383 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+﻿@import 'leaflet/dist/leaflet.css';
 
-:root {
-  /* GrowCommon Brand Colors */
-  --gc-dark: #414535;
-  --gc-light: #9EBB8C;
-  --gc-accent: #7A9B6B;
-  
-  /* System Colors */
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-  
-  /* Semantic Colors */
-  --primary: var(--gc-dark);
-  --primary-foreground: #ffffff;
-  --secondary: var(--gc-light);
-  --secondary-foreground: var(--gc-dark);
-  --accent: var(--gc-accent);
-  --accent-foreground: #ffffff;
-  
-  /* Status Colors */
-  --success: #10b981;
-  --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #ffffff;
-  --error: #ef4444;
-  --error-foreground: #ffffff;
-  
-  /* Border & Surface */
-  --border: #e5e7eb;
-  --input: #f3f4f6;
-  --ring: var(--gc-accent);
-  --muted: #f9fafb;
-  --muted-foreground: #6b7280;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Dark mode styles */
-.dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --primary: var(--gc-light);
-  --primary-foreground: var(--gc-dark);
-  --secondary: var(--gc-dark);
-  --secondary-foreground: var(--gc-light);
-  --border: #374151;
-  --input: #1f2937;
-  --muted: #111827;
-  --muted-foreground: #9ca3af;
-}
-
-/* System preference fallback */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-    --primary: var(--gc-light);
-    --primary-foreground: var(--gc-dark);
-    --secondary: var(--gc-dark);
-    --secondary-foreground: var(--gc-light);
-    --border: #374151;
-    --input: #1f2937;
-    --muted: #111827;
-    --muted-foreground: #9ca3af;
-  }
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Inter', system-ui, sans-serif;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  font-variation-settings: normal;
-  line-height: 1.6;
-  letter-spacing: 0.025em;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Garden Background */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--gc-light) 0%,
-    var(--gc-accent) 25%,
-    var(--gc-dark) 50%,
-    var(--gc-accent) 75%,
-    var(--gc-light) 100%
-  );
-  background-size: 400% 400%;
-  animation: gardenGradient 18s ease-in-out infinite;
-  opacity: 0.03;
-  z-index: -2;
-  pointer-events: none;
-}
-
-/* Pollen Particles */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 20% 20%, rgba(158, 187, 140, 0.1) 1px, transparent 1px),
-    radial-gradient(circle at 80% 40%, rgba(65, 69, 53, 0.08) 1px, transparent 1px),
-    radial-gradient(circle at 40% 80%, rgba(122, 155, 107, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 60% 10%, rgba(158, 187, 140, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 10% 60%, rgba(65, 69, 53, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at 90% 90%, rgba(122, 155, 107, 0.04) 1px, transparent 1px);
-  background-size: 200px 200px, 300px 300px, 250px 250px, 180px 180px, 220px 220px, 280px 280px;
-  animation: pollenFloat 12s ease-in-out infinite;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* Smooth Transitions */
-* {
-  transition: 
-    color 200ms ease-out,
-    background-color 200ms ease-out,
-    border-color 200ms ease-out,
-    opacity 200ms ease-out,
-    transform 200ms ease-out;
-}
-
-/* Focus Styles */
-*:focus-visible {
-  outline: 2px solid var(--gc-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Selection */
-::selection {
-  background-color: var(--gc-accent);
-  color: white;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--muted);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--gc-accent);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gc-dark);
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.025em;
-  color: var(--gc-dark);
-}
-
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-p {
-  line-height: 1.7;
-  color: var(--muted-foreground);
-}
-
-/* Button Base Styles */
-.btn {
-  @apply inline-flex items-center justify-center rounded-2xl px-6 py-3 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gc-accent focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-}
-
-.btn-primary {
-  @apply bg-gc-dark text-white shadow-soft hover:bg-gc-accent hover:shadow-natural active:scale-95;
-}
-
-.btn-secondary {
-  @apply bg-gc-light text-gc-dark shadow-soft hover:bg-gc-accent hover:text-white hover:shadow-natural active:scale-95;
-}
-
-.btn-ghost {
-  @apply text-gc-dark hover:bg-gc-light hover:text-gc-dark;
-}
-
-/* Card Styles */
-.card {
-  @apply rounded-2xl border border-border bg-background shadow-soft;
-}
-
-.card-header {
-  @apply flex flex-col space-y-1.5 p-6;
-}
-
-.card-content {
-  @apply p-6 pt-0;
-}
-
-/* Input Styles */
-.input {
-  @apply flex h-12 w-full rounded-2xl border border-border bg-input px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gc-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-}
-
-/* Glass Morphism */
-.glass {
-  @apply backdrop-blur-md bg-white/80 border border-white/20 shadow-garden;
-}
-
-.glass-dark {
-  @apply backdrop-blur-md bg-black/20 border border-white/10 shadow-garden;
-}
-
-/* Pro Badge Animation */
-.pro-badge {
-  background: linear-gradient(
-    90deg,
-    var(--gc-accent) 0%,
-    var(--gc-light) 25%,
-    var(--gc-accent) 50%,
-    var(--gc-light) 75%,
-    var(--gc-accent) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s linear infinite;
-}
-
-/* Utility Classes */
-.text-balance {
-  text-wrap: balance;
-}
-
-.text-pretty {
-  text-wrap: pretty;
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  body::before,
-  body::after {
-    animation: none;
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
+/* Gardening-themed Design tokens (CSS variables) */
+@layer base {
   :root {
-    --gc-dark: #000000;
-    --gc-light: #ffffff;
-    --gc-accent: #000000;
-    --border: #000000;
+    /* Light Mode - Warm off-white and Deep Forest Green */
+    /* Primary backgrounds */
+    --bg-primary: #FDFBF7; /* Warm off-white, like aged paper */
+    --bg-secondary: #F5F1E8; /* Light tan */
+    --bg-card: #FFFFFF; /* White with subtle tan tint */
+    
+    /* Text colors - AAA contrast (≥7:1) for headings, AA (≥4.5:1) for body */
+    --text-primary: #1A3A1A; /* Deep forest green - 7.2:1 contrast on #FDFBF7 */
+    --text-secondary: #4A6B4A; /* Medium forest green - 4.8:1 contrast on #FDFBF7 */
+    
+    /* Accent and borders */
+    --accent: #6B8E4E; /* Sage green */
+    --border: #D4C4A8; /* Light tan */
+    
+    /* Tailwind-compatible HSL format for existing system */
+    --background: 35 25% 98%; /* #FDFBF7 */
+    --foreground: 120 30% 12%; /* #1A3A1A */
+    --border: 35 30% 75%; /* #D4C4A8 */
+    --input: 35 25% 95%; /* #F5F1E8 */
+    --ring: 120 25% 45%; /* #6B8E4E */
+
+    --primary: 120 25% 45%; /* #6B8E4E - Sage green */
+    --primary-foreground: 0 0% 100%; /* White text on accent */
+
+    --secondary: 35 25% 90%; /* #F5F1E8 - Light tan */
+    --secondary-foreground: 120 30% 12%; /* #1A3A1A - Deep forest green */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --muted: 35 20% 95%; /* Light tan */
+    --muted-foreground: 120 20% 30%; /* #4A6B4A - Medium forest green */
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark Mode - Very Dark Forest Green and Light Tan */
+    /* Primary backgrounds */
+    --bg-primary: #1A2E1A; /* Very dark forest green */
+    --bg-secondary: #2A3E2A; /* Dark olive green */
+    --bg-card: #334433; /* Medium dark green */
+    
+    /* Text colors - AAA contrast for headings, AA for body */
+    --text-primary: #F5F1E8; /* Light tan - 12.5:1 contrast on #1A2E1A */
+    --text-secondary: #D4C4A8; /* Medium tan - 7.8:1 contrast on #1A2E1A */
+    
+    /* Accent and borders */
+    --accent: #8FAA6F; /* Lighter sage green */
+    --border: #4A5A4A; /* Muted green */
+    
+    /* Tailwind-compatible HSL format */
+    --background: 120 25% 15%; /* #1A2E1A */
+    --foreground: 35 25% 95%; /* #F5F1E8 */
+    --border: 120 10% 30%; /* #4A5A4A */
+    --input: 120 20% 20%; /* #2A3E2A */
+    --ring: 120 25% 55%; /* #8FAA6F */
+
+    --primary: 120 25% 55%; /* #8FAA6F - Lighter sage green */
+    --primary-foreground: 120 30% 12%; /* Dark green text on accent */
+
+    --secondary: 120 20% 20%; /* #2A3E2A - Dark olive green */
+    --secondary-foreground: 35 25% 95%; /* #F5F1E8 - Light tan */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --muted: 120 15% 18%; /* #334433 - Medium dark green */
+    --muted-foreground: 35 20% 75%; /* #D4C4A8 - Medium tan */
+  }
+
+  * { @apply border-border; }
+  body { 
+    @apply bg-background text-foreground;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
-  .card {
-    @apply border-2;
+  /* Ensure all headings use primary text color for AAA contrast */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
   }
   
-  .btn {
-    @apply border-2 border-current;
+  /* Body text uses secondary for AA contrast */
+  p, span, li, a:not(.text-primary) {
+    color: var(--text-secondary);
   }
+  
+  /* Links maintain visibility */
+  a {
+    color: var(--accent);
+    transition: color 0.3s ease;
+  }
+
+  /* Hero section text visibility */
+  .hero-subtitle {
+    color: #86efac; /* Light green for light mode - visible on dark overlay */
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .dark .hero-subtitle {
+    color: #bbf7d0; /* Lighter green for dark mode */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Zone info text visibility */
+  .zone-info {
+    color: #2d3748; /* Very dark gray for light mode - high contrast */
+    font-weight: 500;
+  }
+
+  .dark .zone-info {
+    color: #f5f1e8; /* Light tan for dark mode */
+  }
+  
+  a:hover {
+    color: var(--text-primary);
+  }
+}
+
+/* Your components */
+.card {
+  @apply rounded-2xl border border-border shadow-soft;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.input {
+  @apply flex h-12 w-full rounded-2xl border border-gray-200 bg-background px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7A9B6B] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* Plant cards */
+.plant-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.plant-card-title {
+  color: var(--text-primary);
+}
+
+.plant-card-description {
+  color: var(--text-secondary);
+}
+
+/* Hero section with garden background */
+.hero-section {
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  
+  /* CRITICAL: Background Image - Garden with trees, shrubs, soils */
+  background-image: url('/images/homepage-banner.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* Changed from fixed for better mobile support */
+}
+
+/* Dark overlay for text readability */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 500px;
+    background-position: center center;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px;
+  }
+  
+  .hero-subtitle {
+    font-size: 14px;
+  }
+  
+  .hero-description {
+    font-size: 16px;
+  }
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #F5F1E8; /* Light tan for better visibility */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.hero-description {
+  font-size: 20px;
+  color: #F5F1E8;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.hero-cta-button {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-cta-button:hover {
+  background-color: var(--accent);
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Ensure text visibility in both themes */
+@layer utilities {
+  .text-visible {
+    @apply text-foreground;
+  }
+  
+  .text-visible-light {
+    color: hsl(120 20% 15%);
+  }
+  
+  .text-visible-dark {
+    color: hsl(35 35% 95%);
+  }
+  
+  .dark .text-visible-light {
+    color: hsl(35 35% 95%);
+  }
+  
+  .dark .text-visible-dark {
+    color: hsl(120 20% 15%);
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
+  /* Hover link styles using CSS variables */
+  .hover-link {
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+  }
+  
+  .hover-link:hover {
+    color: var(--text-primary);
+  }
+  
+  /* Responsive hero section */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 36px;
+    }
+    
+    .hero-subtitle {
+      font-size: 16px;
+    }
+    
+    .hero-section {
+      min-height: 400px;
+      background-position: 60% center;
+    }
+    
+    .hero-content {
+      padding: 80px 20px;
+    }
+    
+    .theme-toggle {
+      top: 10px;
+      right: 10px;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+  }
+}
+
+/* Logo transparency - makes white background transparent */
+.logo-transparent {
+  mix-blend-mode: multiply;
+  filter: contrast(1.1);
+}
+
+.dark .logo-transparent {
+  mix-blend-mode: screen;
+  filter: contrast(1.1) brightness(1.1);
 }

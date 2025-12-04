@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import React, { useEffect } from 'react';
-import { initializeTheme } from '/src/lib/theme';
+import { initializeTheme } from '../../lib/theme';
 
 interface ThemeProviderProps {
   children: React.ReactNode;

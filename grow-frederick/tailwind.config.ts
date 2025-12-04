@@ -9,8 +9,10 @@ const config: Config = {
     extend: {
       colors: {
         gc: {
-          dark: '#414535',    // Black Olive
-          light: '#9EBB8C',   // Olivine
+        DEFAULT: '#2d3e26',    // Dark green
+          dark: '#2d3e26',     // Dark green
+          light: '#9EBB8C',    // Light green
+          tan: '#D4C5A9',     // Tannish/beige
           cream: '#F5F3EE',   // Soft background
           ink: '#0F1A12',     // Text on light
           accent: '#7A9B6B',  // Computed accessible accent

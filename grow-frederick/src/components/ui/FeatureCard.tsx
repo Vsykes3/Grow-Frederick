@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ProBadge } from './ProBadge';
-import { cn } from '/src/lib/utils';
+import { cn } from '../../lib/utils';
 
 interface FeatureCardProps {
   title: string;

@@ -1,13 +1,12 @@
 ﻿'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useI18n } from '/src/hooks/useI18n';
-import { useTheme } from '/src/hooks/useTheme';
-import { plantDatabase, type Plant } from '/src/lib/plants';
-import { ProBadge } from '/src/components/ui/ProBadge';
-import { PaywallGuard } from '/src/components/ui/PaywallGuard';
-import { Button } from '/src/components/ui/Button';
-import { cn } from '/src/lib/utils';
+// Removed i18n - English only
+import { useTheme } from '@/hooks/useTheme';
+import { plantDatabase, type Plant } from '@/lib/plants';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/utils';
 
 interface GardenPlotProps {
   className?: string;
@@ -31,10 +30,9 @@ interface PlotSquare {
 }
 
 export function GardenPlot({ className }: GardenPlotProps) {
-  const { t, mounted } = useI18n();
   const { resolvedTheme } = useTheme();
-  const [plotSize, setPlotSize] = useState({ width: 8, height: 6 }); // in feet
-  const [squareSize, setSquareSize] = useState(24); // in pixels
+  const [plotSize, setPlotSize] = useState({ width: 4, height: 4 }); // in feet - smaller default
+  const [squareSize, setSquareSize] = useState(20); // in pixels - smaller default
   const [plants, setPlants] = useState<PlotPlant[]>([]);
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [isPlacing, setIsPlacing] = useState(false);
@@ -42,9 +40,9 @@ export function GardenPlot({ className }: GardenPlotProps) {
   const [selectedSquare, setSelectedSquare] = useState<{ x: number; y: number } | null>(null);
   const plotRef = useRef<HTMLDivElement>(null);
 
-  // Calculate grid dimensions
-  const gridWidth = plotSize.width * 12; // Convert feet to inches, then to squares (1 square = 1 inch)
-  const gridHeight = plotSize.height * 12;
+  // Calculate grid dimensions - smaller grid (1 square = 6 inches instead of 1 inch)
+  const gridWidth = plotSize.width * 2; // 1 square = 6 inches (2 squares per foot)
+  const gridHeight = plotSize.height * 2;
 
   // Create grid squares
   const gridSquares: PlotSquare[] = [];
@@ -135,19 +133,10 @@ export function GardenPlot({ className }: GardenPlotProps) {
       return 'bg-gc-light/20';
     }
     
-    return 'bg-gray-100 dark:bg-gray-800';
+    return 'bg-muted';
   };
 
-  if (!mounted) {
-    return (
-      <div className={cn('flex items-center justify-center h-96', className)}>
-        <div className="text-center space-y-4">
-          <div className="w-8 h-8 border-4 border-gc-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  // Removed mounted check - no i18n needed
 
   return (
     <div className={cn('space-y-6', className)}>
@@ -157,7 +146,7 @@ export function GardenPlot({ className }: GardenPlotProps) {
           Interactive Garden Plot
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Design your garden layout by placing plants on the grid. Each square represents 1 inch of space.
+          Design your garden layout by placing plants on the grid. Each square represents 6 inches of space.
         </p>
       </div>
 
@@ -174,11 +163,11 @@ export function GardenPlot({ className }: GardenPlotProps) {
               }}
               className="px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent"
             >
+              <option value="3x3">3x3 feet</option>
               <option value="4x4">4x4 feet</option>
+              <option value="5x5">5x5 feet</option>
               <option value="6x4">6x4 feet</option>
               <option value="8x6">8x6 feet</option>
-              <option value="10x8">10x8 feet</option>
-              <option value="12x8">12x8 feet</option>
             </select>
           </div>
 
@@ -190,23 +179,18 @@ export function GardenPlot({ className }: GardenPlotProps) {
               className="px-3 py-2 border border-gc-light/30 rounded-lg bg-background text-gc-dark focus:outline-none focus:ring-2 focus:ring-gc-accent"
             >
               <option value={16}>16px</option>
+              <option value={18}>18px</option>
               <option value={20}>20px</option>
               <option value={24}>24px</option>
               <option value={28}>28px</option>
-              <option value={32}>32px</option>
             </select>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <ProBadge size="sm" />
-          <span className="text-sm text-muted-foreground">Pro Feature</span>
-        </div>
       </div>
 
       {/* Garden Plot */}
-      <PaywallGuard>
-        <div className="glass rounded-2xl p-6">
+      <div className="glass rounded-2xl p-6">
           <div className="flex gap-6">
             {/* Plot Grid */}
             <div className="flex-1">
@@ -223,7 +207,7 @@ export function GardenPlot({ className }: GardenPlotProps) {
                   <div
                     key={`${square.x}-${square.y}`}
                     className={cn(
-                      'border border-gray-200 dark:border-gray-700 cursor-pointer transition-all duration-150',
+                      'border border-border cursor-pointer transition-all duration-150',
                       'hover:scale-105',
                       getSquareColor(square)
                     )}
@@ -295,36 +279,34 @@ export function GardenPlot({ className }: GardenPlotProps) {
               )}
 
               <div className="space-y-2 max-h-96 overflow-y-auto">
-                {plantDatabase.slice(0, 10).map((plant) => (
+                {plantDatabase.map((plant) => (
                   <div
                     key={plant.id}
-                    className="flex items-center gap-3 p-3 bg-background border border-gc-light/30 rounded-lg hover:border-gc-accent transition-colors cursor-pointer"
+                    className="flex items-center gap-3 p-3 bg-background border border-border rounded-lg hover:border-primary transition-colors cursor-pointer"
                     onClick={() => startPlanting(plant)}
                   >
-                    <div className="w-8 h-8 bg-gc-light/20 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
                       <span className="text-sm">
-                        {plant.category === 'vegetable' && 'ðŸ¥•'}
-                        {plant.category === 'herb' && 'ðŸŒ¿'}
-                        {plant.category === 'fruit' && 'ðŸ“'}
-                        {plant.category === 'flower' && 'ðŸŒ¸'}
-                        {plant.category === 'tree' && 'ðŸŒ³'}
-                        {plant.category === 'shrub' && 'ðŸŒ¿'}
+                        {plant.category === 'vegetable' && '🥕'}
+                        {plant.category === 'herb' && '🌿'}
+                        {plant.category === 'fruit' && '🍓'}
+                        {plant.category === 'flower' && '🌸'}
+                        {plant.category === 'tree' && '🌳'}
+                        {plant.category === 'shrub' && '🌿'}
                       </span>
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-gc-dark">{plant.name}</div>
+                      <div className="font-medium text-foreground">{plant.name}</div>
                       <div className="text-xs text-muted-foreground">
                         {plant.spacing.betweenPlants} spacing
                       </div>
                     </div>
-                    {plant.isPro && <ProBadge size="sm" />}
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
-      </PaywallGuard>
 
       {/* Selected Square Info */}
       {selectedSquare && (

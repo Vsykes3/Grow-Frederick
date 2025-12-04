@@ -1,64 +1,62 @@
-# GrowCommon 🌱
+# GrowCommon - Frederick County Gardening App
 
-**Smart gardening made simple.** Weather intelligence, plant care, and pest alerts all in one place. Built for Frederick gardeners and beyond.
+A production-ready, full-stack gardening web application optimized for Frederick County (USDA Zone 6b–7a). Built with Next.js 14, TypeScript, and modern web technologies.
 
-## 🚀 Features
+## 🌱 Features
 
-### Free Features
-- **Plant Database**: Comprehensive plant index with care guides and companion planting tips
-- **Basic Weather**: Current weather information and basic forecasts
-- **Manual Calendar**: Create and manage planting events manually
-- **Community Access**: Connect with fellow gardeners
-- **Mobile App**: Full mobile experience
+### Core Features
+- **Plant Index**: Comprehensive database of plants with growing guides, season compatibility, and care instructions
+- **My Garden**: Track your plants with progress monitoring and notes
+- **Smart Calendar**: Garden task scheduling with reminders and recurring events
+- **Weather Integration**: Real-time weather data and alerts for your location
+- **Pest Management**: Local pest identification and organic control methods
+- **News & Events**: Gardening news and local events aggregation
 
-### Pro Features
-- **Advanced Weather Intelligence**: Detailed forecasts, frost predictions, and microclimate data
-- **Smart Planting Calendar**: AI-powered suggestions that auto-adjust based on weather conditions
-- **Pest Pressure Analytics**: Track pest trends and get personalized prevention recommendations
-- **Microclimate Mapping**: Create custom zones in your garden with specific recommendations
-- **Companion Planting Optimizer**: Get smart suggestions for plant combinations and spacing
-- **Irrigation Planning**: Calculate water needs and create efficient watering schedules
-- **Seasonal ROI Tracking**: Track your garden's value and optimize your growing strategy
-- **Priority Support**: Get help from our gardening experts when you need it most
+### Plan-Based Features
+- **Free Plan**: Basic plant index, limited garden tracking (10 plants), basic calendar
+- **Pro Plan**: Unlimited garden, advanced filters, recurring events, Pro Starter Pack
+- **Premium Plan**: Push notifications, severe weather alerts, personalized schedules
+- **Admin Plan**: Full content management and feature flag control
 
-## 🛠️ Tech Stack
+### Special Features
+- **Horticultural Therapy**: Specialized content for mental health benefits
+- **Regional Optimization**: Tailored for Frederick County growing conditions
+- **Responsive Design**: Mobile-first approach with dark/light mode support
+- **Accessibility**: WCAG compliant with screen reader support
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Routing**: React Router v6
-- **Styling**: Tailwind CSS v4 with custom GrowCommon theme
-- **Animations**: Framer Motion
-- **State Management**: Zustand
-- **Icons**: Lucide React
-- **Charts**: Recharts
-- **Maps**: Leaflet + React Leaflet
-- **HTTP Client**: Axios
+## 🛠 Tech Stack
 
-## 🎨 Design System
+### Frontend
+- **Next.js 14** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **shadcn/ui** for components
+- **Zustand** for client state management
+- **React Hook Form + Zod** for form handling
+- **FullCalendar** for calendar functionality
+- **React Query** for server state management
+- **Heroicons** for icons
 
-### Brand Colors
-- **gc-dark**: `#414535` (Black Olive)
-- **gc-light**: `#9EBB8C` (Olivine)
-- **gc-cream**: `#F5F3EE` (Soft background)
-- **gc-ink**: `#0F1A12` (Text on light)
-- **gc-accent**: `#7A9B6B` (Computed accessible accent)
+### Backend
+- **Next.js API Routes** (Edge where possible)
+- **PostgreSQL** via Prisma ORM
+- **Redis** for caching and rate limiting
+- **NextAuth** for authentication
+- **Stripe** for payment processing
 
-### Typography
-- **Font**: Inter (system fallback)
-- **Weights**: 300, 400, 500, 600, 700
-- **Line Height**: Comfortable (1.6)
-- **Letter Spacing**: Slightly tight (-0.025em)
+### External APIs
+- **OpenWeather One Call 3.0** for weather data
+- **Google Maps** for geocoding and mapping
+- **NewsAPI** for news aggregation
+- **Resend** for email notifications
 
-### Motion
-- **Duration**: 150-220ms
-- **Easing**: ease-out
-- **Style**: Subtle, not flashy
-- **Accessibility**: Respects `prefers-reduced-motion`
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+ 
-- npm or yarn
+- PostgreSQL database
+- Redis (optional, for caching)
+- API keys for external services
 
 ### Installation
 
@@ -75,205 +73,264 @@
 
 3. **Set up environment variables**
    ```bash
-   cp env.example .env
+   cp env.example .env.local
    ```
    
-   Edit `.env` and add your API keys (see [API Integration](#api-integration) section)
+   Fill in your environment variables:
+   ```env
+   # Database
+   DATABASE_URL="postgresql://username:password@localhost:5432/growcommon"
+   REDIS_URL="redis://localhost:6379"
 
-4. **Start development server**
+   # Authentication
+   NEXTAUTH_SECRET="your-secret-key"
+   NEXTAUTH_URL="http://localhost:3000"
+   GOOGLE_CLIENT_ID="your-google-client-id"
+   GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+   # Payments
+   STRIPE_SECRET_KEY="sk_test_..."
+   STRIPE_WEBHOOK_SECRET="whsec_..."
+   STRIPE_PRO_MONTHLY_PRICE_ID="price_..."
+   STRIPE_PRO_YEARLY_PRICE_ID="price_..."
+   STRIPE_PREMIUM_MONTHLY_PRICE_ID="price_..."
+   STRIPE_PREMIUM_YEARLY_PRICE_ID="price_..."
+
+   # External APIs
+   OWM_API_KEY="your-openweather-api-key"
+   GOOGLE_MAPS_API_KEY="your-google-maps-api-key"
+   NEWSAPI_KEY="your-newsapi-key"
+   RESEND_API_KEY="your-resend-api-key"
+
+   # Feature Flags
+   DEMO_BYPASS_PAYWALL="true"
+   ```
+
+4. **Set up the database**
+   ```bash
+   # Generate Prisma client
+   npx prisma generate
+
+   # Run database migrations
+   npm run db:migrate
+
+   # Seed the database
+   npm run db:seed
+   ```
+
+5. **Start the development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
-   Navigate to `http://localhost:5173`
-
-### Build for Production
-
-```bash
-npm run build
-npm run preview
-```
-
-## 🔧 API Integration
-
-GrowCommon integrates with several APIs to provide real-time data. All APIs have free tiers available.
-
-### Required APIs
-
-#### OpenWeatherMap API
-- **Purpose**: Weather data and forecasts
-- **Free Tier**: 1000 calls/day
-- **Setup**: 
-  1. Sign up at [openweathermap.org](https://openweathermap.org/api)
-  2. Get your API key
-  3. Add to `.env`: `VITE_OPENWEATHER_KEY=your_key_here`
-
-#### Visual Crossing API (Alternative)
-- **Purpose**: Alternative weather data source
-- **Free Tier**: 1000 calls/day
-- **Setup**:
-  1. Sign up at [visualcrossing.com](https://www.visualcrossing.com/weather-api)
-  2. Get your API key
-  3. Add to `.env`: `VITE_VISUALCROSSING_KEY=your_key_here`
-
-### Optional APIs
-
-#### Mapbox (Enhanced Maps)
-- **Purpose**: Enhanced map styling and features
-- **Free Tier**: $200/month
-- **Setup**:
-  1. Sign up at [mapbox.com](https://www.mapbox.com/)
-  2. Get your access token
-  3. Add to `.env`: `VITE_MAPBOX_TOKEN=your_token_here`
-
-#### Supabase (User Data)
-- **Purpose**: User profiles, subscriptions, and data storage
-- **Free Tier**: Available
-- **Setup**:
-  1. Create project at [supabase.com](https://supabase.com/)
-  2. Get your URL and anon key
-  3. Add to `.env`:
-     ```
-     VITE_SUPABASE_URL=your_url_here
-     VITE_SUPABASE_ANON_KEY=your_anon_key_here
-     ```
-
-#### Stripe (Payments)
-- **Purpose**: Subscription payments
-- **Free Tier**: Test mode available
-- **Setup**:
-  1. Create account at [stripe.com](https://stripe.com/)
-  2. Get your publishable key
-  3. Add to `.env`: `VITE_STRIPE_PUBLISHABLE_KEY=your_key_here`
-
-### Fallback Behavior
-- If API keys are not provided, the app will use mock data
-- All features work without external APIs
-- Real-time data requires valid API keys
+6. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-│   └── ui/             # Core UI components
-├── pages/              # Route components
-├── services/           # API and data services
-├── store/              # Zustand state management
-├── types/              # TypeScript type definitions
-├── lib/                # Utility functions
-├── App.tsx             # Main app component
-├── main.tsx            # App entry point
-└── index.css           # Global styles and Tailwind
+grow-frederick/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── api/               # API routes
+│   │   ├── (auth)/            # Authentication pages
+│   │   └── *.page.tsx         # Page components
+│   ├── components/            # Reusable components
+│   │   ├── ui/               # shadcn/ui components
+│   │   └── layout/           # Layout components
+│   ├── lib/                  # Utility functions
+│   └── middleware.ts         # Next.js middleware
+├── prisma/
+│   ├── schema.prisma         # Database schema
+│   └── seed.ts              # Database seed script
+├── public/                   # Static assets
+└── docs/                    # Documentation
 ```
 
-## 🎯 Key Components
+## 🗄 Database Schema
 
-### UI Components
-- **Navbar**: Responsive navigation with theme toggle
-- **Footer**: Links and social media
-- **FeatureCard**: Reusable feature display cards
-- **ProBadge**: Animated Pro feature indicators
-- **PaywallGuard**: Pro feature gating
-- **SproutLoader**: Custom loading animation
+### Core Models
+- **User**: User accounts with plan information
+- **Plant**: Plant database with growing information
+- **UserPlant**: User's garden plants
+- **Event**: Calendar events and reminders
+- **Pest**: Pest identification and control methods
+- **Post**: Blog posts and news articles
+- **Subscription**: Stripe subscription management
 
-### Pages
-- **HomePage**: Hero section with feature overview
-- **AboutPage**: Company information and team
-- **PlantsPage**: Plant database and search
-- **MapPage**: Interactive weather and conditions map
-- **CalendarPage**: Smart planting calendar
-- **AlertsPage**: Pest and weather alerts
-- **ProPage**: Subscription and pricing
+### Key Relationships
+- Users have many UserPlants and Events
+- Plants have many UserPlants
+- Users have one Subscription
+- Events can be linked to UserPlants
 
-## 🔐 Authentication & Subscriptions
+## 🔐 Authentication & Authorization
 
-### User Management
-- **Free Plan**: Basic features, no account required
-- **Pro Plan**: Advanced features, requires account
-- **Authentication**: Email/password (Supabase Auth)
-- **Subscriptions**: Stripe integration
+### Authentication Methods
+- **Google OAuth**: Social login integration
+- **Email**: Magic link authentication
 
-### Pro Features Gating
-```tsx
-import { PaywallGuard } from '@/components/ui/PaywallGuard';
+### Plan-Based Access Control
+- **Free**: Basic features, 10 plant limit
+- **Pro**: Advanced features, unlimited plants
+- **Premium**: All features + push notifications
+- **Admin**: Full system access
 
-<PaywallGuard isPro={user?.plan === 'pro'} feature="Smart Calendar">
-  <SmartCalendarComponent />
-</PaywallGuard>
+### Feature Gating
+- Middleware-based plan checking
+- Component-level feature locks
+- API route protection
+- Demo mode for testing
+
+## 💳 Payment Integration
+
+### Stripe Integration
+- **Checkout Sessions**: Secure payment processing
+- **Webhooks**: Real-time subscription updates
+- **Customer Portal**: Self-service billing management
+- **Price Management**: Flexible pricing tiers
+
+### Subscription Management
+- Automatic plan updates
+- Proration handling
+- Cancellation support
+- Invoice generation
+
+## 📧 Notifications
+
+### Email Notifications
+- **Resend Integration**: Reliable email delivery
+- **Templates**: Pre-built email templates
+- **Scheduling**: Automated reminder system
+
+### Push Notifications
+- **Service Worker**: Background notification handling
+- **VAPID Keys**: Secure push notification delivery
+- **User Preferences**: Granular notification controls
+
+## 🌐 External API Integration
+
+### Weather Data
+- **OpenWeather One Call 3.0**: Comprehensive weather data
+- **Caching**: 15-minute cache for performance
+- **Alerts**: Severe weather notifications
+
+### Mapping
+- **Google Maps**: Geocoding and mapping
+- **MapLibre**: Alternative mapping solution
+- **Location Services**: ZIP code-based location detection
+
+### News & Events
+- **NewsAPI**: News aggregation
+- **RSS Feeds**: Local event integration
+- **Content Caching**: 6-hour cache for performance
+
+## 🧪 Testing & Development
+
+### Development Scripts
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:push      # Push schema changes
+npm run db:migrate   # Run database migrations
+npm run db:seed      # Seed database with sample data
+npm run db:studio    # Open Prisma Studio
 ```
 
-## 🎨 Customization
-
-### Theme Customization
-Edit `src/index.css` to modify:
-- Color variables
-- Typography settings
-- Animation keyframes
-- Global styles
-
-### Brand Customization
-Update in `tailwind.config.ts`:
-- Brand colors
-- Custom animations
-- Component defaults
-
-## 🧪 Development
-
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-### Code Style
-- **TypeScript**: Strict mode enabled
-- **ESLint**: Configured for React and TypeScript
-- **Prettier**: Code formatting (recommended)
-- **Conventions**: 
-  - PascalCase for components
-  - camelCase for functions and variables
-  - kebab-case for file names
+### Environment Management
+- **Development**: Full feature access with demo mode
+- **Staging**: Production-like environment
+- **Production**: Full security and optimization
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
-1. Connect your GitHub repository
+### Vercel Deployment
+1. Connect your GitHub repository to Vercel
 2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
+3. Deploy automatically on push to main branch
 
-### Netlify
-1. Connect your GitHub repository
-2. Set build command: `npm run build`
-3. Set publish directory: `dist`
-4. Add environment variables
+### Database Setup
+1. Set up PostgreSQL database (recommended: Supabase, PlanetScale, or Railway)
+2. Configure connection string in environment variables
+3. Run migrations on deployment
 
-### Docker
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "run", "preview"]
-```
+### External Services
+1. Set up Stripe account and configure webhooks
+2. Obtain API keys for external services
+3. Configure domain and CORS settings
+
+## 📊 Performance & Optimization
+
+### Frontend Optimization
+- **Next.js 14**: Latest performance improvements
+- **Image Optimization**: Automatic image optimization
+- **Code Splitting**: Automatic code splitting
+- **Caching**: Aggressive caching strategies
+
+### Backend Optimization
+- **Edge Functions**: Serverless edge computing
+- **Database Indexing**: Optimized database queries
+- **Redis Caching**: In-memory caching
+- **Rate Limiting**: API protection
+
+## 🔒 Security
+
+### Data Protection
+- **HTTPS Only**: Secure data transmission
+- **Input Validation**: Zod schema validation
+- **SQL Injection Prevention**: Prisma ORM protection
+- **XSS Protection**: Content Security Policy
+
+### Authentication Security
+- **JWT Tokens**: Secure session management
+- **CSRF Protection**: Cross-site request forgery prevention
+- **Rate Limiting**: Brute force protection
+- **Secure Headers**: Security header implementation
+
+## 📱 Mobile Support
+
+### Responsive Design
+- **Mobile-First**: Optimized for mobile devices
+- **Touch-Friendly**: Large touch targets
+- **Progressive Web App**: PWA capabilities
+- **Offline Support**: Service worker caching
+
+### Native Features
+- **Push Notifications**: Native notification support
+- **Geolocation**: Location-based features
+- **Camera Integration**: Plant photo capture
+- **Share API**: Social sharing capabilities
+
+## 🌍 Accessibility
+
+### WCAG Compliance
+- **Screen Reader Support**: ARIA labels and roles
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Color Contrast**: WCAG AA compliance
+- **Focus Management**: Clear focus indicators
+
+### Inclusive Design
+- **Multiple Input Methods**: Touch, keyboard, voice
+- **Customizable Interface**: Font size, contrast options
+- **Clear Language**: Plain language throughout
+- **Error Handling**: Clear error messages
 
 ## 🤝 Contributing
 
+### Development Workflow
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-### Development Guidelines
-- Follow the existing code style
-- Add TypeScript types for new features
-- Include tests for new functionality
-- Update documentation as needed
+### Code Standards
+- **TypeScript**: Strict type checking
+- **ESLint**: Code quality enforcement
+- **Prettier**: Code formatting
+- **Conventional Commits**: Standardized commit messages
 
 ## 📄 License
 
@@ -281,19 +338,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Plant Data**: USDA Plants Database, Trefle API
-- **Weather Data**: OpenWeatherMap, Visual Crossing
-- **Icons**: Lucide React
-- **Design Inspiration**: Modern gardening apps and nature-inspired design
+- **Frederick County Master Gardeners** for local gardening expertise
+- **USDA Plant Hardiness Zone Map** for climate data
+- **OpenWeather** for weather data services
+- **Stripe** for payment processing
+- **Vercel** for hosting and deployment
 
 ## 📞 Support
 
-- **Email**: support@growcommon.com
-- **Documentation**: [docs.growcommon.com](https://docs.growcommon.com)
-- **Community**: [community.growcommon.com](https://community.growcommon.com)
+For support, email support@growcommon.com or visit our [help center](https://growcommon.com/help).
 
 ---
 
-**Built with ❤️ for gardeners everywhere**
-
-*GrowCommon - Smart gardening made simple.*
+**GrowCommon** - Growing together in Frederick County 🌱

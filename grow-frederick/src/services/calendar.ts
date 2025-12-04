@@ -1,4 +1,4 @@
-﻿import type { Event } from '/src/types';
+﻿import type { Event } from '@/types';
 
 // Mock calendar data
 const mockEvents: Event[] = [

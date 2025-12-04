@@ -1,4 +1,6 @@
-﻿import React, { useState } from 'react';
+﻿'use client';
+
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProBadge } from './ProBadge';
 import { Button } from './Button';
@@ -125,17 +127,7 @@ export function PaywallGuard({
                 Upgrade to Pro
               </Button>
               <p className="text-xs text-muted-foreground">
-                7-day free trial â€¢ Cancel anytime
-              </p>
-            </div>
-
-            {/* Testimonial */}
-            <div className="bg-gc-cream/50 rounded-lg p-4">
-              <p className="text-sm italic text-gc-dark">
-                "The Pro features have transformed my gardening. Worth every penny!"
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                - Sarah J., Frederick, MD
+                7-day free trial • Cancel anytime
               </p>
             </div>
           </div>
@@ -250,7 +242,7 @@ export function PaywallModal({
                   Start Free Trial
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  No credit card required â€¢ Cancel anytime
+                  No credit card required • Cancel anytime
                 </p>
               </div>
 
