@@ -52,27 +52,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
-          },
-        ],
-      },
-    ];
-  },
+  // Headers removed - not compatible with static export
+  // Headers should be configured at server/CDN level for static sites
 
   webpack: (config, { isServer }) => {
     // Make optional dependencies external to avoid build-time errors
