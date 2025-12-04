@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Changed to "export" for static site generation (incompatible with middleware)
-  output: "export",
+  // Removed "output: export" - API routes (NextAuth, etc.) require a dynamic server
+  // Use "standalone" for optimized server deployments or remove for standard Next.js server
 
   typescript: {
     ignoreBuildErrors: true,
@@ -19,11 +19,8 @@ const nextConfig = {
       { protocol: "https", hostname: "firebasestorage.googleapis.com" },
       { protocol: "https", hostname: "www.ars.usda.gov" }
     ],
-    unoptimized: true
+    unoptimized: false
   },
-  
-  // Headers removed - not compatible with static export
-  // Headers should be configured at server/CDN level for static sites
 
   webpack: (config, { isServer }) => {
     // Make optional dependencies external to avoid build-time errors
