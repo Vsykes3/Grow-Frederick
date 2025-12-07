@@ -22,6 +22,13 @@ const nextConfig = {
   },
 
   webpack: (config, { isServer }) => {
+    // Fix for @ alias not resolving
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname, 'src')
+    };
+    
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];
