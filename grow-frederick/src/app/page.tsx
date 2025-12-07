@@ -1,10 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, AlertTriangle, Sprout } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
 import { LockBadge } from "@/components/ui/lock-badge";
-import homepageBanner from '@/assets/Homepage Banner.jpg';
 
 const features = [
   {
@@ -44,44 +42,33 @@ const features = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <Image
-          src={homepageBanner}
-          alt="Garden background with trees, shrubs, and soil"
-          fill
-          className="object-cover z-0"
-          priority
-          quality={90}
-        />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/40 z-[1]"></div>
-        {/* Hero Content */}
-        <div className="relative z-[2] container mx-auto px-4 py-20">
-          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-              Grow smarter with{" "}
-              <span className="text-green-300" style={{ color: '#86efac' }}>GrowCommon</span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/90 sm:text-xl" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}>
-              Weather intelligence, planting calendars, pest alerts, and
-              horticultural therapy insights built specifically for our local
-              gardening community.
-            </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/plant-index">
-                <Button size="lg" className="group">
-                  Explore Plants
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-              <Link href="/pricing">
-                <Button variant="outline" size="lg" className="group">
-                  <LockBadge className="mr-2" />
-                  Unlock Pro Features
-                </Button>
-              </Link>
-            </div>
+      {/* Hero section with simple dark-green banner (no full-screen image) */}
+      <section className="bg-[#1F351F] text-[#F9F5E9] py-20">
+        <div className="container mx-auto px-4 text-center max-w-3xl">
+          <p className="text-xs sm:text-sm font-medium tracking-wide mb-3 opacity-80">
+            Optimized for Frederick County · USDA Zone 6b–7a
+          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
+            Grow smarter with{" "}
+            <span className="text-[#F7C978]">GrowCommon</span>
+          </h1>
+          <p className="text-base sm:text-lg opacity-90 mb-8">
+            Weather intelligence, planting calendars, pest alerts, and horticultural
+            therapy insights built specifically for our local gardening community.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/plant-index">
+              <Button size="lg">
+                Explore Plants
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link href="/pricing">
+              <Button variant="outline" size="lg">
+                <LockBadge className="mr-2" />
+                Unlock Pro Features
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
