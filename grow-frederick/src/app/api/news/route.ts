@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 hours
 
 export async function GET(request: NextRequest) {

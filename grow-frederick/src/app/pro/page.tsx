@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
 import { PLAN_PRICING } from '@/lib/plan';
 
+export const dynamic = 'force-dynamic';
+
 export default function ProPage() {
   const handleUpgrade = () => {
     // TODO: Integrate with Stripe or payment provider
