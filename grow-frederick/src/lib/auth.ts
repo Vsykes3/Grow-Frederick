@@ -4,13 +4,21 @@ import GoogleProvider from "next-auth/providers/google"
 import EmailProvider from "next-auth/providers/email"
 import { prisma } from "@/lib/prisma"
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
+const providers = []
+
+// Only add Google provider if credentials are configured
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  )
+}
+
+// Only add Email provider if configured
+if (process.env.EMAIL_SERVER_HOST && process.env.EMAIL_FROM) {
+  providers.push(
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -21,6 +29,21 @@ export const authOptions: NextAuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
+    })
+  )
+}
+
+export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET || "development-secret-key-change-in-production",
+  adapter: PrismaAdapter(prisma),
+  providers: providers.length > 0 ? providers : [
+    // Fallback: Credentials provider for development
+    EmailProvider({
+      server: {
+        host: "localhost",
+        port: "587",
+      },
+      from: "noreply@localhost",
     }),
   ],
   callbacks: {
@@ -72,5 +95,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "database",
   },
+  debug: process.env.NODE_ENV === "development",
 }
 
