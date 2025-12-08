@@ -29,6 +29,18 @@ const nextConfig = {
       '@': require('path').resolve(__dirname, 'src')
     };
     
+    // Fix for Windows/OneDrive path issues with symlinks
+    // This prevents EINVAL errors when Next.js tries to read symlinks in .next directory
+    if (process.platform === 'win32') {
+      config.resolve.symlinks = false;
+      // Disable file watching that causes issues with OneDrive
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['**/.next/**', '**/node_modules/**'],
+        poll: false,
+      };
+    }
+    
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];

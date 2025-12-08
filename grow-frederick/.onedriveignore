@@ -1,5 +1,5 @@
+# Exclude Next.js build directory from OneDrive sync
 .next/
 node_modules/
 *.log
-.DS_Store
-
+.env.local
