@@ -21,6 +21,15 @@ const nextConfig = {
     unoptimized: false
   },
 
+  env: {
+    NEXT_PUBLIC_ENABLE_PRO:
+      process.env.NEXT_PUBLIC_ENABLE_PRO || "true",
+    DEMO_BYPASS_PAYWALL:
+      process.env.DEMO_BYPASS_PAYWALL || "true",
+    NEXTAUTH_URL:
+      process.env.NEXTAUTH_URL || "http://localhost:3000",
+  },
+
   webpack: (config, { isServer }) => {
     // Fix for @ alias not resolving
     config.resolve = config.resolve || {};
