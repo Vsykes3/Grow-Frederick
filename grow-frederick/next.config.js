@@ -42,7 +42,9 @@ const nextConfig = {
     NEXT_PUBLIC_ENABLE_PRO:
       process.env.NEXT_PUBLIC_ENABLE_PRO || "true",
     DEMO_BYPASS_PAYWALL:
-      process.env.DEMO_BYPASS_PAYWALL || "true"
+      process.env.DEMO_BYPASS_PAYWALL || "true",
+    NEXTAUTH_URL:
+      process.env.NEXTAUTH_URL || "http://localhost:3000",
   },
 
   async headers() {
@@ -92,6 +94,12 @@ const nextConfig = {
     if (process.platform === 'win32') {
       config.resolve = config.resolve || {};
       config.resolve.symlinks = false;
+      // Disable file watching that causes issues with OneDrive
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['**/.next/**', '**/node_modules/**'],
+        poll: false,
+      };
     }
     
     return config;
