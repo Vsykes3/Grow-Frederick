@@ -41,8 +41,11 @@ try {
   console.warn('Prisma adapter not available, using JWT sessions');
 }
 
+// Ensure we always have a secret for NextAuth
+const nextAuthSecret = process.env.NEXTAUTH_SECRET || process.env.NEXTAUTH_URL || "development-secret-key-change-in-production-please-change";
+
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || "development-secret-key-change-in-production",
+  secret: nextAuthSecret,
   adapter: adapter,
   providers: providers.length > 0 ? providers : [
     // Fallback: Minimal Email provider for development
