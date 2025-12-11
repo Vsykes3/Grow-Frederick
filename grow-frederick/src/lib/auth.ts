@@ -1,3 +1,7 @@
+// Set NEXTAUTH_SECRET before any NextAuth imports to prevent NO_SECRET error
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = "growcommon-development-secret-key-minimum-32-characters-long-for-nextauth";
+}
 import { NextAuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
@@ -70,8 +74,8 @@ try {
 }
 
 // Ensure we always have a secret for NextAuth - must be at least 32 characters
-// Generate a consistent fallback secret for development
-const nextAuthSecret = process.env.NEXTAUTH_SECRET || "growcommon-development-secret-key-minimum-32-characters-long-for-nextauth";
+// Note: NEXTAUTH_SECRET is already set at the top of this file before imports
+const nextAuthSecret = process.env.NEXTAUTH_SECRET;
 
 // Don't use adapter with Credentials provider (requires JWT)
 const useAdapter = adapter && !providers.some((p: any) => p.id === "credentials");
