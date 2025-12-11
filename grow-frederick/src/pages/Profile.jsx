@@ -6,6 +6,11 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./Profile.css";
 import Navbar from "@/components/ui/Navbar";
 
+// Force dynamic rendering for Next.js Pages Router
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default function Profile() {
   const { currentUser } = useAuth();
   const nameRef = useRef();
