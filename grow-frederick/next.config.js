@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   typescript: {
@@ -100,6 +101,10 @@ const nextConfig = {
         ignored: ['**/.next/**', '**/node_modules/**'],
         poll: false,
       };
+      
+      // Fix webpack chunk loading issues on Windows/OneDrive
+      // Disable persistent cache to avoid chunk loading errors
+      config.cache = false;
     }
     
     return config;

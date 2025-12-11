@@ -32,6 +32,13 @@ function clean() {
   console.log('Cleaning node_modules/.cache...');
   removeDir(path.join(__dirname, '..', 'node_modules', '.cache'));
   
+  // Also clean webpack cache if it exists
+  const webpackCache = path.join(__dirname, '..', '.next', 'cache');
+  if (fs.existsSync(webpackCache)) {
+    console.log('Cleaning webpack cache...');
+    removeDir(webpackCache);
+  }
+  
   console.log('Clean complete!');
 }
 
