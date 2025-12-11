@@ -71,3 +71,5 @@ export const plantImageMap: Record<string, string> = {
 
 
 
+
+
