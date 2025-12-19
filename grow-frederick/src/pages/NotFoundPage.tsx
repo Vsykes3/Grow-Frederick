@@ -4,11 +4,6 @@ import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
-// Force dynamic rendering for Next.js Pages Router
-export async function getServerSideProps() {
-  return { props: {} };
-}
-
 export default function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

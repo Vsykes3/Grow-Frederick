@@ -1,9 +1,8 @@
 ﻿'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useSession } from 'next-auth/react';
-// Removed i18n - English only
-import { useTheme } from '@/hooks/useTheme';
+import { useI18n } from '/src/hooks/useI18n';
+import { useTheme } from '/src/hooks/useTheme';
 import { 
   plantDatabase, 
   type Plant, 
@@ -16,12 +15,11 @@ import {
   getWateringFrequencyText,
   getWateringAmountText,
   searchPlants
-} from '@/lib/plants';
-import { getPlantImageUrl } from '@/lib/plantImageHelper';
-import { ProBadge } from '@/components/ui/ProBadge';
-import { PaywallGuard } from '@/components/ui/PaywallGuard';
-import { Button } from '@/components/ui/Button';
-import { cn } from '@/lib/utils';
+} from '/src/lib/plants';
+import { ProBadge } from '/src/components/ui/ProBadge';
+import { PaywallGuard } from '/src/components/ui/PaywallGuard';
+import { Button } from '@/components/ui/button';
+import { cn } from '/src/lib/utils';
 
 interface PlantIndexProps {
   className?: string;
@@ -31,8 +29,8 @@ type FilterCategory = 'all' | 'vegetable' | 'herb' | 'fruit' | 'flower' | 'tree'
 type SortOption = 'name' | 'difficulty' | 'season' | 'category';
 
 export function PlantIndex({ className }: PlantIndexProps) {
+  const { t, mounted } = useI18n();
   const { resolvedTheme } = useTheme();
-  const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
   const [sortBy, setSortBy] = useState<SortOption>('name');
@@ -40,8 +38,6 @@ export function PlantIndex({ className }: PlantIndexProps) {
   const [showProOnly, setShowProOnly] = useState(false);
 
   const currentSeason = getCurrentSeason();
-  // Check if user has Pro plan (default to false for demo)
-  const isProUser = session?.user?.plan === 'pro' || false;
 
   // Filter and sort plants
   const filteredPlants = useMemo(() => {
@@ -57,10 +53,10 @@ export function PlantIndex({ className }: PlantIndexProps) {
       plants = plants.filter(plant => plant.category === selectedCategory);
     }
 
-    // Pro filter removed - all plants are free
-    // if (showProOnly) {
-    //   plants = plants.filter(plant => plant.isPro);
-    // }
+    // Filter by Pro status
+    if (showProOnly) {
+      plants = plants.filter(plant => plant.isPro);
+    }
 
     // Sort plants
     plants.sort((a, b) => {
@@ -85,23 +81,32 @@ export function PlantIndex({ className }: PlantIndexProps) {
   }, [searchQuery, selectedCategory, sortBy, showProOnly, currentSeason]);
 
   const categories: { id: FilterCategory; label: string; icon: string }[] = [
-    { id: 'all', label: 'All Plants', icon: '' },
-    { id: 'vegetable', label: 'Vegetables', icon: '' },
-    { id: 'herb', label: 'Herbs', icon: '' },
+    { id: 'all', label: 'All Plants', icon: 'ðŸŒ±' },
+    { id: 'vegetable', label: 'Vegetables', icon: 'ðŸ¥•' },
+    { id: 'herb', label: 'Herbs', icon: 'ðŸŒ¿' },
     { id: 'fruit', label: 'Fruits', icon: 'ðŸ“' },
-    { id: 'flower', label: 'Flowers', icon: '' },
-    { id: 'tree', label: 'Trees', icon: '' },
-    { id: 'shrub', label: 'Shrubs', icon: '' },
+    { id: 'flower', label: 'Flowers', icon: 'ðŸŒ¸' },
+    { id: 'tree', label: 'Trees', icon: 'ðŸŒ³' },
+    { id: 'shrub', label: 'Shrubs', icon: 'ðŸŒ¿' },
   ];
 
-  // Removed mounted check - no i18n needed
+  if (!mounted) {
+    return (
+      <div className={cn('flex items-center justify-center h-96', className)}>
+        <div className="text-center space-y-4">
+          <div className="w-8 h-8 border-4 border-gc-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-muted-foreground">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn('space-y-6', className)}>
       {/* Header */}
       <div className="text-center space-y-4">
         <h1 className="text-3xl font-bold text-gc-dark">
-          Plant Index
+          {t('plants.index')}
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Discover plants perfect for your garden. Each plant includes detailed growing information, 
@@ -121,7 +126,7 @@ export function PlantIndex({ className }: PlantIndexProps) {
             className="w-full px-4 py-3 pl-10 bg-background border border-gc-light/30 rounded-xl text-gc-dark placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gc-accent"
           />
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-            🔍
+            ðŸ”
           </div>
         </div>
 
@@ -192,34 +197,19 @@ export function PlantIndex({ className }: PlantIndexProps) {
                   <h3 className="text-lg font-semibold text-gc-dark">{plant.name}</h3>
                   <p className="text-sm text-muted-foreground italic">{plant.scientificName}</p>
                 </div>
+                {plant.isPro && <ProBadge size="sm" />}
               </div>
 
-              {/* Plant Image */}
-              <div className="w-full h-20 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-lg mb-3 overflow-hidden relative flex items-center justify-center">
-                {plant.imageUrl ? (
-                  <img
-                    src={getPlantImageUrl(plant.imageUrl, plant.id)}
-                    alt={plant.name}
-                    className="w-full h-full object-cover absolute inset-0"
-                    onError={(e) => {
-                      // Hide image and show icon instead
-                      const img = e.target as HTMLImageElement;
-                      img.style.display = 'none';
-                      const iconDiv = img.parentElement?.querySelector('.plant-icon');
-                      if (iconDiv) (iconDiv as HTMLElement).classList.remove('hidden');
-                    }}
-                  />
-                ) : null}
-                <div className={`plant-icon flex items-center justify-center ${plant.imageUrl ? 'hidden' : ''}`}>
-                  <div className="text-3xl">
-                    {plant.category === 'vegetable' && '🥕'}
-                    {plant.category === 'herb' && '🌿'}
-                    {plant.category === 'fruit' && '🍓'}
-                    {plant.category === 'flower' && '🌸'}
-                    {plant.category === 'tree' && '🌳'}
-                    {plant.category === 'shrub' && '🌿'}
-                  </div>
-                </div>
+              {/* Plant Image Placeholder */}
+              <div className="w-full h-32 bg-gc-light/20 rounded-lg mb-4 flex items-center justify-center">
+                <span className="text-4xl">
+                  {plant.category === 'vegetable' && 'ðŸ¥•'}
+                  {plant.category === 'herb' && 'ðŸŒ¿'}
+                  {plant.category === 'fruit' && 'ðŸ“'}
+                  {plant.category === 'flower' && 'ðŸŒ¸'}
+                  {plant.category === 'tree' && 'ðŸŒ³'}
+                  {plant.category === 'shrub' && 'ðŸŒ¿'}
+                </span>
               </div>
 
               {/* Plant Info */}
@@ -280,7 +270,7 @@ export function PlantIndex({ className }: PlantIndexProps) {
       {/* No Results */}
       {filteredPlants.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">🔍</div>
+          <div className="text-6xl mb-4">ðŸ”</div>
           <h3 className="text-xl font-semibold text-gc-dark mb-2">No plants found</h3>
           <p className="text-muted-foreground">
             Try adjusting your search or filter criteria
@@ -305,7 +295,7 @@ interface PlantDetailModalProps {
 }
 
 function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
-  // Removed i18n - English only
+  const { t } = useI18n();
   const currentSeason = getCurrentSeason();
   const compatibility = getSeasonalCompatibility(plant, currentSeason);
 
@@ -321,36 +311,22 @@ function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gc-light/20 rounded-lg transition-colors text-foreground"
-              aria-label="Close"
+              className="p-2 hover:bg-gc-light/20 rounded-lg transition-colors"
             >
-              ✕
+              âœ•
             </button>
           </div>
 
           {/* Plant Image */}
-          <div className="w-full h-48 bg-gc-light/20 rounded-xl mb-6 overflow-hidden relative">
-            {plant.imageUrl ? (
-              <img
-                src={getPlantImageUrl(plant.imageUrl, plant.id)}
-                alt={plant.name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-            ) : null}
-            <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-gc-light/30 to-gc-accent/20 ${plant.imageUrl ? 'hidden' : ''}`}>
-              <span className="text-6xl">
-                {plant.category === 'vegetable' && '🥕'}
-                {plant.category === 'herb' && '🌿'}
-                {plant.category === 'fruit' && '🍓'}
-                {plant.category === 'flower' && '🌸'}
-                {plant.category === 'tree' && '🌳'}
-                {plant.category === 'shrub' && '🌿'}
-              </span>
-            </div>
+          <div className="w-full h-48 bg-gc-light/20 rounded-xl mb-6 flex items-center justify-center">
+            <span className="text-6xl">
+              {plant.category === 'vegetable' && 'ðŸ¥•'}
+              {plant.category === 'herb' && 'ðŸŒ¿'}
+              {plant.category === 'fruit' && 'ðŸ“'}
+              {plant.category === 'flower' && 'ðŸŒ¸'}
+              {plant.category === 'tree' && 'ðŸŒ³'}
+              {plant.category === 'shrub' && 'ðŸŒ¿'}
+            </span>
           </div>
 
           {/* Description */}
@@ -390,7 +366,7 @@ function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
             <ul className="space-y-2">
               {plant.growingTips.map((tip, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm text-gc-dark">
-                  <span className="text-gc-accent mt-1">•</span>
+                  <span className="text-gc-accent mt-1">â€¢</span>
                   {tip}
                 </li>
               ))}
@@ -412,45 +388,24 @@ function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
             </div>
           </div>
 
-          {/* Plant Features - All Free Now */}
-          <div className="bg-gc-light/10 rounded-lg p-4 mb-6">
-            <h3 className="text-lg font-semibold text-gc-dark mb-3">Plant Features</h3>
-            <ul className="space-y-2 text-sm text-gc-dark">
-              <li>• Detailed pest management guide</li>
-              <li>• Soil testing recommendations</li>
-              <li>• Harvest timing optimization</li>
-              <li>• Disease prevention strategies</li>
-            </ul>
-          </div>
+          {/* Pro Features */}
+          {plant.isPro && (
+            <PaywallGuard>
+              <div className="bg-gc-light/10 rounded-lg p-4 mb-6">
+                <h3 className="text-lg font-semibold text-gc-dark mb-3">Pro Features</h3>
+                <ul className="space-y-2 text-sm text-gc-dark">
+                  <li>â€¢ Detailed pest management guide</li>
+                  <li>â€¢ Soil testing recommendations</li>
+                  <li>â€¢ Harvest timing optimization</li>
+                  <li>â€¢ Disease prevention strategies</li>
+                </ul>
+              </div>
+            </PaywallGuard>
+          )}
 
           {/* Actions */}
           <div className="flex gap-3">
-            <Button 
-              className="flex-1"
-              onClick={() => {
-                const plantData = {
-                  id: Date.now().toString(),
-                  commonName: plant.name,
-                  name: plant.name,
-                  scientificName: plant.scientificName,
-                  category: plant.category,
-                  image: plant.imageUrl || `/images/plants/${plant.id}.jpg`,
-                  imageUrl: plant.imageUrl,
-                  plantedDate: new Date().toISOString(),
-                  location: '',
-                  notes: '',
-                  status: 'active',
-                  daysToHarvest: plant.maturity?.daysToHarvest || 60
-                };
-                
-                // Store plant in sessionStorage for My Garden to pick up
-                sessionStorage.setItem('pendingPlant', JSON.stringify(plantData));
-                
-                // Navigate to My Garden - it will handle garden selection
-                window.location.href = '/my-garden';
-                onClose();
-              }}
-            >
+            <Button className="flex-1">
               Add to Garden
             </Button>
             <Button variant="outline" onClick={onClose}>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { LockBadge } from '@/components/ui/lock-badge';
 
 export default function ContactPage() {
@@ -74,10 +74,10 @@ export default function ContactPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Contact Us
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Have questions about GrowCommon? We'd love to hear from you. 
             Send us a message and we'll respond as soon as possible.
           </p>
@@ -86,12 +86,12 @@ export default function ContactPage() {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div>
-            <h2 className="text-2xl font-semibold text-foreground mb-6">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Send us a Message
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   Name *
                 </label>
                 <input
@@ -101,13 +101,13 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Your full name"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   Email *
                 </label>
                 <input
@@ -117,13 +117,13 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="your.email@example.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                   Subject *
                 </label>
                 <input
@@ -133,13 +133,13 @@ export default function ContactPage() {
                   required
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="What's this about?"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                   Message *
                 </label>
                 <textarea
@@ -149,7 +149,7 @@ export default function ContactPage() {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Tell us more about your question or feedback..."
                 />
               </div>
@@ -166,55 +166,55 @@ export default function ContactPage() {
 
           {/* Contact Information */}
           <div>
-            <h2 className="text-2xl font-semibold text-foreground mb-6">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Get in Touch
             </h2>
             
             <div className="space-y-6">
-              <div className="bg-card rounded-lg p-6 border border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   General Inquiries
                 </h3>
-                <p className="text-muted-foreground mb-2">
+                <p className="text-gray-600 mb-2">
                   For general questions about GrowCommon, our features, or how to get started.
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-500">
                   We typically respond within 24 hours.
                 </p>
               </div>
 
-              <div className="bg-card rounded-lg p-6 border border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Technical Support
                 </h3>
-                <p className="text-muted-foreground mb-2">
+                <p className="text-gray-600 mb-2">
                   Having trouble with the app? Need help with your account?
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-500">
                   Our support team is here to help.
                 </p>
               </div>
 
-              <div className="bg-card rounded-lg p-6 border border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Business Partnerships
                 </h3>
-                <p className="text-muted-foreground mb-2">
+                <p className="text-gray-600 mb-2">
                   Interested in partnering with GrowCommon? Let's talk!
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-500">
                   We're always looking for great partnerships.
                 </p>
               </div>
 
-              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 border border-green-200 dark:border-green-800">
-                <h3 className="text-lg font-semibold text-green-800 dark:text-green-300 mb-3">
+              <div className="bg-green-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-green-800 mb-3">
                   Horticultural Therapy
                 </h3>
-                <p className="text-green-700 dark:text-green-400 mb-2">
+                <p className="text-green-700 mb-2">
                   Specialized support for individuals using gardening as therapy.
                 </p>
-                <p className="text-sm text-green-600 dark:text-green-500">
+                <p className="text-sm text-green-600">
                   We understand the unique benefits of gardening for mental health.
                 </p>
               </div>

@@ -1,10 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, AlertTriangle, Sprout } from "lucide-react";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { LockBadge } from "@/components/ui/lock-badge";
-import homepageBanner from '@/assets/Homepage Banner.jpg';
 
 const features = [
   {
@@ -13,7 +11,7 @@ const features = [
     description:
       "Real-time temperature, humidity, rainfall, and frost overlays tailored to Frederick County.",
     href: "/map",
-    pro: false,
+    pro: true,
   },
   {
     icon: <Sprout className="h-8 w-8 text-gc-accent" />,
@@ -29,7 +27,7 @@ const features = [
     description:
       "Automated schedules, reminders, and recurring tasks based on USDA Zone 6b–7a.",
     href: "/calendar",
-    pro: false,
+    pro: true,
   },
   {
     icon: <AlertTriangle className="h-8 w-8 text-gc-accent" />,
@@ -44,26 +42,17 @@ const features = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <Image
-          src={homepageBanner}
-          alt="Garden background with trees, shrubs, and soil"
-          fill
-          className="object-cover z-0"
-          priority
-          quality={90}
-        />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/40 z-[1]"></div>
-        {/* Hero Content */}
-        <div className="relative z-[2] container mx-auto px-4 py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-gc-light/30 via-background to-gc-accent/20">
+        <div className="container mx-auto px-4 py-20">
           <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+            <span className="inline-flex items-center rounded-full bg-gc-dark px-4 py-1 text-sm font-medium text-white shadow-soft">
+              Optimized for Frederick County · USDA Zone 6b–7a
+            </span>
+            <h1 className="mt-8 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
               Grow smarter with{" "}
-              <span className="text-green-300" style={{ color: '#86efac' }}>GrowCommon</span>
+              <span className="text-gc-accent">GrowCommon</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/90 sm:text-xl" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}>
+            <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
               Weather intelligence, planting calendars, pest alerts, and
               horticultural therapy insights built specifically for our local
               gardening community.

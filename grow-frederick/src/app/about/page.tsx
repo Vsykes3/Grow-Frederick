@@ -1,9 +1,26 @@
-'use client'
-
 import { Leaf, Users, Heart, Target, Award } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
-import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
+const team = [
+  {
+    name: 'Sarah Johnson',
+    role: 'Founder & Lead Developer',
+    bio: 'Passionate gardener and software engineer with 10+ years of experience in both fields.',
+    image: '/api/placeholder/150/150'
+  },
+  {
+    name: 'Mike Chen',
+    role: 'Horticulture Specialist',
+    bio: 'Master gardener and plant pathologist specializing in Zone 6b-7a growing conditions.',
+    image: '/api/placeholder/150/150'
+  },
+  {
+    name: 'Emily Rodriguez',
+    role: 'UX Designer',
+    bio: 'Designer focused on creating intuitive experiences for gardeners of all skill levels.',
+    image: '/api/placeholder/150/150'
+  }
+]
 
 const values = [
   {
@@ -56,12 +73,8 @@ export default function AboutPage() {
               for Frederick County's unique growing conditions and climate.
             </p>
             <div className="flex gap-4">
-              <Button asChild>
-                <a href="/plant-index">Get Started</a>
-              </Button>
-              <Button variant="outline" asChild>
-                <a href="/pricing">View Plans</a>
-              </Button>
+              <Button>Get Started</Button>
+              <Button variant="outline">Learn More</Button>
             </div>
           </div>
           <div className="bg-card rounded-lg border p-8">
@@ -78,8 +91,27 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* Values Section */}
+      <div className="mb-16">
+        <h2 className="text-3xl font-bold text-foreground text-center mb-12">Our Values</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {values.map((value, index) => {
+            const Icon = value.icon
+            return (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Icon className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">{value.title}</h3>
+                <p className="text-muted-foreground">{value.description}</p>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Horticultural Therapy Section */}
-      <div className="mb-16 bg-green-50 dark:bg-green-900/20 rounded-2xl p-8 border border-green-200 dark:border-green-800">
+      <div className="mb-16 bg-green-50 rounded-2xl p-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <Heart className="h-12 w-12 text-green-600 mx-auto mb-4" />
@@ -104,7 +136,7 @@ export default function AboutPage() {
               responsibility of caring for living things can boost self-esteem and provide structure.
             </p>
             
-            <div className="bg-card rounded-lg p-6 mb-6 border border-border">
+            <div className="bg-white rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">Personal Note from Our Founder</h3>
               <p className="text-muted-foreground italic">
                 "As someone who has personally experienced the challenges of Tourette's Syndrome, 
@@ -113,7 +145,7 @@ export default function AboutPage() {
                 harvesting have all contributed to better emotional regulation and overall well-being. 
                 This is why we've made accessibility and therapeutic benefits core to GrowCommon's mission."
               </p>
-              <p className="text-sm text-muted-foreground mt-2">- Maxwell Liu, Founder</p>
+              <p className="text-sm text-muted-foreground mt-2">- Sarah Johnson, Founder</p>
             </div>
             
             <p className="text-muted-foreground">
@@ -126,42 +158,37 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Founder Section */}
+      {/* Team Section */}
       <div className="mb-16">
-        <h2 className="text-3xl font-bold text-foreground text-center mb-12">Founder</h2>
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg p-0">
-              <Image
-                src="/Founder.png"
-                alt="Maxwell Liu, Founder of GrowCommon"
-                fill
-                className="object-cover"
-                style={{ objectPosition: 'center', padding: 0, margin: 0 }}
-                priority
-                unoptimized
-              />
+        <h2 className="text-3xl font-bold text-foreground text-center mb-12">Meet Our Team</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {team.map((member, index) => (
+            <div key={index} className="text-center">
+              <div className="w-32 h-32 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
+                <Users className="h-16 w-16 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-1">{member.name}</h3>
+              <p className="text-muted-foreground mb-3">{member.role}</p>
+              <p className="text-sm text-muted-foreground">{member.bio}</p>
             </div>
-          </div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Maxwell Liu</h3>
-          <p className="text-muted-foreground mb-3">Founder & Lead Developer</p>
-          <p className="text-sm text-muted-foreground">
-            Passionate gardener and software engineer dedicated to making gardening accessible 
-            and therapeutic for everyone, especially those managing conditions like Tourette's Syndrome.
-          </p>
+          ))}
         </div>
       </div>
 
       {/* Stats Section */}
       <div className="mb-16">
         <div className="bg-card rounded-2xl border p-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-green-600 mb-2">1,200+</div>
+              <div className="text-muted-foreground">Active Gardeners</div>
+            </div>
             <div>
               <div className="text-3xl font-bold text-green-600 mb-2">50+</div>
               <div className="text-muted-foreground">Plant Varieties</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-green-600 mb-2">10</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">12</div>
               <div className="text-muted-foreground">Common Pests Tracked</div>
             </div>
             <div>
@@ -179,11 +206,11 @@ export default function AboutPage() {
           Join thousands of gardeners who are already growing smarter with GrowCommon
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" variant="secondary" asChild>
-            <a href="/plant-index">Get Started Free</a>
+          <Button size="lg" variant="secondary">
+            Get Started Free
           </Button>
-          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-700" asChild>
-            <a href="/pricing">View Plans</a>
+          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-700">
+            Learn More
           </Button>
         </div>
       </div>

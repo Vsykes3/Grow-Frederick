@@ -259,10 +259,5 @@ const StartMyGarden = () => {
   );
 };
 
-// Force dynamic rendering for Next.js Pages Router
-export async function getServerSideProps() {
-  return { props: {} };
-}
-
 export default StartMyGarden;
 

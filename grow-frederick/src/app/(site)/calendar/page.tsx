@@ -1,272 +1,288 @@
-﻿'use client'
+﻿'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/Button';
-import { AddEventModal } from '@/components/calendar/AddEventModal';
-
-interface CalendarEvent {
-  id: string;
-  title: string;
-  date: string;
-  type: 'harvest' | 'plant' | 'water' | 'fertilize' | 'custom';
-  color: string;
-  plantId?: string;
-  gardenId?: string;
-  notes?: string;
-}
+import React, { useState } from 'react';
+import { PaywallGuard } from '/src/components/ui/PaywallGuard';
+import { ProBadge } from '/src/components/ui/ProBadge';
+import { Button } from '@/components/ui/button';
+import { usePlan } from '/src/hooks/usePlan';
 
 export default function CalendarPage() {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showAddEventModal, setShowAddEventModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
+  
+  // Mock user ID - in real app, get from auth context
+  const userId = 'demo-user';
+  const { plan, isLoading: planLoading } = usePlan(userId);
+  const isPro = plan === 'pro';
 
-  useEffect(() => {
-    // Load events from localStorage
-    const savedEvents = localStorage.getItem('calendarEvents');
-    if (savedEvents) {
-      try {
-        setEvents(JSON.parse(savedEvents));
-      } catch (error) {
-        console.error('Error loading events:', error);
-      }
-    }
+  const tasks = [
+    {
+      id: 1,
+      title: 'Plant tomato seeds indoors',
+      date: '2024-01-20',
+      type: 'planting',
+      isPro: false,
+    },
+    {
+      id: 2,
+      title: 'Frost warning - protect plants',
+      date: '2024-01-22',
+      type: 'weather',
+      isPro: true,
+    },
+    {
+      id: 3,
+      title: 'Harvest lettuce',
+      date: '2024-01-25',
+      type: 'harvest',
+      isPro: false,
+    },
+    {
+      id: 4,
+      title: 'Apply fertilizer to roses',
+      date: '2024-01-28',
+      type: 'maintenance',
+      isPro: false,
+    },
+    {
+      id: 5,
+      title: 'Check for aphids on roses',
+      date: '2024-01-30',
+      type: 'pest',
+      isPro: true,
+    },
+  ];
 
-    // Load gardens to auto-generate harvest events
-    const savedGardens = localStorage.getItem('myGardens');
-    if (savedGardens) {
-      try {
-        const gardens = JSON.parse(savedGardens);
-        generateHarvestEvents(gardens);
-      } catch (error) {
-        console.error('Error loading gardens:', error);
-      }
-    }
-  }, []);
-
-  const generateHarvestEvents = (gardens: any[]) => {
-    const harvestEvents: CalendarEvent[] = [];
-    
-    gardens.forEach(garden => {
-      garden.plants?.forEach((plant: any) => {
-        if (plant.expectedHarvestDate && plant.status === 'growing') {
-          harvestEvents.push({
-            id: `harvest-${plant.id}`,
-            title: `Harvest ${plant.commonName}`,
-            date: plant.expectedHarvestDate,
-            type: 'harvest',
-            color: '#10b981',
-            plantId: plant.id,
-            gardenId: garden.id
-          });
-        }
-      });
-    });
-
-    setEvents(prev => {
-      // Remove old auto-generated harvest events
-      const manual = prev.filter(e => !e.id.startsWith('harvest-'));
-      return [...manual, ...harvestEvents];
-    });
-  };
-
-  const saveEvents = (newEvents: CalendarEvent[]) => {
-    setEvents(newEvents);
-    localStorage.setItem('calendarEvents', JSON.stringify(newEvents));
-  };
-
-  const addEvent = (event: Omit<CalendarEvent, 'id'>) => {
-    const newEvent = {
-      ...event,
-      id: Date.now().toString()
-    };
-    saveEvents([...events, newEvent]);
-  };
-
-  const deleteEvent = (eventId: string) => {
-    if (confirm('Delete this event?')) {
-      saveEvents(events.filter(e => e.id !== eventId));
+  const getTaskIcon = (type: string) => {
+    switch (type) {
+      case 'planting': return 'ðŸŒ±';
+      case 'harvest': return 'ðŸŒ¾';
+      case 'maintenance': return 'ðŸ”§';
+      case 'pest': return 'ðŸ›';
+      case 'weather': return 'ðŸŒ¤ï¸';
+      default: return 'ðŸ“…';
     }
   };
 
-  // Calendar helpers
-  const getDaysInMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
-
-  const getEventsForDate = (date: Date) => {
-    return events.filter(event => {
-      const eventDate = new Date(event.date);
-      return eventDate.toDateString() === date.toDateString();
-    });
-  };
-
-  const renderCalendar = () => {
-    const daysInMonth = getDaysInMonth(currentDate);
-    const firstDay = getFirstDayOfMonth(currentDate);
-    const days = [];
-
-    // Empty cells for days before month starts
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="p-2 min-h-24"></div>);
+  const getTaskColor = (type: string) => {
+    switch (type) {
+      case 'planting': return 'bg-green-100 text-green-800 border-green-200';
+      case 'harvest': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'maintenance': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'pest': return 'bg-red-100 text-red-800 border-red-200';
+      case 'weather': return 'bg-purple-100 text-purple-800 border-purple-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
+  };
 
-    // Days of month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-      const dayEvents = getEventsForDate(date);
-      const isToday = date.toDateString() === new Date().toDateString();
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
-      days.push(
-        <div
-          key={day}
-          onClick={() => {
-            setSelectedDate(date);
-            setShowAddEventModal(true);
-          }}
-          className={`min-h-24 p-2 border border-border cursor-pointer hover:bg-accent/10 transition ${
-            isToday ? 'bg-primary/10 border-primary' : ''
-          }`}
-        >
-          <div className={`text-sm font-semibold mb-1 ${isToday ? 'text-primary' : 'text-foreground'}`}>
-            {day}
-          </div>
-          <div className="space-y-1">
-            {dayEvents.slice(0, 3).map(event => (
-              <div
-                key={event.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (confirm('Delete this event?')) {
-                    deleteEvent(event.id);
-                  }
-                }}
-                className="text-xs p-1 rounded truncate cursor-pointer hover:opacity-80"
-                style={{ backgroundColor: event.color + '20', color: event.color }}
-              >
-                {event.type === 'harvest' && '🌾 '}
-                {event.type === 'plant' && '🌱 '}
-                {event.type === 'water' && '💧 '}
-                {event.type === 'fertilize' && '🌿 '}
-                {event.title}
+  const calendarDays = [];
+  
+  // Add empty cells for days before the first day of the month
+  for (let i = 0; i < firstDayOfMonth; i++) {
+    calendarDays.push(null);
+  }
+  
+  // Add days of the month
+  for (let day = 1; day <= daysInMonth; day++) {
+    calendarDays.push(day);
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="glass border-b border-gc-light/20">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gc-dark flex items-center gap-3">
+                Garden Calendar
+                <ProBadge size="md" />
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Plan your planting, harvesting, and garden maintenance
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex gap-2">
+                {(['month', 'week', 'day'] as const).map((viewType) => (
+                  <Button
+                    key={viewType}
+                    variant={view === viewType ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setView(viewType)}
+                    className="capitalize"
+                  >
+                    {viewType}
+                  </Button>
+                ))}
               </div>
-            ))}
-            {dayEvents.length > 3 && (
-              <div className="text-xs text-muted-foreground">
-                +{dayEvents.length - 3} more
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Calendar */}
+          <div className="lg:col-span-2">
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gc-dark">
+                  {today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </h2>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">â†</Button>
+                  <Button variant="outline" size="sm">â†’</Button>
+                </div>
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="grid grid-cols-7 gap-1 mb-4">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                  <div key={day} className="p-2 text-center text-sm font-medium text-muted-foreground">
+                    {day}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">
+                {calendarDays.map((day, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 min-h-[60px] border border-gc-light/20 rounded-lg ${
+                      day === today.getDate() 
+                        ? 'bg-gc-accent text-gc-dark font-semibold' 
+                        : 'hover:bg-gc-light/10'
+                    }`}
+                  >
+                    {day && (
+                      <div className="space-y-1">
+                        <div className="text-sm font-medium">{day}</div>
+                        {/* Show tasks for this day */}
+                        {tasks
+                          .filter(task => new Date(task.date).getDate() === day)
+                          .slice(0, 2)
+                          .map(task => (
+                            <div
+                              key={task.id}
+                              className={`text-xs px-1 py-0.5 rounded border ${getTaskColor(task.type)}`}
+                            >
+                              {getTaskIcon(task.type)} {task.title.slice(0, 10)}...
+                            </div>
+                          ))}
+                        {tasks.filter(task => new Date(task.date).getDate() === day).length > 2 && (
+                          <div className="text-xs text-muted-foreground">
+                            +{tasks.filter(task => new Date(task.date).getDate() === day).length - 2} more
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Tasks Sidebar */}
+          <div className="space-y-6">
+            {/* Upcoming Tasks */}
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-gc-dark mb-4">
+                Upcoming Tasks
+              </h3>
+              <div className="space-y-3">
+                {tasks.slice(0, 5).map((task) => (
+                  <PaywallGuard
+                    key={task.id}
+                    isPro={isPro || !task.isPro}
+                    feature={task.isPro ? 'Smart Calendar Features' : 'Basic Calendar'}
+                  >
+                    <div className="flex items-center gap-3 p-3 bg-gc-light/5 rounded-lg">
+                      <div className="text-lg">{getTaskIcon(task.type)}</div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm font-medium text-gc-dark">
+                            {task.title}
+                          </h4>
+                          {task.isPro && <ProBadge size="sm" />}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(task.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  </PaywallGuard>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-gc-dark mb-4">
+                Quick Actions
+              </h3>
+              <div className="space-y-3">
+                <Button variant="outline" className="w-full justify-start">
+                  ðŸŒ± Add Planting Task
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  ðŸŒ¾ Add Harvest Task
+                </Button>
+                <PaywallGuard isPro={isPro} feature="iCal Export">
+                  <Button variant="outline" className="w-full justify-start">
+                    ðŸ“… Export to iCal
+                    <ProBadge size="sm" className="ml-auto" />
+                  </Button>
+                </PaywallGuard>
+                <PaywallGuard isPro={isPro} feature="Smart Reminders">
+                  <Button variant="outline" className="w-full justify-start">
+                    ðŸ”” Smart Reminders
+                    <ProBadge size="sm" className="ml-auto" />
+                  </Button>
+                </PaywallGuard>
+              </div>
+            </div>
+
+            {/* Pro Features Preview */}
+            {!isPro && (
+              <div className="glass rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-gc-dark mb-4">
+                  Unlock Smart Calendar
+                </h3>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>âœ…</span>
+                    <span>iCal export & sync</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>âœ…</span>
+                    <span>Smart planting reminders</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>âœ…</span>
+                    <span>Weather-based scheduling</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>âœ…</span>
+                    <span>Zone-aware suggestions</span>
+                  </div>
+                </div>
+                <Button size="sm" className="w-full">
+                  <ProBadge size="sm" className="mr-2" />
+                  Upgrade to Pro
+                </Button>
               </div>
             )}
           </div>
         </div>
-      );
-    }
-
-    return days;
-  };
-
-  const previousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
-  };
-
-  const nextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
-  };
-
-  const today = () => {
-    setCurrentDate(new Date());
-  };
-
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground">Garden Calendar</h1>
-        <Button
-          onClick={() => {
-            setSelectedDate(new Date());
-            setShowAddEventModal(true);
-          }}
-          className="bg-primary text-primary-foreground"
-        >
-          + Add Event
-        </Button>
       </div>
-
-      {/* Month Navigation */}
-      <div className="flex justify-between items-center mb-6 bg-card p-4 rounded-lg border">
-        <Button
-          onClick={previousMonth}
-          variant="outline"
-        >
-          ← Previous
-        </Button>
-        <h2 className="text-2xl font-bold text-foreground">
-          {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-        </h2>
-        <div className="flex gap-2">
-          <Button
-            onClick={today}
-            className="bg-primary text-primary-foreground"
-          >
-            Today
-          </Button>
-          <Button
-            onClick={nextMonth}
-            variant="outline"
-          >
-            Next →
-          </Button>
-        </div>
-      </div>
-
-      {/* Calendar Grid */}
-      <div className="bg-card rounded-lg overflow-hidden border">
-        {/* Day Headers */}
-        <div className="grid grid-cols-7 bg-muted">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="p-3 text-center font-bold text-foreground">
-              {day}
-            </div>
-          ))}
-        </div>
-
-        {/* Calendar Days */}
-        <div className="grid grid-cols-7">
-          {renderCalendar()}
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className="mt-6 flex gap-4 flex-wrap">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#10b981' }}></div>
-          <span className="text-sm text-foreground">Harvest</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
-          <span className="text-sm text-foreground">Plant</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#06b6d4' }}></div>
-          <span className="text-sm text-foreground">Water</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded" style={{ backgroundColor: '#8b5cf6' }}></div>
-          <span className="text-sm text-foreground">Fertilize</span>
-        </div>
-      </div>
-
-      {/* Add Event Modal */}
-      {showAddEventModal && selectedDate && (
-        <AddEventModal
-          date={selectedDate}
-          onClose={() => setShowAddEventModal(false)}
-          onAdd={addEvent}
-        />
-      )}
     </div>
   );
 }
+

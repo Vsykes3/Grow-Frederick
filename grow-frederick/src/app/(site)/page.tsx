@@ -2,11 +2,23 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { ProBadge } from '@/components/ui/ProBadge';
-import homepageBanner from '@/assets/Homepage Banner.jpg';
+import { useI18n } from '@/hooks/useI18n';
+
 export default function HomePage() {
+  const { t, mounted } = useI18n();
+  
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-8 h-8 border-4 border-gc-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const features = [
     {
@@ -25,7 +37,7 @@ export default function HomePage() {
       title: 'Smart Calendar',
       description: 'AI-powered planting calendar with harvest reminders and iCal export.',
       icon: '📅',
-      pro: false,
+      pro: true,
     },
     {
       title: 'Pest Alerts',
@@ -37,7 +49,7 @@ export default function HomePage() {
       title: 'Heatmaps',
       description: 'Interactive maps showing temperature, humidity, and soil conditions.',
       icon: '🗺️',
-      pro: false,
+      pro: true,
     },
     {
       title: 'Community',
@@ -70,63 +82,82 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Garden Background */}
-      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden" style={{ marginTop: 0, paddingTop: 0 }}>
-        {/* Background Image */}
-        <Image
-          src={homepageBanner}
-          alt="Garden background with trees, shrubs, and soil"
-          fill
-          className="object-cover z-0"
-          priority
-          quality={90}
-        />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/40 z-[1]"></div>
-        {/* Hero Content - NO TEXT BUBBLE ABOVE */}
-        <div className="relative z-[2] text-center px-4 py-20 max-w-5xl mx-auto container">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gc-light/20 via-background to-gc-accent/20" />
+        <div className="relative container mx-auto px-4 py-20 text-center">
           <div className="max-w-4xl mx-auto space-y-8">
+            {/* Logo Section */}
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                {/* Main Logo Circle */}
+                <div className="w-32 h-32 bg-white rounded-full shadow-2xl border-8 border-gc-dark flex items-center justify-center relative overflow-hidden">
+                  {/* Inner Circle - Canopy */}
+                  <div className="w-20 h-20 bg-gc-light rounded-full flex items-center justify-center relative">
+                    {/* Tree Trunk */}
+                    <div className="w-2 h-12 bg-gc-dark rounded-full relative">
+                      {/* Orange Fruits/Leaves */}
+                      <div className="absolute -left-4 top-2 w-6 h-8 bg-orange-400 rounded-full transform -rotate-12"></div>
+                      <div className="absolute -right-4 top-2 w-6 h-8 bg-orange-400 rounded-full transform rotate-12"></div>
+                      {/* Small Red Accents */}
+                      <div className="absolute -left-3 top-3 w-2 h-2 bg-red-500 rounded-full"></div>
+                      <div className="absolute -right-3 top-3 w-2 h-2 bg-red-500 rounded-full"></div>
+                      {/* Small Leaves */}
+                      <div className="absolute -left-2 top-6 w-3 h-3 bg-gc-dark rounded-full transform -rotate-45"></div>
+                      <div className="absolute -right-2 top-6 w-3 h-3 bg-gc-dark rounded-full transform rotate-45"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Root System */}
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-24 h-16">
+                    {/* Main Root */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-8 bg-gc-dark rounded-full"></div>
+                    {/* Branching Roots */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-2 w-1 h-6 bg-gc-dark rounded-full transform -rotate-30 origin-top"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-2 w-1 h-6 bg-gc-dark rounded-full transform rotate-30 origin-top"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-4 w-1 h-4 bg-gc-dark rounded-full transform -rotate-60 origin-top"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-4 w-1 h-4 bg-gc-dark rounded-full transform rotate-60 origin-top"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-6 w-1 h-3 bg-gc-dark rounded-full transform -rotate-45 origin-top"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-6 w-1 h-3 bg-gc-dark rounded-full transform rotate-45 origin-top"></div>
+                  </div>
+                </div>
+                
+                {/* Brand Text */}
+                <div className="mt-6 text-center">
+                  <h1 className="text-4xl md:text-5xl font-bold text-gc-dark mb-2">
+                    GR<span className="relative inline-block w-8 h-8 bg-gc-dark rounded-full flex items-center justify-center mx-1">
+                      <div className="w-3 h-3 bg-gc-light rounded-full flex items-center justify-center">
+                        <div className="w-1 h-2 bg-gc-dark rounded-full"></div>
+                        <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gc-dark rounded-full"></div>
+                        <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gc-dark rounded-full rotate-45"></div>
+                      </div>
+                    </span>W<span className="text-gc-accent">COMMON</span>
+                  </h1>
+                  <div className="w-24 h-1 bg-gc-dark mx-auto rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            
             <div className="space-y-4">
-              {/* Main Heading - Starts immediately, NO text bubble/badge above */}
-              <h1 
-                className="text-5xl md:text-6xl font-bold text-white mb-6" 
-                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
-              >
-                Grow smarter with GrowCommon
-              </h1>
-              <p className="hero-description text-white/90 drop-shadow-lg">
-                Weather intelligence, planting calendars, pest alerts, and horticultural therapy insights built specifically for our local gardening community.
-              </p>
-              <p className="text-white/80 drop-shadow-md text-sm mt-2">
-                Tools, data, and guidance designed around Frederick's microclimate, growing season, and community.
+              <h2 className="text-3xl md:text-5xl font-bold text-gc-dark">
+                {t('home.title')}
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                {t('home.subtitle')}
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto px-4">
-              <button 
-                className="hero-cta-button"
-                onClick={() => {
-                  const event = new CustomEvent('openAuth', { detail: { mode: 'signup' } });
-                  window.dispatchEvent(event);
-                }}
-              >
-                Get Started
-              </button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg px-8 flex-shrink-0 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20"
-                onClick={() => {
-                  const event = new CustomEvent('openAuth', { detail: { mode: 'signin' } });
-                  window.dispatchEvent(event);
-                }}
-              >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="text-lg px-8">
+                {t('home.getStarted')}
+              </Button>
+              <Button variant="outline" size="lg" className="text-lg px-8">
                 <ProBadge size="sm" className="mr-2" />
-                Try Pro
+                {t('home.tryPro')}
               </Button>
             </div>
             
-            <p className="text-sm text-white/90 drop-shadow-md">
+            <p className="text-sm text-muted-foreground">
               No credit card required • 7-day free trial • Cancel anytime
             </p>
           </div>
@@ -231,10 +262,7 @@ export default function HomePage() {
               Loved by gardeners everywhere
             </h2>
             <p className="text-lg text-muted-foreground">
-              Join the battle against spotted lanternflies in the Urbana community of gardeners
-            </p>
-            <p className="text-base text-muted-foreground mt-2">
-              Join thousands of households who are already growing smarter with GrowCommon
+              Join thousands of successful gardeners
             </p>
           </div>
 

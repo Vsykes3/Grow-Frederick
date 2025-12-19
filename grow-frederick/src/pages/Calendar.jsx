@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/ui/Navbar';
+import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import './Calendar.css';
 
@@ -338,11 +338,6 @@ const Calendar = () => {
     </div>
   );
 };
-
-// Force dynamic rendering for Next.js Pages Router
-export async function getServerSideProps() {
-  return { props: {} };
-}
 
 export default Calendar;
 

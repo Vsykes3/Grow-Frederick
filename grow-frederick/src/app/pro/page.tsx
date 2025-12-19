@@ -1,11 +1,7 @@
-﻿'use client'
-
-import React from 'react';
-import { Button } from '@/components/ui/Button';
-import { ProBadge } from '@/components/ui/ProBadge';
-import { PLAN_PRICING } from '@/lib/plan';
-
-export const dynamic = 'force-dynamic';
+﻿import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ProBadge } from '/src/components/ui/ProBadge';
+import { PLAN_PRICING } from '/src/lib/plan';
 
 export default function ProPage() {
   const handleUpgrade = () => {
@@ -347,7 +343,7 @@ export default function ProPage() {
             Start Your Free Trial Today
           </Button>
           <p className="text-sm text-muted-foreground mt-4">
-            No credit card required • Cancel anytime • 7-day free trial
+            No credit card required â€¢ Cancel anytime â€¢ 7-day free trial
           </p>
         </div>
       </div>

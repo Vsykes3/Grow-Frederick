@@ -10,6 +10,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { UserProvider } from '@/contexts/UserContext';
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -47,6 +48,20 @@ export default function RootLayout({
         <link rel="icon" href="/GrowCommon.png" />
         <link rel="apple-touch-icon" href="/GrowCommon.png" />
         <link rel="manifest" href="/manifest.json" />
+        
+        {/* Google Analytics - ADD THIS SECTION */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-35035ZREXH"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-35035ZREXH');
+          `}
+        </Script>
       </head>
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>

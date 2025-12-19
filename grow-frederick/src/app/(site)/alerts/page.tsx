@@ -1,10 +1,10 @@
 ﻿'use client';
 
 import React, { useState } from 'react';
-import { PaywallGuard } from '@/components/ui/PaywallGuard';
-import { ProBadge } from '@/components/ui/ProBadge';
-import { Button } from '@/components/ui/Button';
-import { usePlan } from '@/hooks/usePlan';
+import { PaywallGuard } from '/src/components/ui/PaywallGuard';
+import { ProBadge } from '/src/components/ui/ProBadge';
+import { Button } from '@/components/ui/button';
+import { usePlan } from '/src/hooks/usePlan';
 
 export default function AlertsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'pest' | 'weather' | 'disease'>('all');
