@@ -45,11 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/GrowCommon.png" />
-        <link rel="apple-touch-icon" href="/GrowCommon.png" />
-        <link rel="manifest" href="/manifest.json" />
-        
-        {/* Google Analytics - ADD THIS SECTION */}
+        {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-35035ZREXH"
           strategy="afterInteractive"
@@ -62,6 +58,9 @@ export default function RootLayout({
             gtag('config', 'G-35035ZREXH');
           `}
         </Script>
+        <link rel="icon" href="/GrowCommon.png" />
+        <link rel="apple-touch-icon" href="/GrowCommon.png" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>

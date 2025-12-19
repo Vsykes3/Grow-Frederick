@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '@/components/ui/Navbar';
 import Footer from '../components/Footer';
 import './Calendar.css';
 
