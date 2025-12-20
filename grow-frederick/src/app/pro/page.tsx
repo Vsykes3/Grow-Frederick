@@ -1,7 +1,11 @@
-﻿import React from 'react';
+﻿'use client';
+
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ProBadge } from '/src/components/ui/ProBadge';
 import { PLAN_PRICING } from '/src/lib/plan';
+
+export const dynamic = 'force-dynamic';
 
 export default function ProPage() {
   const handleUpgrade = () => {

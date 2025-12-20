@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { LockBadge } from '@/components/ui/lock-badge'
 import { FeatureGate } from '@/components/ui/lock-badge'
 
+export const dynamic = 'force-dynamic';
+
 // Mock garden data
 const gardenPlants = [
   {

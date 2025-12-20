@@ -8,6 +8,8 @@ import { ThemeSelector } from '/src/components/ui/ThemeSelector';
 import { Button } from '@/components/ui/button';
 import { ProBadge } from '/src/components/ui/ProBadge';
 
+export const dynamic = 'force-dynamic';
+
 export default function SettingsPage() {
   const { t, mounted } = useI18n();
   const { theme, resolvedTheme, changeTheme } = useTheme();
