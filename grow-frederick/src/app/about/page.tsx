@@ -1,6 +1,8 @@
 import { Leaf, Users, Heart, Target, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+export const dynamic = 'force-dynamic';
+
 const team = [
   {
     name: 'Sarah Johnson',

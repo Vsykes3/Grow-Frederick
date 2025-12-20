@@ -1,5 +1,7 @@
 import { Cookie, Settings, Shield, Info } from 'lucide-react'
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Cookie Policy | GrowCommon',
   description: 'GrowCommon Cookie Policy - Learn about how we use cookies and similar technologies.',

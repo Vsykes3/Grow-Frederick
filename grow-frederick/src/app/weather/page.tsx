@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 
+export const dynamic = 'force-dynamic';
+
 interface WeatherData {
   temperature: number
   feelsLike: number

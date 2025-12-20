@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { LockBadge } from '@/components/ui/lock-badge';
 
+export const dynamic = 'force-dynamic';
+
 export default function ProStarterPackPage() {
   const [selectedRegion, setSelectedRegion] = useState('mid-atlantic');
 

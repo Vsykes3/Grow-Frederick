@@ -6,6 +6,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { updateProfile } from "firebase/auth";
 import { auth } from "@/lib/firebase"; // import your firebase auth instance
 
+export const getServerSideProps = async () => {
+  return { props: {} };
+};
+
 export default function SignUp() {
   const nameRef = useRef();
   const emailRef = useRef();

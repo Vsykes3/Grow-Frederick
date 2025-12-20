@@ -1,0 +1,26 @@
+{"location":"auth.ts:74","message":"Before setting NEXTAUTH_SECRET","data":{"envSecretExistsBefore":false},"timestamp":1765426209791,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:80","message":"Secret ready","data":{"secretLength":73,"envVarSet":true},"timestamp":1765426209794,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:79","message":"Creating authOptions","data":{"hasSecret":true,"secretLength":73,"providerCount":1,"useAdapter":false},"timestamp":1765426209795,"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}
+{"location":"auth.ts:76","message":"Set NEXTAUTH_SECRET env var","data":{"setFallback":true},"timestamp":1765426209793,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"route.ts:4","message":"Before NextAuth() call","data":{"hasSecretInOptions":true,"secretLengthInOptions":73,"envSecretAtHandlerTime":true},"timestamp":1765426209795,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"C"}
+{"location":"route.ts:10","message":"After NextAuth() call","data":{"handlerCreated":true,"noError":true},"timestamp":1765426209795,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"D"}
+{"location":"auth.ts:74","message":"Before setting NEXTAUTH_SECRET","data":{"envSecretExistsBefore":true},"timestamp":1765426210937,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:80","message":"Secret ready","data":{"secretLength":73,"envVarSet":true},"timestamp":1765426210952,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:79","message":"Creating authOptions","data":{"hasSecret":true,"secretLength":73,"providerCount":1,"useAdapter":false},"timestamp":1765426210954,"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}
+{"location":"route.ts:4","message":"Before NextAuth() call","data":{"hasSecretInOptions":true,"secretLengthInOptions":73,"envSecretAtHandlerTime":true},"timestamp":1765426210955,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"C"}
+{"location":"route.ts:10","message":"After NextAuth() call","data":{"handlerCreated":true,"noError":true},"timestamp":1765426210956,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"D"}
+{"location":"middleware.ts:3","message":"Set NEXTAUTH_SECRET in middleware","data":{"envVarSet":true},"timestamp":1765427303536,"sessionId":"debug-session","runId":"run2","hypothesisId":"E"}
+{"location":"auth.ts:1","message":"Set NEXTAUTH_SECRET before imports","data":{"envVarSet":true},"timestamp":1765427311366,"sessionId":"debug-session","runId":"run2","hypothesisId":"E"}
+{"location":"auth.ts:74","message":"Before setting NEXTAUTH_SECRET","data":{"envSecretExistsBefore":true},"timestamp":1765427311369,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:80","message":"Secret ready","data":{"secretLength":73,"envVarSet":true},"timestamp":1765427311369,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:79","message":"Creating authOptions","data":{"hasSecret":true,"secretLength":73,"providerCount":1,"useAdapter":false},"timestamp":1765427311369,"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}
+{"location":"route.ts:1","message":"Set NEXTAUTH_SECRET before imports","data":{"envVarSet":true},"timestamp":1765427311369,"sessionId":"debug-session","runId":"run2","hypothesisId":"E"}
+{"location":"route.ts:4","message":"Before NextAuth() call","data":{"hasSecretInOptions":true,"secretLengthInOptions":73,"envSecretAtHandlerTime":true},"timestamp":1765427311370,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"C"}
+{"location":"route.ts:10","message":"After NextAuth() call","data":{"handlerCreated":true,"noError":true},"timestamp":1765427311370,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"D"}
+{"location":"auth.ts:1","message":"Set NEXTAUTH_SECRET before imports","data":{"envVarSet":true},"timestamp":1765427312482,"sessionId":"debug-session","runId":"run2","hypothesisId":"E"}
+{"location":"auth.ts:74","message":"Before setting NEXTAUTH_SECRET","data":{"envSecretExistsBefore":true},"timestamp":1765427312492,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:80","message":"Secret ready","data":{"secretLength":73,"envVarSet":true},"timestamp":1765427312492,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"A"}
+{"location":"auth.ts:79","message":"Creating authOptions","data":{"hasSecret":true,"secretLength":73,"providerCount":1,"useAdapter":false},"timestamp":1765427312493,"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}
+{"location":"route.ts:1","message":"Set NEXTAUTH_SECRET before imports","data":{"envVarSet":true},"timestamp":1765427312494,"sessionId":"debug-session","runId":"run2","hypothesisId":"E"}
+{"location":"route.ts:4","message":"Before NextAuth() call","data":{"hasSecretInOptions":true,"secretLengthInOptions":73,"envSecretAtHandlerTime":true},"timestamp":1765427312494,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"C"}
+{"location":"route.ts:10","message":"After NextAuth() call","data":{"handlerCreated":true,"noError":true},"timestamp":1765427312495,"sessionId":"debug-session","runId":"post-fix","hypothesisId":"D"}

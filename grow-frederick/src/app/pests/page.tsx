@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Search, Filter, AlertTriangle, Bug, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+export const dynamic = 'force-dynamic';
+
 // Mock pest data
 const pests = [
   {

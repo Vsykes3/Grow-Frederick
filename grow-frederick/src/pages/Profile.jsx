@@ -1,5 +1,5 @@
 ﻿import React, { useRef, useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { auth, storage, db } from "@/lib/firebase";
 import { updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";

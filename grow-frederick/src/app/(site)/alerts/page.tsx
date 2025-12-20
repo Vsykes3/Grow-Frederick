@@ -6,6 +6,8 @@ import { ProBadge } from '/src/components/ui/ProBadge';
 import { Button } from '@/components/ui/button';
 import { usePlan } from '/src/hooks/usePlan';
 
+export const dynamic = 'force-dynamic';
+
 export default function AlertsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'pest' | 'weather' | 'disease'>('all');
   

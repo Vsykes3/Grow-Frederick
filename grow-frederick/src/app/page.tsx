@@ -4,6 +4,8 @@ import { ArrowRight, MapPin, Calendar, AlertTriangle, Sprout } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { LockBadge } from "@/components/ui/lock-badge";
 
+export const dynamic = 'force-dynamic';
+
 const features = [
   {
     icon: <MapPin className="h-8 w-8 text-gc-accent" />,

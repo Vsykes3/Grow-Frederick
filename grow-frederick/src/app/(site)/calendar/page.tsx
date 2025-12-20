@@ -6,6 +6,8 @@ import { ProBadge } from '/src/components/ui/ProBadge';
 import { Button } from '@/components/ui/button';
 import { usePlan } from '/src/hooks/usePlan';
 
+export const dynamic = 'force-dynamic';
+
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
