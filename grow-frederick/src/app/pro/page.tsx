@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ProBadge } from '/src/components/ui/ProBadge';
-import { PLAN_PRICING } from '/src/lib/plan';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { PLAN_PRICING } from '@/lib/plan';
 
 export const dynamic = 'force-dynamic';
 

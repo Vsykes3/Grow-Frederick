@@ -1,8 +1,8 @@
 ﻿'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useI18n } from '/src/hooks/useI18n';
-import { useTheme } from '/src/hooks/useTheme';
+import { useI18n } from '@/hooks/useI18n';
+import { useTheme } from '@/hooks/useTheme';
 import { 
   plantDatabase, 
   type Plant, 
@@ -15,11 +15,11 @@ import {
   getWateringFrequencyText,
   getWateringAmountText,
   searchPlants
-} from '/src/lib/plants';
-import { ProBadge } from '/src/components/ui/ProBadge';
-import { PaywallGuard } from '/src/components/ui/PaywallGuard';
+} from '@/lib/plants';
+import { ProBadge } from '@/components/ui/ProBadge';
+import { PaywallGuard } from '@/components/ui/PaywallGuard';
 import { Button } from '@/components/ui/button';
-import { cn } from '/src/lib/utils';
+import { cn } from '@/lib/utils';
 
 interface PlantIndexProps {
   className?: string;

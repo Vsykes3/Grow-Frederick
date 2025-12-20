@@ -1,10 +1,10 @@
 ﻿'use client';
 
 import React, { useState } from 'react';
-import { PaywallGuard } from '/src/components/ui/PaywallGuard';
-import { ProBadge } from '/src/components/ui/ProBadge';
+import { PaywallGuard } from '@/components/ui/PaywallGuard';
+import { ProBadge } from '@/components/ui/ProBadge';
 import { Button } from '@/components/ui/button';
-import { usePlan } from '/src/hooks/usePlan';
+import { usePlan } from '@/hooks/usePlan';
 
 export const dynamic = 'force-dynamic';
 

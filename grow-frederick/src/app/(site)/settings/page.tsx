@@ -1,12 +1,12 @@
 ﻿'use client';
 
 import React, { useState } from 'react';
-import { useI18n } from '/src/hooks/useI18n';
-import { useTheme } from '/src/hooks/useTheme';
-import { LanguageSelector } from '/src/components/ui/LanguageSelector';
-import { ThemeSelector } from '/src/components/ui/ThemeSelector';
+import { useI18n } from '@/hooks/useI18n';
+import { useTheme } from '@/hooks/useTheme';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
+import { ThemeSelector } from '@/components/ui/ThemeSelector';
 import { Button } from '@/components/ui/button';
-import { ProBadge } from '/src/components/ui/ProBadge';
+import { ProBadge } from '@/components/ui/ProBadge';
 
 export const dynamic = 'force-dynamic';
 
