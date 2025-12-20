@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/ui/Navbar';
-import Footer from '../components/Footer';
+// Note: Navbar and Footer are provided by the root layout in Next.js
 import './Calendar.css';
 
 const Calendar = () => {
@@ -181,7 +180,7 @@ const Calendar = () => {
 
   return (
     <div className="stack">
-      <Navbar />
+      {/* Navbar provided by root layout */}
       
       <div className="calendar-container">
         <div className="calendar-header">
@@ -334,7 +333,7 @@ const Calendar = () => {
         </div>
       )}
 
-      <Footer />
+      {/* Footer provided by root layout */}
     </div>
   );
 };

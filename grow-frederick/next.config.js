@@ -39,6 +39,15 @@ const nextConfig = {
     ];
   },
   webpack: (config, { isServer }) => {
+    // Fix for @ alias not resolving
+    const path = require('path');
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      // Stub react-router-dom for legacy files that shouldn't use it in Next.js
+      'react-router-dom': path.resolve(__dirname, 'src/lib/react-router-stub.js'),
+    };
+    
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];
@@ -47,6 +56,7 @@ const nextConfig = {
         'web-push': 'commonjs web-push',
       });
     }
+    
     return config;
   },
 };
