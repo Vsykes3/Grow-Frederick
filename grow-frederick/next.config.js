@@ -49,11 +49,20 @@ const nextConfig = {
     };
     
     // Use NormalModuleReplacementPlugin to handle case-insensitive button imports
+    // This replaces '@/components/ui/button' imports with '@/components/ui/Button.tsx'
     const webpack = require('webpack');
     config.plugins = config.plugins || [];
     config.plugins.push(
       new webpack.NormalModuleReplacementPlugin(
-        /@\/components\/ui\/button$/,
+        /^@\/components\/ui\/button$/,
+        path.resolve(__dirname, 'src/components/ui/Button.tsx')
+      )
+    );
+    
+    // Also handle with .tsx extension
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /^@\/components\/ui\/button\.tsx$/,
         path.resolve(__dirname, 'src/components/ui/Button.tsx')
       )
     );
