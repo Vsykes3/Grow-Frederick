@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { LockBadge } from '@/components/ui/lock-badge';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default function ProStarterPackPage() {
   const [selectedRegion, setSelectedRegion] = useState('mid-atlantic');

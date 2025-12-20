@@ -7,6 +7,7 @@ import { ProBadge } from '@/components/ui/ProBadge';
 import { useI18n } from '@/hooks/useI18n';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default function HomePage() {
   const { t, mounted } = useI18n();

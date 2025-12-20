@@ -6,6 +6,7 @@ import { ProBadge } from '@/components/ui/ProBadge';
 import { PLAN_PRICING } from '@/lib/plan';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default function ProPage() {
   const handleUpgrade = () => {

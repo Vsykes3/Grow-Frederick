@@ -5,6 +5,7 @@ import Link from 'next/link'
 import PaymentModal from '@/components/PaymentModal'
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default function PricingPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)

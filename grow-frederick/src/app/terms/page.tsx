@@ -1,6 +1,7 @@
 import { FileText, Scale, AlertTriangle, CheckCircle } from 'lucide-react'
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata = {
   title: 'Terms of Service | GrowCommon',

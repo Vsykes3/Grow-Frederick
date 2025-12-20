@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LockBadge } from "@/components/ui/lock-badge";
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const features = [
   {
