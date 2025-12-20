@@ -46,9 +46,17 @@ const nextConfig = {
       '@': path.resolve(__dirname, 'src'),
       // Stub react-router-dom for legacy files that shouldn't use it in Next.js
       'react-router-dom': path.resolve(__dirname, 'src/lib/react-router-stub.js'),
-      // Resolve lowercase button to Button.tsx for case-sensitive filesystem compatibility
-      '@/components/ui/button': path.resolve(__dirname, 'src/components/ui/Button.tsx'),
     };
+    
+    // Use NormalModuleReplacementPlugin to handle case-insensitive button imports
+    const webpack = require('webpack');
+    config.plugins = config.plugins || [];
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /@\/components\/ui\/button$/,
+        path.resolve(__dirname, 'src/components/ui/Button.tsx')
+      )
+    );
     
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
