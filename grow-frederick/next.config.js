@@ -52,17 +52,35 @@ const nextConfig = {
     // This replaces '@/components/ui/button' imports with '@/components/ui/Button.tsx'
     const webpack = require('webpack');
     config.plugins = config.plugins || [];
+    
+    // Handle @/components/ui/button imports
     config.plugins.push(
       new webpack.NormalModuleReplacementPlugin(
-        /^@\/components\/ui\/button$/,
+        /@\/components\/ui\/button$/,
         path.resolve(__dirname, 'src/components/ui/Button.tsx')
       )
     );
     
-    // Also handle with .tsx extension
+    // Handle @/components/ui/button.tsx imports
     config.plugins.push(
       new webpack.NormalModuleReplacementPlugin(
-        /^@\/components\/ui\/button\.tsx$/,
+        /@\/components\/ui\/button\.tsx$/,
+        path.resolve(__dirname, 'src/components/ui/Button.tsx')
+      )
+    );
+    
+    // Handle relative ./button imports in components/ui directory
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /components\/ui\/button$/,
+        path.resolve(__dirname, 'src/components/ui/Button.tsx')
+      )
+    );
+    
+    // Handle relative ./button.tsx imports
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /components\/ui\/button\.tsx$/,
         path.resolve(__dirname, 'src/components/ui/Button.tsx')
       )
     );
