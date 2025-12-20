@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { usePlan } from '@/hooks/usePlan';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default function AlertsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'pest' | 'weather' | 'disease'>('all');
