@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Calendar, AlertTriangle, Sprout } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { LockBadge } from "@/components/ui/lock-badge";
 
 export const dynamic = 'force-dynamic';

@@ -2,8 +2,6 @@
 
 import dynamicImport from 'next/dynamic'
 
-export const dynamic = 'force-dynamic';
-
 // Import map dynamically (client-side only) to avoid SSR issues
 const InteractiveWorldMap = dynamicImport(
   () => import('@/components/InteractiveWorldMap'),

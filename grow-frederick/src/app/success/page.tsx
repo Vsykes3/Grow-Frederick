@@ -3,9 +3,7 @@
 import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-
-export const dynamic = 'force-dynamic';
+import { Button } from '@/components/ui/Button'
 
 function SuccessContent() {
   const searchParams = useSearchParams()

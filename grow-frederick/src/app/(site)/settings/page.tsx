@@ -5,10 +5,8 @@ import { useI18n } from '@/hooks/useI18n';
 import { useTheme } from '@/hooks/useTheme';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeSelector } from '@/components/ui/ThemeSelector';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
-
-export const dynamic = 'force-dynamic';
 
 export default function SettingsPage() {
   const { t, mounted } = useI18n();

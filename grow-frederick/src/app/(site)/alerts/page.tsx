@@ -3,10 +3,8 @@
 import React, { useState } from 'react';
 import { PaywallGuard } from '@/components/ui/PaywallGuard';
 import { ProBadge } from '@/components/ui/ProBadge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { usePlan } from '@/hooks/usePlan';
-
-export const dynamic = 'force-dynamic';
 
 export default function AlertsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'pest' | 'weather' | 'disease'>('all');

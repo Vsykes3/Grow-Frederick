@@ -2,11 +2,9 @@
 
 import { useState } from 'react'
 import { Plus, Grid, List, Download, Filter } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { LockBadge } from '@/components/ui/lock-badge'
 import { FeatureGate } from '@/components/ui/lock-badge'
-
-export const dynamic = 'force-dynamic';
 
 // Mock garden data
 const gardenPlants = [

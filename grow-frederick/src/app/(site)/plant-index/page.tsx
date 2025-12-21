@@ -4,8 +4,6 @@ import React from 'react';
 import { PlantIndex } from '@/components/plants/PlantIndex';
 import { GardenPlot } from '@/components/garden/GardenPlot';
 
-export const dynamic = 'force-dynamic';
-
 export default function PlantIndexPage() {
 
   return (

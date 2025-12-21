@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import PaymentModal from '@/components/PaymentModal'
 
-export const dynamic = 'force-dynamic';
-
 export default function PricingPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<{ name: string; price: string } | null>(null)

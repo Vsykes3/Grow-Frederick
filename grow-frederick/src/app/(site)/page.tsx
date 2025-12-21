@@ -2,11 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ProBadge } from '@/components/ui/ProBadge';
 import { useI18n } from '@/hooks/useI18n';
-
-export const dynamic = 'force-dynamic';
 
 export default function HomePage() {
   const { t, mounted } = useI18n();

@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 
-export const dynamic = 'force-dynamic';
-
 interface NewsArticle {
   id: string;
   title: string;
