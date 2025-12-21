@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { ProBadge } from '@/components/ui/ProBadge';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default function SettingsPage() {
   const { t, mounted } = useI18n();

@@ -1,7 +1,6 @@
 import { Shield, Lock, Eye, FileText } from 'lucide-react'
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export const metadata = {
   title: 'Privacy Policy | GrowCommon',
