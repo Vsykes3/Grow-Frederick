@@ -1,0 +1,179 @@
+{
+  "polyfillFiles": [
+    "static/chunks/polyfills-42372ed130431b0a.js"
+  ],
+  "devFiles": [],
+  "ampDevFiles": [],
+  "lowPriorityFiles": [
+    "static/3wS3KTM0wIpDCq4QDRoyk/_buildManifest.js",
+    "static/3wS3KTM0wIpDCq4QDRoyk/_ssgManifest.js"
+  ],
+  "rootMainFiles": [
+    "static/chunks/webpack-7027a6cd58cb65dd.js",
+    "static/chunks/fd9d1056-b10cb3a1933297da.js",
+    "static/chunks/2117-166fe0ad102a0493.js",
+    "static/chunks/main-app-a914d96def36083a.js"
+  ],
+  "pages": {
+    "/AboutPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/AboutPage-bbf7af1121f175cb.js"
+    ],
+    "/AccountPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/AccountPage-b8b2d710bdf726e0.js"
+    ],
+    "/AlertsPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/AlertsPage-f5f8fb3aa26e868a.js"
+    ],
+    "/Calendar": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/css/c5e4c7001e0b73dd.css",
+      "static/chunks/pages/Calendar-797ceb9938c30b67.js"
+    ],
+    "/CalendarPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/CalendarPage-dfca158752aa06bf.js"
+    ],
+    "/HomePage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/pages/HomePage-679a1c9cab19d1fe.js"
+    ],
+    "/LivePage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/LivePage-3cafa48fb0d1540a.js"
+    ],
+    "/MapPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/7066-4f14e43fa652ce1f.js",
+      "static/chunks/pages/MapPage-0d949da284c2d7d4.js"
+    ],
+    "/News": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/8675-ea2f4797533a75f2.js",
+      "static/chunks/7066-4f14e43fa652ce1f.js",
+      "static/chunks/1396-db192e8793e15218.js",
+      "static/css/9a8cc9095eade8dd.css",
+      "static/chunks/pages/News-c7f9ccc4ccccbce0.js"
+    ],
+    "/NotFoundPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/pages/NotFoundPage-918fa44abef68053.js"
+    ],
+    "/PlantDetailPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/PlantDetailPage-6d2b8ef23f01ccd9.js"
+    ],
+    "/PlantsPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/PlantsPage-9c4168f16a4490e7.js"
+    ],
+    "/ProPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/ProPage-90800be218df3c18.js"
+    ],
+    "/Profile": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/efc9dd46-4646327080a70114.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/8675-ea2f4797533a75f2.js",
+      "static/chunks/776-0bd824c5d962fd89.js",
+      "static/chunks/6689-6bfaaf4cb5a76f1f.js",
+      "static/chunks/1396-db192e8793e15218.js",
+      "static/css/f9d214a07b04199e.css",
+      "static/chunks/pages/Profile-ac7855ac27d0bfd6.js"
+    ],
+    "/Settings": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/efc9dd46-4646327080a70114.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/8675-ea2f4797533a75f2.js",
+      "static/chunks/776-0bd824c5d962fd89.js",
+      "static/chunks/1396-db192e8793e15218.js",
+      "static/css/316ff5c0edea7a57.css",
+      "static/chunks/pages/Settings-662383f0dde6238b.js"
+    ],
+    "/SignUp": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/efc9dd46-4646327080a70114.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/8675-ea2f4797533a75f2.js",
+      "static/chunks/776-0bd824c5d962fd89.js",
+      "static/chunks/1396-db192e8793e15218.js",
+      "static/css/82bad980d895f581.css",
+      "static/chunks/pages/SignUp-6a1bb472676a3dc5.js"
+    ],
+    "/StartMyGarden": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/5698-d62a50588f855a5e.js",
+      "static/chunks/8675-ea2f4797533a75f2.js",
+      "static/chunks/1396-db192e8793e15218.js",
+      "static/css/9db420c29508e551.css",
+      "static/chunks/pages/StartMyGarden-639339d54f7251f1.js"
+    ],
+    "/StartPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/StartPage-7df553b755e9eaa5.js"
+    ],
+    "/UpdatesPage": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/UpdatesPage-1c81381725bffcb7.js"
+    ],
+    "/_app": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/_app-3c9ca398d360b709.js"
+    ],
+    "/_error": [
+      "static/chunks/webpack-7027a6cd58cb65dd.js",
+      "static/chunks/framework-6294d8733806e2a4.js",
+      "static/chunks/main-59487afaabb73181.js",
+      "static/chunks/pages/_error-cf5ca766ac8f493f.js"
+    ]
+  },
+  "ampFirstPages": []
+}

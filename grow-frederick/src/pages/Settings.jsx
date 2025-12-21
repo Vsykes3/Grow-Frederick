@@ -6,6 +6,10 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '../components/Footer';
 import './Settings.css';
 
+export const getServerSideProps = async () => {
+  return { props: {} };
+};
+
 const Settings = () => {
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState('account');

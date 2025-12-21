@@ -7,10 +7,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Disable static optimization to prevent prerendering errors
-  experimental: {
-    isrMemoryCacheSize: 0,
-  },
   images: {
     domains: [
       'images.unsplash.com',
