@@ -88,7 +88,7 @@ export function PlantIndex({ className }: PlantIndexProps) {
     { id: 'all', label: 'All Plants', icon: '' },
     { id: 'vegetable', label: 'Vegetables', icon: '' },
     { id: 'herb', label: 'Herbs', icon: '' },
-    { id: 'fruit', label: 'Fruits', icon: 'üçì' },
+    { id: 'fruit', label: 'Fruits', icon: '' },
     { id: 'flower', label: 'Flowers', icon: '' },
     { id: 'tree', label: 'Trees', icon: '' },
     { id: 'shrub', label: 'Shrubs', icon: '' },
@@ -390,7 +390,7 @@ function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
             <ul className="space-y-2">
               {plant.growingTips.map((tip, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm text-gc-dark">
-                  <span className="text-gc-accent mt-1">ï</span>
+                  <span className="text-gc-accent mt-1">ÔøΩ</span>
                   {tip}
                 </li>
               ))}
@@ -416,10 +416,10 @@ function PlantDetailModal({ plant, onClose }: PlantDetailModalProps) {
           <div className="bg-gc-light/10 rounded-lg p-4 mb-6">
             <h3 className="text-lg font-semibold text-gc-dark mb-3">Plant Features</h3>
             <ul className="space-y-2 text-sm text-gc-dark">
-              <li>ï Detailed pest management guide</li>
-              <li>ï Soil testing recommendations</li>
-              <li>ï Harvest timing optimization</li>
-              <li>ï Disease prevention strategies</li>
+              <li>ÔøΩ Detailed pest management guide</li>
+              <li>ÔøΩ Soil testing recommendations</li>
+              <li>ÔøΩ Harvest timing optimization</li>
+              <li>ÔøΩ Disease prevention strategies</li>
             </ul>
           </div>
 
