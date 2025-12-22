@@ -15,6 +15,21 @@ export function LockBadge({ className, size = "sm", onClick }: LockBadgeProps) {
     lg: "h-6 w-6"
   }
 
+  // If no onClick, render as span to avoid nested button issues
+  if (!onClick) {
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center justify-center rounded-full border-amber-200 bg-amber-50 text-amber-600",
+          sizeClasses[size],
+          className
+        )}
+      >
+        <Lock className={sizeClasses[size]} />
+      </span>
+    )
+  }
+
   return (
     <Button
       variant="outline"

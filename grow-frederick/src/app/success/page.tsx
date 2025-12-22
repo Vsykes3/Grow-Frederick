@@ -1,32 +1,64 @@
-"use client"
+'use client'
 
 import { Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
+import { useSearchParams } from 'next/navigation'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
-  
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-2xl mx-auto text-center">
-        <div className="mb-8">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h1 className="text-3xl font-bold mb-2">Payment Successful!</h1>
-          <p className="text-muted-foreground">Thank you for your purchase.</p>
+        <div className="text-6xl mb-6">🎉</div>
+        <h1 className="text-4xl font-bold mb-4">Welcome to GrowCommon Pro!</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+          Your subscription is now active. Start exploring all the premium features!
+        </p>
+        
+        <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">What's Next?</h2>
+          <ul className="text-left space-y-3">
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 text-xl">✓</span>
+              <span>Add unlimited plants to your garden</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 text-xl">✓</span>
+              <span>Set up calendar reminders for planting</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 text-xl">✓</span>
+              <span>Export your garden data anytime</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 text-xl">✓</span>
+              <span>Access advanced pest forecasts</span>
+            </li>
+          </ul>
         </div>
+
+        <div className="flex gap-4 justify-center">
+          <Link
+            href="/my-garden"
+            className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+          >
+            Go to My Garden
+          </Link>
+          <Link
+            href="/plant-index"
+            className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          >
+            Browse Plants
+          </Link>
+        </div>
+
         {sessionId && (
-          <p className="text-sm text-muted-foreground mb-6">Session ID: {sessionId}</p>
+          <p className="text-sm text-gray-500 mt-8">
+            Session ID: {sessionId}
+          </p>
         )}
-        <Link href="/">
-          <Button>Return to Home</Button>
-        </Link>
       </div>
     </div>
   )
@@ -34,7 +66,14 @@ function SuccessContent() {
 
 export default function SuccessPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center">Loading...</div>}>
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="text-6xl mb-6">🎉</div>
+          <h1 className="text-4xl font-bold mb-4">Loading...</h1>
+        </div>
+      </div>
+    }>
       <SuccessContent />
     </Suspense>
   )

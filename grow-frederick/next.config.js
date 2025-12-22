@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
 const nextConfig = {
+  reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -7,95 +9,106 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: [
-      'images.unsplash.com',
-      'via.placeholder.com',
-      'firebasestorage.googleapis.com',
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com"
+      },
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com"
+      },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com"
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos"
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com"
+      },
+      {
+        protocol: "https",
+        hostname: "www.ars.usda.gov"
+      }
     ],
+    // doesn't affect server deploy, fine to keep
+    unoptimized: true
   },
+
   env: {
-    NEXT_PUBLIC_ENABLE_PRO: process.env.NEXT_PUBLIC_ENABLE_PRO || 'true',
-    DEMO_BYPASS_PAYWALL: process.env.DEMO_BYPASS_PAYWALL || 'true',
+    NEXT_PUBLIC_ENABLE_PRO:
+      process.env.NEXT_PUBLIC_ENABLE_PRO || "true",
+    DEMO_BYPASS_PAYWALL:
+      process.env.DEMO_BYPASS_PAYWALL || "true",
+    NEXTAUTH_URL:
+      process.env.NEXTAUTH_URL || "http://localhost:3000",
   },
+
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY"
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff"
           },
           {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-        ],
-      },
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin"
+          }
+        ]
+      }
     ];
   },
+
   webpack: (config, { isServer }) => {
     // Fix for @ alias not resolving
-    const path = require('path');
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname, 'src'),
-      // Stub react-router-dom for legacy files that shouldn't use it in Next.js
-      'react-router-dom': path.resolve(__dirname, 'src/lib/react-router-stub.js'),
-    };
+      '@': require('path').resolve(__dirname, 'src')
+    }
     
-    // Use NormalModuleReplacementPlugin to handle case-insensitive button imports
-    // This replaces '@/components/ui/button' imports with '@/components/ui/Button.tsx'
-    const webpack = require('webpack');
-    config.plugins = config.plugins || [];
-    
-    // Handle @/components/ui/button imports
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /@\/components\/ui\/button$/,
-        path.resolve(__dirname, 'src/components/ui/Button.tsx')
-      )
-    );
-    
-    // Handle @/components/ui/button.tsx imports
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /@\/components\/ui\/button\.tsx$/,
-        path.resolve(__dirname, 'src/components/ui/Button.tsx')
-      )
-    );
-    
-    // Handle relative ./button imports in components/ui directory
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /components\/ui\/button$/,
-        path.resolve(__dirname, 'src/components/ui/Button.tsx')
-      )
-    );
-    
-    // Handle relative ./button.tsx imports
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /components\/ui\/button\.tsx$/,
-        path.resolve(__dirname, 'src/components/ui/Button.tsx')
-      )
-    );
+    // Exclude React Router pages directory from being processed
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
     
     // Make optional dependencies external to avoid build-time errors
     if (isServer) {
       config.externals = config.externals || [];
       config.externals.push({
-        'resend': 'commonjs resend',
-        'web-push': 'commonjs web-push',
+        resend: "commonjs resend",
+        "web-push": "commonjs web-push"
       });
     }
     
+    // Fix for Windows/OneDrive path issues with symlinks
+    // This prevents EINVAL errors when Next.js tries to read symlinks in .next directory
+    if (process.platform === 'win32') {
+      config.resolve = config.resolve || {};
+      config.resolve.symlinks = false;
+      // Disable file watching that causes issues with OneDrive
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['**/.next/**', '**/node_modules/**'],
+        poll: false,
+      };
+      
+      // Fix webpack chunk loading issues on Windows/OneDrive
+      // Disable persistent cache to avoid chunk loading errors
+      config.cache = false;
+    }
+    
     return config;
-  },
+  }
 };
 
 module.exports = nextConfig;

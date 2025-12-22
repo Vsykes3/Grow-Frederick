@@ -6,10 +6,6 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '../components/Footer';
 import './Settings.css';
 
-export const getServerSideProps = async () => {
-  return { props: {} };
-};
-
 const Settings = () => {
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState('account');
@@ -566,6 +562,11 @@ const Settings = () => {
     </div>
   );
 };
+
+// Force dynamic rendering for Next.js Pages Router
+export async function getServerSideProps() {
+  return { props: {} };
+}
 
 export default Settings;
 

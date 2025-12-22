@@ -550,8 +550,3 @@ export const expandedVegetables: Plant[] = [
 
 
 
-
-
-
-
-

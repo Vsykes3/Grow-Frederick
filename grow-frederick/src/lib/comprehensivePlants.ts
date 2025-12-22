@@ -482,8 +482,3 @@ export const allComprehensivePlants: Plant[] = [
 
 
 
-
-
-
-
-

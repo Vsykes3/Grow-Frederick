@@ -1,7 +1,5 @@
 import { Shield, Lock, Eye, FileText } from 'lucide-react'
 
-export const dynamic = 'force-dynamic';
-
 export const metadata = {
   title: 'Privacy Policy | GrowCommon',
   description: 'GrowCommon Privacy Policy - Learn how we protect your personal information and gardening data.',
@@ -155,11 +153,6 @@ export default function PrivacyPolicyPage() {
     </div>
   )
 }
-
-
-
-
-
 
 
 

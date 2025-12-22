@@ -1,14 +1,15 @@
 ﻿import React, { useRef, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { auth, storage, db } from "@/lib/firebase";
 import { updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./Profile.css";
 import Navbar from "@/components/ui/Navbar";
 
-export const getServerSideProps = async () => {
+// Force dynamic rendering for Next.js Pages Router
+export async function getServerSideProps() {
   return { props: {} };
-};
+}
 
 export default function Profile() {
   const { currentUser } = useAuth();

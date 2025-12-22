@@ -1,14 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { useSession, signIn, signOut } from "next-auth/react"
-import { useTheme } from "next-themes"
+import { useSession, signIn, signOut as nextAuthSignOut } from "next-auth/react"
+import { useFirebaseAuth } from "@/hooks/useFirebaseAuth"
+import { completeSignOut } from "@/lib/firebase"
+import { useRouter } from "next/navigation"
 import { 
   Menu, 
   X, 
   Sun, 
-  Moon, 
   User, 
   Settings, 
   LogOut,
@@ -26,17 +27,20 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { LockBadge } from "@/components/ui/lock-badge"
+import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { useUser } from "@/contexts/UserContext"
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Plant Index', href: '/plant-index', icon: Leaf },
-  { name: 'My Garden', href: '/my-garden', icon: UserCheck, requiresAuth: true },
-  { name: 'Calendar', href: '/calendar', icon: Calendar, requiresAuth: true, pro: true },
-  { name: 'Weather', href: '/weather', icon: Sun, requiresAuth: true },
-  { name: 'Map', href: '/map', icon: MapPin, requiresAuth: true, pro: true },
+  { name: 'My Garden', href: '/my-garden', icon: UserCheck, requiresAuth: false },
+  { name: 'Calendar', href: '/calendar', icon: Calendar, requiresAuth: false },
+  { name: 'Weather', href: '/weather', icon: Sun, requiresAuth: false },
+  { name: 'Map', href: '/map', icon: MapPin, requiresAuth: false },
   { name: 'Pests', href: '/pests', icon: Bug },
-  { name: 'News', href: '/news', icon: Newspaper, requiresAuth: true },
+  { name: 'News', href: '/news', icon: Newspaper },
   { name: 'Blog', href: '/blog', icon: BookOpen },
   { name: 'About', href: '/about', icon: Info },
   { name: 'Contact', href: '/contact', icon: Mail },
@@ -45,32 +49,89 @@ const navigation = [
 
 export function Navbar() {
   const { data: session } = useSession()
-  const { theme, setTheme } = useTheme()
+  const { user: firebaseUser, loading: firebaseLoading } = useFirebaseAuth()
+  const { user: contextUser, setUser } = useUser() // Get user from context
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+  // Use context user (which updates immediately), fallback to Firebase/NextAuth
+  const currentUser = contextUser ? {
+    displayName: contextUser.displayName || '',
+    email: contextUser.email || '',
+    photoURL: contextUser.profilePicture || undefined
+  } : (firebaseUser || (session?.user ? {
+    displayName: session.user.name || '',
+    email: session.user.email || '',
+    photoURL: session.user.image || undefined
+  } : null))
+
+  const handleSignOut = async () => {
+    try {
+      // Sign out from Firebase (clears all local data)
+      await completeSignOut()
+      
+      // Sign out from NextAuth if session exists
+      if (session) {
+        await nextAuthSignOut({ callbackUrl: '/' })
+      }
+      
+      // Clear user context
+      setUser(null)
+      
+      // Close menus
+      setIsOpen(false)
+      setShowUserMenu(false)
+      
+      // Redirect to home page
+      router.push('/')
+      router.refresh()
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // Even if there's an error, clear local state and redirect
+      setUser(null)
+      setIsOpen(false)
+      setShowUserMenu(false)
+      router.push('/')
+      router.refresh()
+    }
   }
 
-  const handleSignOut = () => {
-    signOut()
-    setIsOpen(false)
-  }
+  // Close user menu when clicking outside
+  const userMenuRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
+      }
+    }
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showUserMenu])
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
-              <Leaf className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-foreground">GrowCommon</span>
+      <div className="container mx-auto px-2 sm:px-4">
+        <div className="flex h-16 items-center gap-1 sm:gap-2">
+          {/* Logo - positioned at left */}
+          <Link href="/" className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+            <Image
+              src="/GrowCommon.png"
+              alt="GrowCommon Logo"
+              width={32}
+              height={32}
+              className="h-7 w-7 sm:h-8 sm:w-8 object-contain logo-transparent"
+              priority
+            />
+            <span className="text-base sm:text-lg font-bold text-foreground hidden sm:inline">GrowCommon</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          {/* Desktop Navigation - scrollable on medium, full on large */}
+          <div className="hidden md:flex items-center space-x-0.5 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
             {navigation.map((item) => {
               const Icon = item.icon
               const isActive = false // You can implement active state logic here
@@ -81,11 +142,11 @@ export function Navbar() {
                     key={item.name}
                     variant="ghost"
                     size="sm"
-                    onClick={() => signIn()}
-                    className="flex items-center space-x-2"
+                    onClick={() => signIn(undefined, { callbackUrl: item.href })}
+                    className="flex items-center space-x-1 text-foreground hover:text-foreground px-1.5 sm:px-2 text-xs whitespace-nowrap flex-shrink-0"
                   >
-                    <Icon className="h-4 w-4" />
-                    <span>{item.name}</span>
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden lg:inline">{item.name}</span>
                   </Button>
                 )
               }
@@ -95,10 +156,10 @@ export function Navbar() {
                   <Button
                     variant={isActive ? "default" : "ghost"}
                     size="sm"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-1 text-foreground px-1.5 sm:px-2 text-xs whitespace-nowrap flex-shrink-0"
                   >
-                    <Icon className="h-4 w-4" />
-                    <span>{item.name}</span>
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden lg:inline">{item.name}</span>
                     {item.pro && session?.user?.plan === 'FREE' && (
                       <LockBadge size="sm" />
                     )}
@@ -108,46 +169,114 @@ export function Navbar() {
             })}
           </div>
 
-          {/* Right side actions */}
-          <div className="flex items-center space-x-2">
+          {/* Right side actions - ensure it doesn't shrink */}
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0 ml-auto">
             {/* Theme toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </Button>
+            <ThemeToggle />
 
             {/* User menu */}
-            {session ? (
-              <div className="flex items-center space-x-2">
-                <Link href="/account">
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline">{session.user?.name || 'Account'}</span>
+            {currentUser ? (
+              <div className="flex items-center space-x-1 sm:space-x-2 relative">
+                <div className="relative" ref={userMenuRef}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center space-x-1.5 sm:space-x-2 text-foreground px-2"
+                  >
+                    {currentUser.photoURL ? (
+                      <Image
+                        src={currentUser.photoURL}
+                        alt={currentUser.displayName || 'User'}
+                        width={28}
+                        height={28}
+                        className="rounded-full border-2 border-border"
+                      />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-semibold border-2 border-border">
+                        {currentUser.displayName?.[0]?.toUpperCase() || currentUser.email?.[0]?.toUpperCase() || 'U'}
+                      </div>
+                    )}
+                    {currentUser.displayName && (
+                      <span className="hidden sm:inline text-xs sm:text-sm font-medium">{currentUser.displayName}</span>
+                    )}
                   </Button>
-                </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className="flex items-center space-x-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign Out</span>
-                </Button>
+                  
+                  {/* User Dropdown Menu */}
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg z-50">
+                      <div className="p-4 border-b border-border">
+                        <div className="flex items-center space-x-3">
+                          {currentUser.photoURL ? (
+                            <Image
+                              src={currentUser.photoURL}
+                              alt={currentUser.displayName || 'User'}
+                              width={48}
+                              height={48}
+                              className="rounded-full"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-lg font-semibold">
+                              {currentUser.displayName?.[0]?.toUpperCase() || currentUser.email?.[0]?.toUpperCase() || 'U'}
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-foreground truncate">
+                              {currentUser.displayName || 'User'}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {currentUser.email}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-2">
+                        <Link href="/settings">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-full justify-start text-foreground"
+                            onClick={() => setShowUserMenu(false)}
+                          >
+                            <Settings className="h-4 w-4 mr-2" />
+                            Settings
+                          </Button>
+                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleSignOut}
+                          className="w-full justify-start text-foreground"
+                        >
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm" onClick={() => signIn()}>
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => {
+                    const event = new CustomEvent('openAuth', { detail: { mode: 'signin' } });
+                    window.dispatchEvent(event);
+                  }}
+                  className="text-foreground hover:text-foreground px-2 sm:px-3 text-xs sm:text-sm whitespace-nowrap"
+                >
                   Sign In
                 </Button>
-                <Button size="sm" onClick={() => signIn()}>
+                <Button 
+                  size="sm" 
+                  onClick={() => {
+                    const event = new CustomEvent('openAuth', { detail: { mode: 'signup' } });
+                    window.dispatchEvent(event);
+                  }}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-2 sm:px-3 text-xs sm:text-sm whitespace-nowrap"
+                >
                   Get Started
                 </Button>
               </div>
@@ -157,7 +286,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="lg:hidden h-8 w-8"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -167,19 +296,50 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden border-t py-4">
+          <div className="lg:hidden border-t py-4">
+            {/* Mobile User Info */}
+            {currentUser && (
+              <div className="px-4 py-3 mb-4 border-b border-border">
+                <div className="flex items-center space-x-3">
+                  {currentUser.photoURL ? (
+                    <Image
+                      src={currentUser.photoURL}
+                      alt={currentUser.displayName || 'User'}
+                      width={40}
+                      height={40}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold">
+                      {currentUser.displayName?.[0]?.toUpperCase() || currentUser.email?.[0]?.toUpperCase() || 'U'}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground truncate">
+                      {currentUser.displayName || 'User'}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {currentUser.email}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="space-y-2">
               {navigation.map((item) => {
                 const Icon = item.icon
                 
-                if (item.requiresAuth && !session) {
+                if (item.requiresAuth && !currentUser) {
                   return (
                     <Button
                       key={item.name}
                       variant="ghost"
                       size="sm"
-                      onClick={() => signIn()}
-                      className="w-full justify-start"
+                      onClick={() => {
+                        signIn(undefined, { callbackUrl: item.href })
+                        setIsOpen(false)
+                      }}
+                      className="w-full justify-start text-foreground hover:text-foreground"
                     >
                       <Icon className="h-4 w-4 mr-2" />
                       {item.name}
@@ -192,17 +352,45 @@ export function Navbar() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-foreground"
                     >
                       <Icon className="h-4 w-4 mr-2" />
                       {item.name}
-                      {item.pro && session?.user?.plan === 'FREE' && (
+                      {item.pro && currentUser && (
                         <LockBadge size="sm" className="ml-auto" />
                       )}
                     </Button>
                   </Link>
                 )
               })}
+              {/* Mobile auth buttons */}
+                  {!currentUser && (
+                    <div className="pt-4 space-y-2 border-t">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => {
+                          const event = new CustomEvent('openAuth', { detail: { mode: 'signin' } });
+                          window.dispatchEvent(event);
+                          setIsOpen(false);
+                        }}
+                        className="w-full justify-start text-foreground"
+                      >
+                        Sign In
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        onClick={() => {
+                          const event = new CustomEvent('openAuth', { detail: { mode: 'signup' } });
+                          window.dispatchEvent(event);
+                          setIsOpen(false);
+                        }}
+                        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      >
+                        Get Started
+                      </Button>
+                    </div>
+                  )}
             </div>
           </div>
         )}

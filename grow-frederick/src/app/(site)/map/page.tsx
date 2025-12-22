@@ -1,9 +1,9 @@
 ﻿'use client'
 
-import dynamicImport from 'next/dynamic'
+import dynamic from 'next/dynamic'
 
 // Import map dynamically (client-side only) to avoid SSR issues
-const InteractiveWorldMap = dynamicImport(
+const InteractiveWorldMap = dynamic(
   () => import('@/components/InteractiveWorldMap'),
   { 
     ssr: false,

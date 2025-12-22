@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
-// Note: Navbar and Footer are provided by the root layout in Next.js
+import Navbar from '@/components/ui/Navbar';
+import Footer from '../components/Footer';
 import './Calendar.css';
 
 const Calendar = () => {
@@ -180,7 +181,7 @@ const Calendar = () => {
 
   return (
     <div className="stack">
-      {/* Navbar provided by root layout */}
+      <Navbar />
       
       <div className="calendar-container">
         <div className="calendar-header">
@@ -333,10 +334,15 @@ const Calendar = () => {
         </div>
       )}
 
-      {/* Footer provided by root layout */}
+      <Footer />
     </div>
   );
 };
+
+// Force dynamic rendering for Next.js Pages Router
+export async function getServerSideProps() {
+  return { props: {} };
+}
 
 export default Calendar;
 

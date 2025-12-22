@@ -8,6 +8,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { UserProvider } from '@/contexts/UserContext';
 import Script from 'next/script'
 

@@ -49,6 +49,11 @@ const features = [
   }
 ];
 
+// Force dynamic rendering for Next.js Pages Router
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen">
